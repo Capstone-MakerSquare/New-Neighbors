@@ -1,0 +1,20 @@
+angular.module('app.services',[])
+.factory('Api', function ($http) {
+	var submit = function (searchInfo) {
+		console.log('services.js says: Info submitted:', searchInfo);
+
+		console.log('services.js says: POST request initiated.');
+		return $http({
+			method: 'POST',
+			url: '/api/getNeighbors',
+			data: searchInfo
+		})
+		.then(function(resp) {
+			console.log('services.js says: POST request complete.');
+		})
+	};
+
+	return {
+		submit : submit
+	};
+});

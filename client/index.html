@@ -2,9 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MKS20 Site Deploy</title>
+  <title>NewNeighbors</title>
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./styles/style.css">
+
 </head>
-<body>
-  <h1>Hello, World!</h1>
+<body ng-app="app" ng-controller="MainController as main">
+  <h3>Provide the following information:</h3>
+
+  <div class="container row ">
+	  <form name="main.addForm" class="form" ng-submit="main.submitAddress()">
+	  	
+	  	<!-- Destination -->
+	  	<div class="col-md-12 inputForm">
+		    <input type="text" class="form-control  " ng-model="main.address" placeholder="Where do you want to go?" required/>
+		</div>
+
+		<!-- Number of bedrooms -->
+		<div class="col-md-12 inputForm">
+		    <input type="text" class="form-control  " ng-model="main.address" placeholder="Enter the number of bedrooms" required/>
+		</div>
+
+		<!-- Number of bathrooms -->
+		<div class="col-md-12 inputForm">
+		    <input type="text" class="form-control  " ng-model="main.address" placeholder="Enter the number of bathrooms" required/>
+		</div>
+
+
+	  </form>
+  </div>
+
+
+<!-- angular -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular.min.js"></script>
+  <script src="./app/app.js"></script>
+  <script src="./app/services.js"></script>
+  <script src="./app/mainCtrl.js"></script>
+
 </body>
 </html>
