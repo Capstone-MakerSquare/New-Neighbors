@@ -11,6 +11,7 @@ angular.module('app.services',[])
 		})
 		.then(function(resp) {
 			console.log('services.js says: POST request complete.');
+			console.log('Response data:',resp.data);
 		})
 	};
 

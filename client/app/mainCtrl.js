@@ -3,8 +3,8 @@ angular.module('app',['app.services'])
   var main = this;
 
   main.address = '';
-  main.bedrooms = 0;
-  main.bathrooms = 0;
+  main.bedrooms = '';
+  main.bathrooms = '';
 
   main.searchInfo = { };
 
@@ -14,8 +14,8 @@ angular.module('app',['app.services'])
     main.searchInfo.address = main.address;
     main.searchInfo.bedrooms = main.bedrooms;
     main.searchInfo.bathrooms = main.bathrooms;
-    
+
     Api.submit(main.searchInfo);
   };
 
-}])
+}]);
