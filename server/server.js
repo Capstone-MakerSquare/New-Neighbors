@@ -63,19 +63,25 @@ var zilpy = function (searchInfo) {
 }
 
 //-----------------------------------------------------------------------------------
-//Determine driving times and distances
-//for multiple origins to a single destination
-//INPUT: array of origins as string name and/or latlong
-//                           ['Mar Vista, CA', {lat: 34, lng: -118}]
-//       destination as string name or lat/long object as above
-//OUTPUT: results array of object for each origin:
-//                           {name:, distance:, time:}
+//DETERMINE driving times and distances for multiple origins to a single destination
+/*INPUT: originsArr: Array of origins as string name and/or latlong
+           Eg. ['Mar Vista, CA', {lat: 34, lng: -118}]
+      	 destination: Destination as string name or lat/long object as above
+  OUTPUT: Array of objects for each origin:
+  				Eg.
+  				{
+  				 		name: loremIpsum,
+  				 		distance: 34,				//kilometers
+  				 		time: 54						//minutes
+  				}
+*/
 
 var createDistanceMatrix = function (originsArr, destination) {
   var deferred = Q.defer();
 
   var resultArr = [];
   var service = new google.maps.DistanceMatrixService;
+
   service.getDistanceMatrix({
     origins: originsArr,
     destinations: [destination],
@@ -110,6 +116,7 @@ var createDistanceMatrix = function (originsArr, destination) {
   Input: searchInfo
   Output: [latitude, longitude]
 */
+
 
 var reverseGeocode = function (searchInfo) {
 	var deferred = Q.defer();
@@ -148,7 +155,5 @@ var reverseGeocode = function (searchInfo) {
 	Street Address
   Website: Google places
 */
-
-
 
 module.exports = app;
