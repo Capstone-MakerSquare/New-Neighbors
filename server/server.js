@@ -14,10 +14,14 @@ app.use(express.static(__dirname + '/../client'));
 app.post('/api/getNeighbors', function (req, res) {
 	console.log('server.js says: POST request received! Data:', req.body);
 	var searchInfo = req.body;
-
+	var glanceCards = [];
+	 
 	zilpy(searchInfo)
 	.then(function (zilpyData){
 		res.send(200, zilpyData);
+	})
+	.then(function () {
+		console.log('Response sent back to the client.');
 	});
 });
 
