@@ -1,0 +1,24 @@
+{
+  "name": "New-Neighbor-App",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Capstone-MakerSquare/New-Neighbors/",
+  "authors": [
+    "Raghav Abboy <rabboy@eng.ucsd.edu>",
+    "Melinda Sarnicki Bernardo <melindasarnicki@gmail.com>",
+    "Evan Mencke <evanmencke@gmail.com>",
+    "Kalisa Falzone <kalisafalzone@gmail.com>"
+  ],
+  "description": "An application that recommends neighborhoods to users moving to a new city",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation-apps": "~1.1.0"
+  }
+}
