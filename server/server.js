@@ -63,10 +63,10 @@ var zilpy = function (searchInfo) {
 //INPUT: array of origins as string name and/or latlong
 //                           ['Mar Vista, CA', {lat: 34, lng: -118}]
 //       destination as string name or lat/long object as above
-//       callback fucntion that takes in a result array of objects as follows:
+//OUTPUT: results array of object for each origin:
 //                           {name:, distance:, time:}
 
-var createDistanceMatrix = function (originsArr, destination, cb) {
+var createDistanceMatrix = function (originsArr, destination) {
   var deferred = Q.defer();
 
   var resultArr = [];
