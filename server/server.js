@@ -2,6 +2,7 @@ var express = require('express');
 var middleware = require('./config/middleware.js');
 var http = require('http');
 var Q = require('q');
+var keys = require('./config/keys.js');
 
 app = express();
 middleware(app,express);
@@ -21,7 +22,7 @@ app.post('/api/getNeighbors', function (req, res) {
 		res.send(200, zilpyData);
 	})
 	.then(function () {
-		console.log('Response sent back to the client.');
+		reverseGeocode(searchInfo);
 	});
 });
 
@@ -31,6 +32,9 @@ app.post('/api/getNeighbors', function (req, res) {
 /*Prerequisites:
 	Street Address, Bedrooms, Bathrooms
   Website: zilpy.com
+
+  Input: searchInfo object
+  Output: zilpyData object
 */
 
 var zilpy = function (searchInfo) {
@@ -49,8 +53,9 @@ var zilpy = function (searchInfo) {
 	      body += chunk;
 	    });
 	    response.on('end', function () {
-	      console.log('Zilpy data - BODY: ' + body);
-		  deferred.resolve(body);
+	      //remove
+	      //console.log('Zilpy data - BODY: ' + body);
+		  	deferred.resolve(body);
 	    });
 	}); //end of http.get
 
@@ -96,6 +101,54 @@ var createDistanceMatrix = function (originsArr, destination) {
   return deferred.promise;
 }
 
+//-----------------------------------------------------------------------------------
+//GET latitude and longitude of an address, given the address
+/*Prerequisites:
+	Street Address
+  Website: Google maps endpoint
+
+  Input: searchInfo
+  Output: [latitude, longitude]
+*/
+
+var reverseGeocode = function (searchInfo) {
+	var deferred = Q.defer();
+
+	var address = searchInfo.address;
+	var gPlacesUrl_address = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
+	var gPlacesUrl_sensor = '&sensor=false';
+
+	console.log('server.js says: reverseGeocode called.');
+	console.log('address: ',address);
+	console.log('googleAPIKey: ',keys.googleAPIKey);
+
+	var gPlacesUrl = gPlacesUrl_address + address + gPlacesUrl_sensor;
+	http.get( gPlacesUrl, function (response) {
+		var body = '';
+		response.on('data', function (chunk) {
+			body += chunk;
+		});
+		response.on('end', function () {
+			body = JSON.parse(body);
+			console.log('Response from reverseGeocode:',typeof body);
+			console.log('Content:', body);
+			deferred.resolve(body);
+		});
+	}); //end of http.get
+
+	return deferred.promise;
+}
+
+
+
+
+//-----------------------------------------------------------------------------------
+//GET neighborhood list, given a particular latitude and longitude
+/*Prerequisites:
+	Street Address
+  Website: Google places
+*/
+
+
 
 module.exports = app;
-
