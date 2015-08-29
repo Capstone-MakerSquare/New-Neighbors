@@ -2,6 +2,7 @@ var express = require('express');
 var middleware = require('./config/middleware.js');
 var http = require('http');
 var Q = require('q');
+var keys = require('./config/keys.js');
 
 app = express();
 middleware(app,express);
@@ -21,7 +22,7 @@ app.post('/api/getNeighbors', function (req, res) {
 		res.send(200, zilpyData);
 	})
 	.then(function () {
-		console.log('Response sent back to the client.');
+		reverseGeocode(searchInfo);
 	});
 });
 
@@ -31,6 +32,9 @@ app.post('/api/getNeighbors', function (req, res) {
 /*Prerequisites:
 	Street Address, Bedrooms, Bathrooms
   Website: zilpy.com
+
+  Input: searchInfo object
+  Output: zilpyData object
 */
 
 var zilpy = function (searchInfo) {
@@ -49,8 +53,9 @@ var zilpy = function (searchInfo) {
 	      body += chunk;
 	    });
 	    response.on('end', function () {
-	      console.log('Zilpy data - BODY: ' + body);
-		  deferred.resolve(body);
+	      //remove
+	      //console.log('Zilpy data - BODY: ' + body);
+		  	deferred.resolve(body);
 	    });
 	}); //end of http.get
 
@@ -58,19 +63,25 @@ var zilpy = function (searchInfo) {
 }
 
 //-----------------------------------------------------------------------------------
-//Determine driving times and distances
-//for multiple origins to a single destination
-//INPUT: array of origins as string name and/or latlong
-//                           ['Mar Vista, CA', {lat: 34, lng: -118}]
-//       destination as string name or lat/long object as above
-//OUTPUT: results array of object for each origin:
-//                           {name:, distance:, time:}
+//DETERMINE driving times and distances for multiple origins to a single destination
+/*INPUT: originsArr: Array of origins as string name and/or latlong
+           Eg. ['Mar Vista, CA', {lat: 34, lng: -118}]
+      	 destination: Destination as string name or lat/long object as above
+  OUTPUT: Array of objects for each origin:
+  				Eg.
+  				{
+  				 		name: loremIpsum,
+  				 		distance: 34,				//kilometers
+  				 		time: 54						//minutes
+  				}
+*/
 
 var createDistanceMatrix = function (originsArr, destination) {
   var deferred = Q.defer();
 
   var resultArr = [];
   var service = new google.maps.DistanceMatrixService;
+
   service.getDistanceMatrix({
     origins: originsArr,
     destinations: [destination],
@@ -96,6 +107,59 @@ var createDistanceMatrix = function (originsArr, destination) {
   return deferred.promise;
 }
 
+//-----------------------------------------------------------------------------------
+//GET latitude and longitude of an address, given the address
+/*Prerequisites:
+	Street Address
+  Website: Google maps endpoint
+
+  Input: searchInfo
+  Output: [latitude, longitude]
+*/
+
+
+var reverseGeocode = function (searchInfo) {
+	var deferred = Q.defer();
+
+	var address = searchInfo.address;
+	var gPlacesUrl_address = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
+	var gPlacesUrl_sensor = '&sensor=false';
+
+	console.log('server.js says: reverseGeocode called.');
+	console.log('address: ',address);
+	console.log('googleAPIKey: ',keys.googleAPIKey);
+
+	var gPlacesUrl = gPlacesUrl_address + address + gPlacesUrl_sensor;
+	http.get( gPlacesUrl, function (response) {
+		var body = '';
+		response.on('data', function (chunk) {
+			body += chunk;
+		});
+		response.on('end', function () {
+			body = JSON.parse(body);
+			console.log('Response from reverseGeocode:',typeof body);
+			console.log('Content:', body);
+			deferred.resolve(body);
+		});
+	}); //end of http.get
+
+	return deferred.promise;
+}
+
+
+
+
+//-----------------------------------------------------------------------------------
+//GET neighborhood list, given a particular latitude and longitude
+/*Prerequisites:
+	Street Address
+  Website: Google places
+*/
+
+
+
+
+
+
 
 module.exports = app;
-
