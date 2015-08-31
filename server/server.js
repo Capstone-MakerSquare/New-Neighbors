@@ -3,7 +3,8 @@ var middleware = require('./config/middleware.js');
 var http = require('http');
 var Q = require('q');
 var keys = require('./config/keys.js');
-var httpRequest = require('http-request');
+var request = require('request');
+var _ = require('underscore');
 
 app = express();
 middleware(app,express);
@@ -18,28 +19,76 @@ app.post('/api/getNeighbors', function (req, res) {
 
 	var searchInfo = req.body;
 	var glanceCards = [];
-	var eventNumber = 1;
+	var eventNumber = 0;
 
 	var checkAndRespond = function () {
-		if(eventNumber === 3) {
+		if(eventNumber === 2) {
 			res.send(200, "Data fetched.");
 		}
 	}
 
 	zilpy(searchInfo)
 	.then(function (zilpyData){
-		console.log('Data from zilpy received. EventNumber:', eventNumber++);
+		console.log('Data from zilpy received. EventNumber:', ++eventNumber);
 		checkAndRespond();
 	})
 
 	reverseGeocode(searchInfo)
-	.then(function (coordinates) {
-		console.log('Data from reverseGeocode received. EventNumber:', eventNumber++);
-		// console.log('coordinates:', coordinates);
+	.then(function (geoCode) {
+		console.log('Data from reverseGeocode received. EventNumber:', ++eventNumber);
+		console.log('geoCode:', geoCode);
+		return findNeighborhoods(geoCode);
+	})
+	.then(function (neighborhoodObj) {
+		console.log('Neighborhood list:',neighborhoodObj);
 		checkAndRespond();
 	});
 
-});
+});	//end of POST request handler
+
+//-----------------------------------------------------------------------------------
+//GET list of neighborhood localities for a pair of coordinates (corresponding to the given street address)
+/*Input: coordinates
+  Output: Object of neighborhoods
+*/
+
+var findNeighborhoods = function (geoCode) {
+	var deferred = Q.defer();
+
+	var gPlacesUrl_location = 'https://maps.googleapis.com/maps/api/place/search/json?location=';			//latitude + ',' + longitude
+	var gPlacesUrl_radius = '&radius=';
+	var gPlacesUrl_types = '&types=';
+	var gPlacesUrl_key = 'l&key=';
+
+	var neighborhoodObj = {};
+	var radius = 1000;
+	var key = keys.googleAPIKey;
+	var types = 'locality|sublocality|neighborhood|sublocality_level_4|sublocality_level_3|sublocality_level_2|sublocality_level_1';
+
+	var gPlacesUrl = gPlacesUrl_location + geoCode.coordinates.latitude + ',' + geoCode.coordinates.longitude +
+									 gPlacesUrl_radius + radius +
+									 gPlacesUrl_types + types +
+									 gPlacesUrl_key + key;
+
+	deferred.resolve(
+
+		getRequest(gPlacesUrl)
+		.then(function (responseObj) {
+			var results = responseObj.results;
+			_.each(results, function (result) {
+				neighborhoodObj[result.name] = {
+					latitude: result.geometry.location.lat,
+					longitude: result.geometry.location.lng,
+					placeId: result.place_id
+				};
+			});
+			return neighborhoodObj;
+		})
+
+	);
+
+	return deferred.promise;
+}
 
 
 //-----------------------------------------------------------------------------------
@@ -60,25 +109,11 @@ var zilpy = function (searchInfo) {
 	var zilpyUrl_bathrooms = '&ba=';
 
 	var zilpyUrl = zilpyUrl_address + searchInfo.address + zilpyUrl_bedrooms + searchInfo.bedrooms + zilpyUrl_bathrooms + searchInfo.bathrooms;
-	//console.log('Sample URL for Zilpy:', zilpyUrl);
 
-	http.get( zilpyUrl, function (response) {
-	    var body = '';
-	    response.on('data', function (chunk) {
-	      body += chunk;
-	    });
-	    response.on('end', function () {
-	      //remove
-	      //console.log('Zilpy data - BODY: ' + body);
-		  	deferred.resolve(body);
-	    });
-	}); //end of http.get
-
+	deferred.resolve(getRequest(zilpyUrl));
 	return deferred.promise;
 }
-
 //-----------------------------------------------------------------------------------
-
 
 
 //-----------------------------------------------------------------------------------
@@ -144,23 +179,31 @@ var reverseGeocode = function (searchInfo) {
 	var gPlacesUrl_address = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
 	var gPlacesUrl_sensor = '&sensor=false';
 
-	console.log('server.js says: reverseGeocode called.');
-	console.log('address: ',address);
-	console.log('googleAPIKey: ',keys.googleAPIKey);
+	// console.log('server.js says: reverseGeocode called.');
+	// console.log('address: ',address);
+	// console.log('googleAPIKey: ',keys.googleAPIKey);
 
 	var gPlacesUrl = gPlacesUrl_address + address + gPlacesUrl_sensor;
-	http.get( gPlacesUrl, function (response) {
-		var body = '';
-		response.on('data', function (chunk) {
-			body += chunk;
-		});
-		response.on('end', function () {
-			body = JSON.parse(body);
-			//console.log('Response from reverseGeocode:',typeof body);
-			//console.log('Content:', body);
-			deferred.resolve(body);
-		});
-	}); //end of http.get
+
+	deferred.resolve(
+		getRequest(gPlacesUrl)
+		.then(function (coordinatesObj) {
+			console.log('coordinatesObj:', coordinatesObj);
+
+			//Fetch the placeID, formatted address and the coordinates; make a minimal geoCode
+			var results = coordinatesObj.results[0];
+			var geoCode = {
+				formattedAddress : results.formatted_address,
+			  placeId : results.place_id,
+			  coordinates : {
+					latitude: results.geometry.location.lat,
+					longitude: results.geometry.location.lng
+				}
+			};
+
+			return geoCode;
+		})
+	);
 
 	return deferred.promise;
 }
@@ -208,11 +251,26 @@ var trulia = function (zip) {
   return deferred.promise;
 }
 
-//-----------------------------------------------------------------------------------
 //Helper functions
-
+//-----------------------------------------------------------------------------------
 //HTTP get request
-//var getRequest = function (url, )
+var getRequest = function (url) {
+	var deferred = Q.defer()
+
+	//remove
+	// console.log('getRequest called. url:',url);
+
+	request(url, function (error, response, body) {
+	  if(error) { deferred.reject(error); }
+	  if (!error && response.statusCode == 200) { deferred.resolve(JSON.parse(body)); }
+	  else { deferred.resolve("Not Available"); }
+	});
+
+	return deferred.promise;
+}
+//-----------------------------------------------------------------------------------
+
+
 
 
 module.exports = app;
