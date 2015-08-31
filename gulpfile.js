@@ -46,7 +46,7 @@ var paths = {
   appJS: [
     'client/assets/js/app.js'
   ]
-}
+};
 
 // 3. TASKS
 // - - - - - - - - - - - - - - -
@@ -74,6 +74,13 @@ gulp.task('copy:templates', function() {
     }))
     .pipe(gulp.dest('./build/templates'))
   ;
+});
+
+//Copies foundation's library of font icons
+gulp.task('copy:icons', function() {
+  return gulp.src('client/assets/scss/foundation-icons.*')
+      .pipe(gulp.dest('./build/assets/css/'))
+    ;
 });
 
 // Compiles the Foundation for Apps directive partials into a single JavaScript file
@@ -113,7 +120,7 @@ gulp.task('sass', function () {
 });
 
 // Compiles and copies the Foundation for Apps JavaScript, as well as your app's custom JS
-gulp.task('uglify', ['uglify:foundation', 'uglify:app'])
+gulp.task('uglify', ['uglify:foundation', 'uglify:app']);
 
 gulp.task('uglify:foundation', function(cb) {
   var uglify = $.if(isProduction, $.uglify()
@@ -156,7 +163,7 @@ gulp.task('server', ['build'], function() {
 
 // Builds your entire app once, without starting a server
 gulp.task('build', function(cb) {
-  sequence('clean', ['copy', 'copy:foundation', 'sass', 'uglify'], 'copy:templates', cb);
+  sequence('clean', ['copy', 'copy:foundation', 'copy:icons', 'sass', 'uglify'], 'copy:templates', cb);
 });
 
 // Default task: builds your app, starts a server, and recompiles assets when they change
