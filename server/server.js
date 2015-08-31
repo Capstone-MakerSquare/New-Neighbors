@@ -3,6 +3,7 @@ var middleware = require('./config/middleware.js');
 var http = require('http');
 var Q = require('q');
 var keys = require('./config/keys.js');
+var httpRequest = require('http-request');
 
 app = express();
 middleware(app,express);
@@ -14,16 +15,30 @@ app.use(express.static(__dirname + '/../client'));
 //api/getNeighbors
 app.post('/api/getNeighbors', function (req, res) {
 	console.log('server.js says: POST request received! Data:', req.body);
+
 	var searchInfo = req.body;
 	var glanceCards = [];
+	var eventNumber = 1;
+
+	var checkAndRespond = function () {
+		if(eventNumber === 3) {
+			res.send(200, "Data fetched.");
+		}
+	}
 
 	zilpy(searchInfo)
 	.then(function (zilpyData){
-		res.send(200, zilpyData);
+		console.log('Data from zilpy received. EventNumber:', eventNumber++);
+		checkAndRespond();
 	})
-	.then(function () {
-		reverseGeocode(searchInfo);
+
+	reverseGeocode(searchInfo)
+	.then(function (coordinates) {
+		console.log('Data from reverseGeocode received. EventNumber:', eventNumber++);
+		// console.log('coordinates:', coordinates);
+		checkAndRespond();
 	});
+
 });
 
 
@@ -41,11 +56,11 @@ var zilpy = function (searchInfo) {
 	var deferred = Q.defer();
 
 	var zilpyUrl_address = 'http://api-stage.zilpy.com/property/-/rent/newreport?addr='
-	var zilpyUrl_bedrooms = '&ptype=single_family_house&bdr='
+	var zilpyUrl_bedrooms = '&ptype=single_family_house&bdr='							//default to apartment_condos
 	var zilpyUrl_bathrooms = '&ba=';
 
 	var zilpyUrl = zilpyUrl_address + searchInfo.address + zilpyUrl_bedrooms + searchInfo.bedrooms + zilpyUrl_bathrooms + searchInfo.bathrooms;
-	console.log('Sample URL for Zilpy:', zilpyUrl);
+	//console.log('Sample URL for Zilpy:', zilpyUrl);
 
 	http.get( zilpyUrl, function (response) {
 	    var body = '';
@@ -61,6 +76,10 @@ var zilpy = function (searchInfo) {
 
 	return deferred.promise;
 }
+
+//-----------------------------------------------------------------------------------
+
+
 
 //-----------------------------------------------------------------------------------
 //DETERMINE driving times and distances for multiple origins to a single destination
@@ -107,6 +126,7 @@ var createDistanceMatrix = function (originsArr, destination) {
   return deferred.promise;
 }
 
+
 //-----------------------------------------------------------------------------------
 //GET latitude and longitude of an address, given the address
 /*Prerequisites:
@@ -116,7 +136,6 @@ var createDistanceMatrix = function (originsArr, destination) {
   Input: searchInfo
   Output: [latitude, longitude]
 */
-
 
 var reverseGeocode = function (searchInfo) {
 	var deferred = Q.defer();
@@ -137,15 +156,14 @@ var reverseGeocode = function (searchInfo) {
 		});
 		response.on('end', function () {
 			body = JSON.parse(body);
-			console.log('Response from reverseGeocode:',typeof body);
-			console.log('Content:', body);
+			//console.log('Response from reverseGeocode:',typeof body);
+			//console.log('Content:', body);
 			deferred.resolve(body);
 		});
 	}); //end of http.get
 
 	return deferred.promise;
 }
-
 
 
 
@@ -169,7 +187,6 @@ var reverseGeocode = function (searchInfo) {
 */
 var trulia = function (zip) {
   var deferred = Q.defer();
-
   var truliaUrl_address = 'http://api.trulia.com/webservices.php?library=TruliaStats&function=getZipCodeStats&zipCode='
   var truliaUrl_start_date = '&startDate=2014-01-01'
   var truliaUrl_end_date = '&endDate=2015-08-01&statType=listings&apikey=';
@@ -183,7 +200,6 @@ var trulia = function (zip) {
         body += chunk;
       });
       response.on('end', function () {
-        //remove
         //console.log('Trulia data - BODY: ' + body);
         deferred.resolve(body);
       });
@@ -192,7 +208,11 @@ var trulia = function (zip) {
   return deferred.promise;
 }
 
+//-----------------------------------------------------------------------------------
+//Helper functions
 
+//HTTP get request
+//var getRequest = function (url, )
 
 
 module.exports = app;
