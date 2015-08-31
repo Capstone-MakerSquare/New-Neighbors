@@ -36,7 +36,7 @@ app.post('/api/getNeighbors', function (req, res) {
 	reverseGeocode(searchInfo)
 	.then(function (geoCode) {
 		console.log('Data from reverseGeocode received. EventNumber:', ++eventNumber);
-		console.log('geoCode:', geoCode);
+		// console.log('geoCode:', geoCode);
 		return findNeighborhoods(geoCode);
 	})
 	.then(function (neighborhoodObj) {
@@ -62,30 +62,36 @@ var findNeighborhoods = function (geoCode) {
 
 	var neighborhoodObj = {};
 	var radius = 1000;
+	var numResponses = 1;
 	var key = keys.googleAPIKey;
-	var types = 'locality|sublocality|neighborhood|sublocality_level_4|sublocality_level_3|sublocality_level_2|sublocality_level_1';
+	var types = 'locality|sublocality|neighborhood|administrative_area_level_1|administrative_area_level_2|administrative_area_level_3|administrative_area_level_4|administrative_area_level_5|sublocality_level_4|sublocality_level_3|sublocality_level_2|sublocality_level_1';
 
-	var gPlacesUrl = gPlacesUrl_location + geoCode.coordinates.latitude + ',' + geoCode.coordinates.longitude +
-									 gPlacesUrl_radius + radius +
-									 gPlacesUrl_types + types +
-									 gPlacesUrl_key + key;
-
-	deferred.resolve(
+  for(radius = 1000; radius<=20000; radius+=1000) {
+		var gPlacesUrl = gPlacesUrl_location + geoCode.coordinates.latitude + ',' + geoCode.coordinates.longitude +
+										 gPlacesUrl_radius + radius +
+										 gPlacesUrl_types + types +
+										 gPlacesUrl_key + key;
 
 		getRequest(gPlacesUrl)
 		.then(function (responseObj) {
 			var results = responseObj.results;
 			_.each(results, function (result) {
-				neighborhoodObj[result.name] = {
+				neighborhoodObj[result.name] = neighborhoodObj[result.name] ||
+				{
 					latitude: result.geometry.location.lat,
 					longitude: result.geometry.location.lng,
 					placeId: result.place_id
 				};
 			});
-			return neighborhoodObj;
-		})
 
-	);
+			//remove
+			//console.log('numResponses:',numResponses);
+
+			if(numResponses === 20) { deferred.resolve(neighborhoodObj); }
+			else { numResponses++; }
+		});
+
+	}//end of for loop
 
 	return deferred.promise;
 }
@@ -188,7 +194,7 @@ var reverseGeocode = function (searchInfo) {
 	deferred.resolve(
 		getRequest(gPlacesUrl)
 		.then(function (coordinatesObj) {
-			console.log('coordinatesObj:', coordinatesObj);
+			// console.log('coordinatesObj:', coordinatesObj);
 
 			//Fetch the placeID, formatted address and the coordinates; make a minimal geoCode
 			var results = coordinatesObj.results[0];
