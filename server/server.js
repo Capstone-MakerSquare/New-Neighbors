@@ -21,9 +21,9 @@ app.post('/api/getNeighbors', function (req, res) {
 	var glanceCards = [];
 	var eventNumber = 0;
 
-	var checkAndRespond = function () {
+	var checkAndRespond = function (neighborhoodObj) {
 		if(eventNumber === 1) {
-			res.send(200, "Data fetched.");
+			res.send(200, neighborhoodObj);
 		}
 	}
 
@@ -44,14 +44,18 @@ app.post('/api/getNeighbors', function (req, res) {
 		return getStreetAddresses(neighborhoodObj);
 	})
 	.then(function (neighborhoodObj) {
-		console.log('Street addresses fetched.');
+		// console.log('Street addresses fetched.');
+		// console.log(neighborhoodObj);
+		return getEstimates(neighborhoodObj, searchInfo);
+	})
+	.then(function (neighborhoodObj) {
+		console.log('Rental Estimates fetched.');
 		console.log(neighborhoodObj);
-		checkAndRespond();
+		checkAndRespond(neighborhoodObj);
 	});
 
+
 });	//end of POST request handler
-
-
 
 
 
@@ -113,12 +117,44 @@ var findNeighborhoods = function (geoCode) {
   Output: Rent estimate for each neighborhood augmented on the object
 */
 
-var getEstimates = function (neighborhoodObj) {
+var getEstimates = function (neighborhoodObj, searchInfo) {
 	var deferred = Q.defer();
 
+	var neighborhoodList = Object.keys(neighborhoodObj);
+	var lastNeighborhood = neighborhoodList[neighborhoodList.length - 1];
+	var numNeighborhoods = neighborhoodList.length;
+	var numEvents = 0;
 
+	for(var neighborhood in neighborhoodObj) {
+		//console.log(neighborhoodObj[neighborhood]);
+		var zilpySearchInfo = {
+			address : neighborhoodObj[neighborhood].streetAddress,
+			bedrooms : searchInfo.bedrooms,
+			bathrooms : searchInfo.bathrooms
+		}
+
+		zilpy(zilpySearchInfo, neighborhood)
+		.then(function (tuple) {
+			//[rentEstimate, neighborhood]
+			var rentEstimate = tuple[0];
+			var neighborhood = tuple[1];
+			numEvents++;
+
+			//remove
+			console.log(neighborhood);
+
+			neighborhoodObj[neighborhood].rentEstimate = rentEstimate;
+
+			if(numEvents === numNeighborhoods) {
+				console.log('Resolved.');
+				deferred.resolve(neighborhoodObj);
+			}
+
+		});
+	}
+
+	return deferred.promise;
 }
-
 
 
 //-----------------------------------------------------------------------------------
@@ -127,11 +163,15 @@ var getEstimates = function (neighborhoodObj) {
 	Street Address, Bedrooms, Bathrooms
   Website: zilpy.com
 
-  Input: searchInfo object
+  Input: searchInfo = {
+					address:
+					bedrooms:
+					bathrooms:
+  			}
   Output: zilpyData object
 */
 
-var zilpy = function (searchInfo) {
+var zilpy = function (searchInfo, neighborhood) {
 	var deferred = Q.defer();
 
 	/* Possible values for ptype:
@@ -146,7 +186,13 @@ var zilpy = function (searchInfo) {
 
 	var zilpyUrl = zilpyUrl_address + searchInfo.address + zilpyUrl_bedrooms + searchInfo.bedrooms + zilpyUrl_bathrooms + searchInfo.bathrooms;
 
-	deferred.resolve(getRequest(zilpyUrl));
+	getRequest(zilpyUrl)
+	.then(function (zilpyData) {
+		console.log(neighborhood);
+		console.log('Zilpy Data:',zilpyData);
+		deferred.resolve([zilpyData.estimate,neighborhood]);
+	});
+
 	return deferred.promise;
 }
 //-----------------------------------------------------------------------------------
