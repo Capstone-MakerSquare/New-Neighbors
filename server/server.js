@@ -3,7 +3,8 @@ var middleware = require('./config/middleware.js');
 var http = require('http');
 var Q = require('q');
 var keys = require('./config/keys.js');
-var httpRequest = require('http-request');
+var request = require('request');
+var _ = require('underscore');
 
 app = express();
 middleware(app,express);
@@ -18,28 +19,142 @@ app.post('/api/getNeighbors', function (req, res) {
 
 	var searchInfo = req.body;
 	var glanceCards = [];
-	var eventNumber = 1;
+	var eventNumber = 0;
 
-	var checkAndRespond = function () {
-		if(eventNumber === 3) {
-			res.send(200, "Data fetched.");
+	var checkAndRespond = function (neighborhoodObj) {
+		if(eventNumber === 1) {
+			res.send(200, neighborhoodObj);
 		}
 	}
 
-	zilpy(searchInfo)
-	.then(function (zilpyData){
-		console.log('Data from zilpy received. EventNumber:', eventNumber++);
-		checkAndRespond();
-	})
+	// zilpy(searchInfo)
+	// .then(function (zilpyData){
+	// 	console.log('Data from zilpy received. EventNumber:', ++eventNumber);
+	// 	checkAndRespond();
+	// })
 
-	reverseGeocode(searchInfo)
-	.then(function (coordinates) {
-		console.log('Data from reverseGeocode received. EventNumber:', eventNumber++);
-		// console.log('coordinates:', coordinates);
-		checkAndRespond();
+	geoCode(searchInfo.address)
+	.then(function (geoCode) {
+		console.log('Data from geoCode received. EventNumber:', ++eventNumber);
+		// console.log('geoCode:', geoCode);
+		return findNeighborhoods(geoCode);
+	})
+	.then(function (neighborhoodObj) {
+		// console.log('Neighborhood list:',neighborhoodObj);
+		return getStreetAddresses(neighborhoodObj);
+	})
+	.then(function (neighborhoodObj) {
+		// console.log('Street addresses fetched.');
+		// console.log(neighborhoodObj);
+		return getEstimates(neighborhoodObj, searchInfo);
+	})
+	.then(function (neighborhoodObj) {
+		console.log('Rental Estimates fetched.');
+		console.log(neighborhoodObj);
+		checkAndRespond(neighborhoodObj);
 	});
 
-});
+
+});	//end of POST request handler
+
+
+
+//-----------------------------------------------------------------------------------
+//GET list of neighborhood localities for a pair of coordinates (corresponding to the given street address)
+/*Input: coordinates
+  Output: Object of neighborhoods
+*/
+
+var findNeighborhoods = function (geoCode) {
+	var deferred = Q.defer();
+
+	var gPlacesUrl_location = 'https://maps.googleapis.com/maps/api/place/search/json?location=';			//latitude + ',' + longitude
+	var gPlacesUrl_radius = '&radius=';
+	var gPlacesUrl_types = '&types=';
+	var gPlacesUrl_key = 'l&key=';
+
+	var neighborhoodObj = {};
+	var radius = 1000;
+	var numResponses = 1;
+	var key = keys.googleAPIKey;
+	var types = 'locality|sublocality|neighborhood|administrative_area_level_1|administrative_area_level_2|administrative_area_level_3|administrative_area_level_4|administrative_area_level_5|sublocality_level_4|sublocality_level_3|sublocality_level_2|sublocality_level_1';
+
+  for(radius = 1000; radius<=20000; radius+=1000) {
+		var gPlacesUrl = gPlacesUrl_location + geoCode.coordinates.latitude + ',' + geoCode.coordinates.longitude +
+										 gPlacesUrl_radius + radius +
+										 gPlacesUrl_types + types +
+										 gPlacesUrl_key + key;
+
+		getRequest(gPlacesUrl)
+		.then(function (responseObj) {
+			var results = responseObj.results;
+			_.each(results, function (result) {
+				neighborhoodObj[result.name] = neighborhoodObj[result.name] ||
+				{
+					latitude: result.geometry.location.lat,
+					longitude: result.geometry.location.lng,
+					placeId: result.place_id
+				};
+			});
+
+			//remove
+			//console.log('numResponses:',numResponses);
+
+			if(numResponses === 20) { deferred.resolve(neighborhoodObj); }
+			else { numResponses++; }
+		});
+
+	}//end of for loop
+
+	return deferred.promise;
+}
+
+
+
+//-----------------------------------------------------------------------------------
+//GET rental estimates from zilpy.com for a neighborhood object
+/*Input: Object of neighborhoods
+  Output: Rent estimate for each neighborhood augmented on the object
+*/
+
+var getEstimates = function (neighborhoodObj, searchInfo) {
+	var deferred = Q.defer();
+
+	var neighborhoodList = Object.keys(neighborhoodObj);
+	var lastNeighborhood = neighborhoodList[neighborhoodList.length - 1];
+	var numNeighborhoods = neighborhoodList.length;
+	var numEvents = 0;
+
+	for(var neighborhood in neighborhoodObj) {
+		//console.log(neighborhoodObj[neighborhood]);
+		var zilpySearchInfo = {
+			address : neighborhoodObj[neighborhood].streetAddress,
+			bedrooms : searchInfo.bedrooms,
+			bathrooms : searchInfo.bathrooms
+		}
+
+		zilpy(zilpySearchInfo, neighborhood)
+		.then(function (tuple) {
+			//[rentEstimate, neighborhood]
+			var rentEstimate = tuple[0];
+			var neighborhood = tuple[1];
+			numEvents++;
+
+			//remove
+			console.log(neighborhood);
+
+			neighborhoodObj[neighborhood].rentEstimate = rentEstimate;
+
+			if(numEvents === numNeighborhoods) {
+				console.log('Resolved.');
+				deferred.resolve(neighborhoodObj);
+			}
+
+		});
+	}
+
+	return deferred.promise;
+}
 
 
 //-----------------------------------------------------------------------------------
@@ -48,37 +163,39 @@ app.post('/api/getNeighbors', function (req, res) {
 	Street Address, Bedrooms, Bathrooms
   Website: zilpy.com
 
-  Input: searchInfo object
+  Input: searchInfo = {
+					address:
+					bedrooms:
+					bathrooms:
+  			}
   Output: zilpyData object
 */
 
-var zilpy = function (searchInfo) {
+var zilpy = function (searchInfo, neighborhood) {
 	var deferred = Q.defer();
 
+	/* Possible values for ptype:
+			single_family_house
+			apartment_condo
+			town_house
+	*/
+
 	var zilpyUrl_address = 'http://api-stage.zilpy.com/property/-/rent/newreport?addr='
-	var zilpyUrl_bedrooms = '&ptype=single_family_house&bdr='							//default to apartment_condos
+	var zilpyUrl_bedrooms = '&ptype=apartment_condo&bdr='							//default to apartment_condos
 	var zilpyUrl_bathrooms = '&ba=';
 
 	var zilpyUrl = zilpyUrl_address + searchInfo.address + zilpyUrl_bedrooms + searchInfo.bedrooms + zilpyUrl_bathrooms + searchInfo.bathrooms;
-	//console.log('Sample URL for Zilpy:', zilpyUrl);
 
-	http.get( zilpyUrl, function (response) {
-	    var body = '';
-	    response.on('data', function (chunk) {
-	      body += chunk;
-	    });
-	    response.on('end', function () {
-	      //remove
-	      //console.log('Zilpy data - BODY: ' + body);
-		  	deferred.resolve(body);
-	    });
-	}); //end of http.get
+	getRequest(zilpyUrl)
+	.then(function (zilpyData) {
+		console.log(neighborhood);
+		console.log('Zilpy Data:',zilpyData);
+		deferred.resolve([zilpyData.estimate,neighborhood]);
+	});
 
 	return deferred.promise;
 }
-
 //-----------------------------------------------------------------------------------
-
 
 
 //-----------------------------------------------------------------------------------
@@ -128,44 +245,133 @@ var createDistanceMatrix = function (originsArr, destination) {
 
 
 //-----------------------------------------------------------------------------------
-//GET latitude and longitude of an address, given the address
-/*Prerequisites:
-	Street Address
-  Website: Google maps endpoint
-
-  Input: searchInfo
-  Output: [latitude, longitude]
+//GET street addresses for each neighborhood
+/*Input: neighborhoodObj
+  Output: Extends each neighborhood in the object with a reference street address
 */
-
-var reverseGeocode = function (searchInfo) {
+var getStreetAddresses = function (neighborhoodObj) {
 	var deferred = Q.defer();
 
-	var address = searchInfo.address;
-	var gPlacesUrl_address = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
-	var gPlacesUrl_sensor = '&sensor=false';
+	//remove
+	// console.log('List of neighborhoods');
 
-	console.log('server.js says: reverseGeocode called.');
-	console.log('address: ',address);
-	console.log('googleAPIKey: ',keys.googleAPIKey);
+	var neighborhoodList = Object.keys(neighborhoodObj);
+	var lastNeighborhood = neighborhoodList[neighborhoodList.length - 1];
+	var numNeighborhoods = neighborhoodList.length;
+	var numEvents = 0;
 
-	var gPlacesUrl = gPlacesUrl_address + address + gPlacesUrl_sensor;
-	http.get( gPlacesUrl, function (response) {
-		var body = '';
-		response.on('data', function (chunk) {
-			body += chunk;
+	for(var neighborhood in neighborhoodObj) {
+		//console.log(neighborhoodObj[neighborhood]);
+		var coordinates = {
+			latitude : neighborhoodObj[neighborhood].latitude,
+			longitude : neighborhoodObj[neighborhood].longitude
+		}
+		reverseGeocode(coordinates, neighborhood)
+		.then(function (tuple) {
+			//[streetAddress, neighborhood]
+			var streetAddress = tuple[0];
+			var neighborhood = tuple[1];
+			numEvents++;
+
+			//remove
+			// console.log(neighborhood);
+
+			neighborhoodObj[neighborhood].streetAddress = streetAddress;
+
+			if(numEvents === numNeighborhoods) {
+				// console.log('Resolved.');
+				deferred.resolve(neighborhoodObj);
+			}
+
 		});
-		response.on('end', function () {
-			body = JSON.parse(body);
-			//console.log('Response from reverseGeocode:',typeof body);
-			//console.log('Content:', body);
-			deferred.resolve(body);
-		});
-	}); //end of http.get
+	}
 
+	//deferred.resolve('done');
 	return deferred.promise;
 }
 
 
+//-----------------------------------------------------------------------------------
+//GET latitude and longitude of an address, given the address
+//Geocode
+/*Prerequisites:
+	Street Address
+  Website: Google maps endpoint
+
+  Input: address
+  Output: geoCode = {
+						latitude :
+						longitude :
+						place_id :
+  				}
+*/
+
+var geoCode = function (address) {
+	var deferred = Q.defer();
+
+	var address = address;
+	var gPlacesUrl_address = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
+	var gPlacesUrl_sensor = '&sensor=false';
+
+	// console.log('server.js says: geoCode called.');
+	// console.log('address: ',address);
+	// console.log('googleAPIKey: ',keys.googleAPIKey);
+
+	var gPlacesUrl = gPlacesUrl_address + address + gPlacesUrl_sensor;
+
+	deferred.resolve(
+		getRequest(gPlacesUrl)
+		.then(function (coordinatesObj) {
+			// console.log('coordinatesObj:', coordinatesObj);
+
+			//Fetch the placeID, formatted address and the coordinates; make a minimal geoCode
+			var results = coordinatesObj.results[0];
+			var geoCode = {
+				formattedAddress : results.formatted_address,
+			  placeId : results.place_id,
+			  coordinates : {
+					latitude: results.geometry.location.lat,
+					longitude: results.geometry.location.lng
+				}
+			};
+
+			return geoCode;
+		})
+	);
+
+	return deferred.promise;
+}
+
+//-----------------------------------------------------------------------------------
+//GET the street address of a latitude/longitude pair
+//Reverse Geocoding
+/*
+  Input: coordinates = {
+						latitude :
+						longitude :
+  				}
+  Output: Street address (string)
+*/
+
+var reverseGeocode = function (coordinates, neighborhood) {
+	var deferred = Q.defer();
+
+	var geocodeUrl_latlng = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
+	var geocodeUrl_key = '&key=';
+
+	var geocodeUrl = geocodeUrl_latlng + coordinates.latitude + ',' + coordinates.longitude + geocodeUrl_key + keys.googleAPIKey;
+
+	getRequest(geocodeUrl)
+	.then(function (streetAddress) {
+		// console.log('streetAddress fetched.');
+		// console.log('LatLng:',coordinates.latitude, coordinates.longitude);
+		// console.log('Street Address:',streetAddress);
+
+		deferred.resolve([streetAddress.results[0].formatted_address, neighborhood]);
+	});
+
+	return deferred.promise;
+}
 
 //-----------------------------------------------------------------------------------
 //GET neighborhood list, given a particular latitude and longitude
@@ -208,11 +414,26 @@ var trulia = function (zip) {
   return deferred.promise;
 }
 
-//-----------------------------------------------------------------------------------
 //Helper functions
-
+//-----------------------------------------------------------------------------------
 //HTTP get request
-//var getRequest = function (url, )
+var getRequest = function (url) {
+	var deferred = Q.defer()
+
+	//remove
+	// console.log('getRequest called. url:',url);
+
+	request(url, function (error, response, body) {
+	  if(error) { deferred.reject(error); }
+	  if (!error && response.statusCode == 200) { deferred.resolve(JSON.parse(body)); }
+	  else { deferred.resolve("Not Available"); }
+	});
+
+	return deferred.promise;
+}
+//-----------------------------------------------------------------------------------
+
+
 
 
 module.exports = app;
