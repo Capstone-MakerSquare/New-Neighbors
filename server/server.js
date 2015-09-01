@@ -11,6 +11,9 @@ middleware(app,express);
 
 app.use(express.static(__dirname + '/../client'));
 
+//Global Variables
+var userDestination;
+var neighborhoods;
 
 //Handle a POST request
 //api/getNeighbors
@@ -23,7 +26,7 @@ app.post('/api/getNeighbors', function (req, res) {
 
 	var checkAndRespond = function (neighborhoodObj) {
 		if(eventNumber === 1) {
-			res.send(200, neighborhoodObj);
+			res.status(200).send(neighborhoodObj);
 		}
 	}
 
@@ -37,20 +40,26 @@ app.post('/api/getNeighbors', function (req, res) {
 	.then(function (geoCode) {
 		console.log('Data from geoCode received. EventNumber:', ++eventNumber);
 		// console.log('geoCode:', geoCode);
+		userDestination = geoCode;
 		return findNeighborhoods(geoCode);
 	})
 	.then(function (neighborhoodObj) {
+		console.log('Neighborhoods fetched.');
 		// console.log('Neighborhood list:',neighborhoodObj);
 		return getStreetAddresses(neighborhoodObj);
 	})
 	.then(function (neighborhoodObj) {
-		// console.log('Street addresses fetched.');
+		console.log('Street addresses fetched.');
+		return getDistances(neighborhoodObj);
+	})
+	.then(function (neighborhoodObj) {
+		console.log('Distances fetched.');
 		// console.log(neighborhoodObj);
 		return getEstimates(neighborhoodObj, searchInfo);
 	})
 	.then(function (neighborhoodObj) {
 		console.log('Rental Estimates fetched.');
-		console.log(neighborhoodObj);
+		// console.log(neighborhoodObj);
 		checkAndRespond(neighborhoodObj);
 	});
 
@@ -98,7 +107,7 @@ var findNeighborhoods = function (geoCode) {
 			});
 
 			//remove
-			//console.log('numResponses:',numResponses);
+			// console.log('Neighborhoods fetched:',numResponses);
 
 			if(numResponses === 20) { deferred.resolve(neighborhoodObj); }
 			else { numResponses++; }
@@ -134,19 +143,21 @@ var getEstimates = function (neighborhoodObj, searchInfo) {
 		}
 
 		zilpy(zilpySearchInfo, neighborhood)
-		.then(function (tuple) {
-			//[rentEstimate, neighborhood]
-			var rentEstimate = tuple[0];
-			var neighborhood = tuple[1];
+		.then(function (triplet) {
+			//[rentEstimate, propertyType, neighborhood]
+			var rentEstimate = triplet[0];
+			var propertyType = triplet[1];
+			var neighborhood = triplet[2];
 			numEvents++;
 
 			//remove
-			console.log(neighborhood);
+			//console.log(neighborhood);
 
 			neighborhoodObj[neighborhood].rentEstimate = rentEstimate;
+			neighborhoodObj[neighborhood].propertyType = propertyType;
 
 			if(numEvents === numNeighborhoods) {
-				console.log('Resolved.');
+				//console.log('Resolved.');
 				deferred.resolve(neighborhoodObj);
 			}
 
@@ -188,14 +199,91 @@ var zilpy = function (searchInfo, neighborhood) {
 
 	getRequest(zilpyUrl)
 	.then(function (zilpyData) {
-		console.log(neighborhood);
-		console.log('Zilpy Data:',zilpyData);
-		deferred.resolve([zilpyData.estimate,neighborhood]);
+		// console.log(neighborhood);
+		// console.log('Zilpy Data:',zilpyData);
+		deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
 	});
 
 	return deferred.promise;
 }
+
+
 //-----------------------------------------------------------------------------------
+//GET distances and commute time from each neighborhood to user destination
+/* INPUT: neighborhood object
+	 OUTPUT: neighborhood obj augmented with commute distance and time
+*/
+var getDistances = function (neighborhoodObj, transitMode) {
+	var transitMode = transitMode || 'driving';
+	var deferred = Q.defer();
+  //remove
+  // console.log('getDistances called.');
+
+  //make an origins array
+  var originsArr = [];
+  var destination = '' + userDestination.coordinates.latitude + ',' +
+  											 userDestination.coordinates.longitude;
+  var index = 0;
+
+
+  var gDrivingUrl_origins = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=';		//lat,lng|lat,lng|lat,lng
+  var gDrivingUrl_destinations = '&destinations=';
+  var gDrivingUrl_mode = '&units=imperial&mode=';
+  var gDrivingUrl_key = '&key=';
+
+  for (var neighborhood in neighborhoodObj) {
+  	originsArr.push(neighborhoodObj[neighborhood].latitude + ',' + neighborhoodObj[neighborhood].longitude);
+  }
+
+  var origins = originsArr.join('|');
+
+  //remove
+  // console.log('origins:',origins);
+  // console.log('destination', destination);
+
+  var gDrivingUrl = gDrivingUrl_origins + origins +
+  									gDrivingUrl_destinations + destination +
+  									gDrivingUrl_mode + transitMode +
+  									gDrivingUrl_key + keys.googleAPIKey;
+
+  // remove
+  // console.log('gDrivingUrl:', gDrivingUrl);
+
+  getRequest(gDrivingUrl)
+  .then(function (distancesObj) {
+  	var distances = distancesObj.rows;
+
+  	//remove
+  	// console.log('Number of rows:',distances.length);
+
+		for(var neighborhood in neighborhoodObj) {
+
+			var distance = distances[index].elements[0].distance.text;
+			var time = distances[index].elements[0].duration.text;
+
+			distance = +distance.split(' ')[0];
+			time = +time.split(' ')[0];
+
+			//remove
+			// console.log('Distance:',distance);
+			// console.log('Time:',time);
+
+			neighborhoodObj[neighborhood].commuteInfo = {
+				commuteDistance : distance,
+				commuteTime : time
+			};
+
+			index++;
+		}
+
+  	deferred.resolve(neighborhoodObj);
+  });
+
+	return deferred.promise;
+}
+
+
+
 
 
 //-----------------------------------------------------------------------------------
@@ -207,39 +295,44 @@ var zilpy = function (searchInfo, neighborhood) {
   				Eg.
   				{
   				 		name: loremIpsum,
-  				 		distance: 34,				//kilometers
+  				 		distance: 34,				//miles
   				 		time: 54						//minutes
   				}
 */
 
 var createDistanceMatrix = function (originsArr, destination) {
+
   var deferred = Q.defer();
 
   var resultArr = [];
   var service = new google.maps.DistanceMatrixService;
+
+  //remove
+  console.log('createDistanceMatrix called.');
 
   service.getDistanceMatrix({
     origins: originsArr,
     destinations: [destination],
     travelMode: google.maps.TravelMode.DRIVING,
   }, function(response, status) {
-    if (status !== google.maps.DistanceMatrixStatus.OK) {
-      console.log('Error was: ' + status);
-    } else {
-      console.log(response)
-      var originList = response.originAddresses;
-      var destinationList = response.destinationAddresses;
+	    if (status !== google.maps.DistanceMatrixStatus.OK) {
+	      console.log('Error was: ' + status);
+	    }
+	    else {
+	      console.log(response)
+	      var originList = response.originAddresses;
+	      var destinationList = response.destinationAddresses;
 
-      for (var i = 0; i < originList.length; i++) {
-        var results = response.rows[i].elements;
-        for (var j = 0; j < results.length; j++) {
-          console.log("results i's ", results)
-          resultArr.push({name: originList[i], distance: results[j].distance.text, time: results[j].duration.text})
-        }
-      }
-    }
-    deferred.resolve(resultArr)
-  });
+	      for (var i = 0; i < originList.length; i++) {
+	        var results = response.rows[i].elements;
+	        for (var j = 0; j < results.length; j++) {
+	          console.log("results i's ", results)
+	          resultArr.push({name: originList[i], distance: results[j].distance.text, time: results[j].duration.text})
+	        }
+	      }
+	    }
+    	deferred.resolve(resultArr)
+  	});
   return deferred.promise;
 }
 
@@ -424,7 +517,7 @@ var getRequest = function (url) {
 	// console.log('getRequest called. url:',url);
 
 	request(url, function (error, response, body) {
-	  if(error) { deferred.reject(error); }
+	  if(error) { console.log('Error for url:', url); deferred.resolve('Not Available'); }
 	  if (!error && response.statusCode == 200) { deferred.resolve(JSON.parse(body)); }
 	  else { deferred.resolve("Not Available"); }
 	});
