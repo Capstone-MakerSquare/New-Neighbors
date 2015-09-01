@@ -22,29 +22,38 @@ app.post('/api/getNeighbors', function (req, res) {
 	var eventNumber = 0;
 
 	var checkAndRespond = function () {
-		if(eventNumber === 2) {
+		if(eventNumber === 1) {
 			res.send(200, "Data fetched.");
 		}
 	}
 
-	zilpy(searchInfo)
-	.then(function (zilpyData){
-		console.log('Data from zilpy received. EventNumber:', ++eventNumber);
-		checkAndRespond();
-	})
+	// zilpy(searchInfo)
+	// .then(function (zilpyData){
+	// 	console.log('Data from zilpy received. EventNumber:', ++eventNumber);
+	// 	checkAndRespond();
+	// })
 
-	reverseGeocode(searchInfo)
+	geoCode(searchInfo.address)
 	.then(function (geoCode) {
-		console.log('Data from reverseGeocode received. EventNumber:', ++eventNumber);
+		console.log('Data from geoCode received. EventNumber:', ++eventNumber);
 		// console.log('geoCode:', geoCode);
 		return findNeighborhoods(geoCode);
 	})
 	.then(function (neighborhoodObj) {
-		console.log('Neighborhood list:',neighborhoodObj);
+		// console.log('Neighborhood list:',neighborhoodObj);
+		return getStreetAddresses(neighborhoodObj);
+	})
+	.then(function (neighborhoodObj) {
+		console.log('Street addresses fetched.');
+		console.log(neighborhoodObj);
 		checkAndRespond();
 	});
 
 });	//end of POST request handler
+
+
+
+
 
 //-----------------------------------------------------------------------------------
 //GET list of neighborhood localities for a pair of coordinates (corresponding to the given street address)
@@ -97,6 +106,21 @@ var findNeighborhoods = function (geoCode) {
 }
 
 
+
+//-----------------------------------------------------------------------------------
+//GET rental estimates from zilpy.com for a neighborhood object
+/*Input: Object of neighborhoods
+  Output: Rent estimate for each neighborhood augmented on the object
+*/
+
+var getEstimates = function (neighborhoodObj) {
+	var deferred = Q.defer();
+
+
+}
+
+
+
 //-----------------------------------------------------------------------------------
 //GET Rent estimate High/Low
 /*Prerequisites:
@@ -110,8 +134,14 @@ var findNeighborhoods = function (geoCode) {
 var zilpy = function (searchInfo) {
 	var deferred = Q.defer();
 
+	/* Possible values for ptype:
+			single_family_house
+			apartment_condo
+			town_house
+	*/
+
 	var zilpyUrl_address = 'http://api-stage.zilpy.com/property/-/rent/newreport?addr='
-	var zilpyUrl_bedrooms = '&ptype=single_family_house&bdr='							//default to apartment_condos
+	var zilpyUrl_bedrooms = '&ptype=apartment_condo&bdr='							//default to apartment_condos
 	var zilpyUrl_bathrooms = '&ba=';
 
 	var zilpyUrl = zilpyUrl_address + searchInfo.address + zilpyUrl_bedrooms + searchInfo.bedrooms + zilpyUrl_bathrooms + searchInfo.bathrooms;
@@ -169,23 +199,75 @@ var createDistanceMatrix = function (originsArr, destination) {
 
 
 //-----------------------------------------------------------------------------------
+//GET street addresses for each neighborhood
+/*Input: neighborhoodObj
+  Output: Extends each neighborhood in the object with a reference street address
+*/
+var getStreetAddresses = function (neighborhoodObj) {
+	var deferred = Q.defer();
+
+	//remove
+	// console.log('List of neighborhoods');
+
+	var neighborhoodList = Object.keys(neighborhoodObj);
+	var lastNeighborhood = neighborhoodList[neighborhoodList.length - 1];
+	var numNeighborhoods = neighborhoodList.length;
+	var numEvents = 0;
+
+	for(var neighborhood in neighborhoodObj) {
+		//console.log(neighborhoodObj[neighborhood]);
+		var coordinates = {
+			latitude : neighborhoodObj[neighborhood].latitude,
+			longitude : neighborhoodObj[neighborhood].longitude
+		}
+		reverseGeocode(coordinates, neighborhood)
+		.then(function (tuple) {
+			//[streetAddress, neighborhood]
+			var streetAddress = tuple[0];
+			var neighborhood = tuple[1];
+			numEvents++;
+
+			//remove
+			// console.log(neighborhood);
+
+			neighborhoodObj[neighborhood].streetAddress = streetAddress;
+
+			if(numEvents === numNeighborhoods) {
+				// console.log('Resolved.');
+				deferred.resolve(neighborhoodObj);
+			}
+
+		});
+	}
+
+	//deferred.resolve('done');
+	return deferred.promise;
+}
+
+
+//-----------------------------------------------------------------------------------
 //GET latitude and longitude of an address, given the address
+//Geocode
 /*Prerequisites:
 	Street Address
   Website: Google maps endpoint
 
-  Input: searchInfo
-  Output: [latitude, longitude]
+  Input: address
+  Output: geoCode = {
+						latitude :
+						longitude :
+						place_id :
+  				}
 */
 
-var reverseGeocode = function (searchInfo) {
+var geoCode = function (address) {
 	var deferred = Q.defer();
 
-	var address = searchInfo.address;
+	var address = address;
 	var gPlacesUrl_address = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
 	var gPlacesUrl_sensor = '&sensor=false';
 
-	// console.log('server.js says: reverseGeocode called.');
+	// console.log('server.js says: geoCode called.');
 	// console.log('address: ',address);
 	// console.log('googleAPIKey: ',keys.googleAPIKey);
 
@@ -214,7 +296,36 @@ var reverseGeocode = function (searchInfo) {
 	return deferred.promise;
 }
 
+//-----------------------------------------------------------------------------------
+//GET the street address of a latitude/longitude pair
+//Reverse Geocoding
+/*
+  Input: coordinates = {
+						latitude :
+						longitude :
+  				}
+  Output: Street address (string)
+*/
 
+var reverseGeocode = function (coordinates, neighborhood) {
+	var deferred = Q.defer();
+
+	var geocodeUrl_latlng = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
+	var geocodeUrl_key = '&key=';
+
+	var geocodeUrl = geocodeUrl_latlng + coordinates.latitude + ',' + coordinates.longitude + geocodeUrl_key + keys.googleAPIKey;
+
+	getRequest(geocodeUrl)
+	.then(function (streetAddress) {
+		// console.log('streetAddress fetched.');
+		// console.log('LatLng:',coordinates.latitude, coordinates.longitude);
+		// console.log('Street Address:',streetAddress);
+
+		deferred.resolve([streetAddress.results[0].formatted_address, neighborhood]);
+	});
+
+	return deferred.promise;
+}
 
 //-----------------------------------------------------------------------------------
 //GET neighborhood list, given a particular latitude and longitude
