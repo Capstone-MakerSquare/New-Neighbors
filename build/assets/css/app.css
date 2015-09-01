@@ -4,6 +4,7 @@
  * 2. Prevent iOS text size adjust after orientation change, without disabling
  *    user zoom.
  */
+@import url(foundation-icons.css);
 html {
   font-family: sans-serif;
   /* 1 */
@@ -6398,3 +6399,89 @@ blockquote p {
 
 .float-none {
   float: none; }
+
+.search-header h3,
+.search-header a {
+  color: #fff; }
+
+.search-header h3 {
+  padding-left: 20px; }
+
+.search-header .search-header-left img {
+  display: inline-block;
+  width: 50px;
+  height: 50px; }
+
+.search-header .search-header-right {
+  margin-bottom: -30px;
+  overflow: hidden; }
+
+.search-header .search-header-right input {
+  height: 45px;
+  margin-left: -15px; }
+
+.search-header .search-header-right .button {
+  height: 45px;
+  text-align: center;
+  font-size: 16px;
+  display: inline-block; }
+
+.search-header .search-header-right .search-header-signup {
+  vertical-align: middle;
+  margin-top: 10px; }
+
+.search-header .search-header-right .search-header-signup {
+  margin-top: 20px; }
+
+.form-category-label {
+  font-weight: bold; }
+
+.glance-card .glance-background {
+  background-image: url("../images/santamonica.jpg");
+  background-size: cover;
+  background-repeat: no-repeat; }
+
+.glance-card {
+  text-align: center;
+  font-size: 36px;
+  color: #fff;
+  border: none;
+  max-height: 200px; }
+
+.glance-card .card-divider {
+  border-bottom: 2px solid grey; }
+
+.glance-content div:first-child {
+  border-right: 1px solid #000; }
+
+.glance-content h4,
+.glance-content p {
+  margin: 0 auto;
+  color: #000;
+  text-align: center; }
+
+@media only screen and (min-width: 40em) {
+  .medium-up-3 > li, .medium-up-3 > div, .medium-up-3 > section {
+    padding: 0 0.5rem 0.5rem; } }
+
+.filter label {
+  font-size: 16px;
+  padding-top: 10px;
+  text-align: center; }
+
+.filter input[type="radio"] {
+  display: inline-block; }
+
+.filter .filter-row {
+  margin-top: 20px; }
+
+.filter .more-filters-btn {
+  float: right; }
+
+.footer ul {
+  text-align: center;
+  margin: 0 auto; }
+
+.footer li {
+  display: inline-block;
+  list-style-type: none; }
