@@ -2,4 +2,6 @@
 
 node_modules/
 client/lib
-build/
+build/**
+bower_components/**
+server/config/keys.js
