@@ -19,5 +19,11 @@
     "run-sequence": "^1.1.1",
     "yargs": "^3.15.0"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "http": "0.0.0",
+    "q": "^1.4.1",
+    "request": "^2.61.0",
+    "underscore": "^1.8.3"
+  }
 }
