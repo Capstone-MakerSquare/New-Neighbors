@@ -30,12 +30,6 @@ app.post('/api/getNeighbors', function (req, res) {
 		}
 	}
 
-	// zilpy(searchInfo)
-	// .then(function (zilpyData){
-	// 	console.log('Data from zilpy received. EventNumber:', ++eventNumber);
-	// 	checkAndRespond();
-	// })
-
 	geoCode(searchInfo.address)
 	.then(function (geoCode) {
 		console.log('Data from geoCode received. EventNumber:', ++eventNumber);
@@ -63,9 +57,7 @@ app.post('/api/getNeighbors', function (req, res) {
 		checkAndRespond(neighborhoodObj);
 	});
 
-
 });	//end of POST request handler
-
 
 
 //-----------------------------------------------------------------------------------
@@ -119,7 +111,6 @@ var findNeighborhoods = function (geoCode) {
 }
 
 
-
 //-----------------------------------------------------------------------------------
 //GET rental estimates from zilpy.com for a neighborhood object
 /*Input: Object of neighborhoods
@@ -151,7 +142,7 @@ var getEstimates = function (neighborhoodObj, searchInfo) {
 			numEvents++;
 
 			//remove
-			//console.log(neighborhood);
+			// console.log(neighborhood);
 
 			neighborhoodObj[neighborhood].rentEstimate = rentEstimate;
 			neighborhoodObj[neighborhood].propertyType = propertyType;
@@ -283,60 +274,6 @@ var getDistances = function (neighborhoodObj, transitMode) {
 }
 
 
-
-
-
-//-----------------------------------------------------------------------------------
-//DETERMINE driving times and distances for multiple origins to a single destination
-/*INPUT: originsArr: Array of origins as string name and/or latlong
-           Eg. ['Mar Vista, CA', {lat: 34, lng: -118}]
-      	 destination: Destination as string name or lat/long object as above
-  OUTPUT: Array of objects for each origin:
-  				Eg.
-  				{
-  				 		name: loremIpsum,
-  				 		distance: 34,				//miles
-  				 		time: 54						//minutes
-  				}
-*/
-
-var createDistanceMatrix = function (originsArr, destination) {
-
-  var deferred = Q.defer();
-
-  var resultArr = [];
-  var service = new google.maps.DistanceMatrixService;
-
-  //remove
-  console.log('createDistanceMatrix called.');
-
-  service.getDistanceMatrix({
-    origins: originsArr,
-    destinations: [destination],
-    travelMode: google.maps.TravelMode.DRIVING,
-  }, function(response, status) {
-	    if (status !== google.maps.DistanceMatrixStatus.OK) {
-	      console.log('Error was: ' + status);
-	    }
-	    else {
-	      console.log(response)
-	      var originList = response.originAddresses;
-	      var destinationList = response.destinationAddresses;
-
-	      for (var i = 0; i < originList.length; i++) {
-	        var results = response.rows[i].elements;
-	        for (var j = 0; j < results.length; j++) {
-	          console.log("results i's ", results)
-	          resultArr.push({name: originList[i], distance: results[j].distance.text, time: results[j].duration.text})
-	        }
-	      }
-	    }
-    	deferred.resolve(resultArr)
-  	});
-  return deferred.promise;
-}
-
-
 //-----------------------------------------------------------------------------------
 //GET street addresses for each neighborhood
 /*Input: neighborhoodObj
@@ -435,6 +372,7 @@ var geoCode = function (address) {
 	return deferred.promise;
 }
 
+
 //-----------------------------------------------------------------------------------
 //GET the street address of a latitude/longitude pair
 //Reverse Geocoding
@@ -454,11 +392,14 @@ var reverseGeocode = function (coordinates, neighborhood) {
 
 	var geocodeUrl = geocodeUrl_latlng + coordinates.latitude + ',' + coordinates.longitude + geocodeUrl_key + keys.googleAPIKey;
 
+	//remove
+	// console.log('reverseGeocodeUrl:',geocodeUrl);
+
 	getRequest(geocodeUrl)
 	.then(function (streetAddress) {
 		// console.log('streetAddress fetched.');
 		// console.log('LatLng:',coordinates.latitude, coordinates.longitude);
-		// console.log('Street Address:',streetAddress);
+		//console.log('Street Address:',streetAddress);
 
 		deferred.resolve([streetAddress.results[0].formatted_address, neighborhood]);
 	});
@@ -466,12 +407,6 @@ var reverseGeocode = function (coordinates, neighborhood) {
 	return deferred.promise;
 }
 
-//-----------------------------------------------------------------------------------
-//GET neighborhood list, given a particular latitude and longitude
-/*Prerequisites:
-	Street Address
-  Website: Google places
-*/
 
 //-----------------------------------------------------------------------------------
 //GET price of houses sold list, given a particular zip code
@@ -507,6 +442,7 @@ var trulia = function (zip) {
   return deferred.promise;
 }
 
+
 //Helper functions
 //-----------------------------------------------------------------------------------
 //HTTP get request
@@ -525,8 +461,6 @@ var getRequest = function (url) {
 	return deferred.promise;
 }
 //-----------------------------------------------------------------------------------
-
-
 
 
 module.exports = app;
