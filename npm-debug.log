@@ -1,225 +1,35 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'node', '/usr/local/bin/npm', 'install' ]
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'start' ]
 2 info using npm@2.10.1
 3 info using node@v0.12.4
-4 verbose readDependencies loading dependencies from /Users/EMeta/Documents/thesis/New-Neighbors/package.json
-5 verbose install where, deps [ '/Users/EMeta/Documents/thesis/New-Neighbors',
-5 verbose install   [ 'front-router',
-5 verbose install     'gulp',
-5 verbose install     'gulp-autoprefixer',
-5 verbose install     'gulp-concat',
-5 verbose install     'gulp-if',
-5 verbose install     'gulp-load-plugins',
-5 verbose install     'gulp-ng-html2js',
-5 verbose install     'gulp-sass',
-5 verbose install     'gulp-uglify',
-5 verbose install     'gulp-webserver',
-5 verbose install     'rimraf',
-5 verbose install     'run-sequence',
-5 verbose install     'yargs' ] ]
-6 verbose install where, peers [ '/Users/EMeta/Documents/thesis/New-Neighbors', [] ]
-7 verbose installManyTop reading for lifecycle /Users/EMeta/Documents/thesis/New-Neighbors/package.json
-8 info preinstall foundation-apps-template@1.1.0
-9 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/body/package.json
-10 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/body-parser/package.json
-11 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/browser-sync/package.json
-12 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/browserify/package.json
-13 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/express/package.json
-14 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/front-router/package.json
-15 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp/package.json
-16 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-autoprefixer/package.json
-17 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-browserify/package.json
-18 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-concat/package.json
-19 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-if/package.json
-20 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-load-plugins/package.json
-21 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-ng-html2js/package.json
-22 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-nodemon/package.json
-23 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-sass/package.json
-24 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-uglify/package.json
-25 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-webserver/package.json
-26 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/http/package.json
-27 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/http-request/package.json
-28 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/morgan/package.json
-29 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/parser/package.json
-30 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/q/package.json
-31 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/rimraf/package.json
-32 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/run-sequence/package.json
-33 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/xml2js/package.json
-34 verbose installManyTop reading scoped package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/yargs/package.json
-35 info package.json gulp-if@1.2.5 No license field.
-36 info package.json gulp-ng-html2js@0.2.0 No license field.
-37 info package.json http@0.0.0 http is also the name of a node core module.
-38 info package.json http@0.0.0 No description
-39 info package.json http@0.0.0 No repository field.
-40 info package.json parser@0.1.4 No license field.
-41 info package.json q@1.4.1 license should be a valid SPDX license expression
-42 info package.json http-request@0.7.0 No license field.
-43 info package.json body@5.1.0 No license field.
-44 verbose readDependencies loading dependencies from /Users/EMeta/Documents/thesis/New-Neighbors/package.json
-45 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/body/package.json
-46 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/body-parser/package.json
-47 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/browser-sync/package.json
-48 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/browserify/package.json
-49 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/express/package.json
-50 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/front-router/package.json
-51 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp/package.json
-52 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-autoprefixer/package.json
-53 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-browserify/package.json
-54 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-concat/package.json
-55 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-if/package.json
-56 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-load-plugins/package.json
-57 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-ng-html2js/package.json
-58 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-nodemon/package.json
-59 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-sass/package.json
-60 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-uglify/package.json
-61 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/gulp-webserver/package.json
-62 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/http/package.json
-63 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/http-request/package.json
-64 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/morgan/package.json
-65 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/parser/package.json
-66 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/q/package.json
-67 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/rimraf/package.json
-68 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/run-sequence/package.json
-69 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/xml2js/package.json
-70 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/yargs/package.json
-71 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/browser-sync/package.json
-72 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/browserify/package.json
-73 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/gulp/package.json
-74 verbose targetResolver reading package data from /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/rimraf/package.json
-75 verbose already installed skipping gulp-if@^1.2.5 /Users/EMeta/Documents/thesis/New-Neighbors
-76 verbose already installed skipping gulp-load-plugins@1.0.0-rc.1 /Users/EMeta/Documents/thesis/New-Neighbors
-77 verbose already installed skipping gulp-ng-html2js@^0.2.0 /Users/EMeta/Documents/thesis/New-Neighbors
-78 verbose already installed skipping gulp-sass@^2.0.3 /Users/EMeta/Documents/thesis/New-Neighbors
-79 verbose already installed skipping gulp-uglify@^1.2.0 /Users/EMeta/Documents/thesis/New-Neighbors
-80 verbose already installed skipping gulp-webserver@^0.9.1 /Users/EMeta/Documents/thesis/New-Neighbors
-81 verbose already installed skipping rimraf@^2.4.1 /Users/EMeta/Documents/thesis/New-Neighbors
-82 verbose already installed skipping run-sequence@^1.1.1 /Users/EMeta/Documents/thesis/New-Neighbors
-83 verbose already installed skipping yargs@^3.15.0 /Users/EMeta/Documents/thesis/New-Neighbors
-84 verbose already installed skipping front-router@^1.0.0 /Users/EMeta/Documents/thesis/New-Neighbors
-85 verbose already installed skipping gulp@^3.9.0 /Users/EMeta/Documents/thesis/New-Neighbors
-86 verbose already installed skipping gulp-autoprefixer@^2.3.1 /Users/EMeta/Documents/thesis/New-Neighbors
-87 verbose already installed skipping gulp-concat@^2.6.0 /Users/EMeta/Documents/thesis/New-Neighbors
-88 silly install resolved []
-89 info build /Users/EMeta/Documents/thesis/New-Neighbors
-90 info linkStuff foundation-apps-template@1.1.0
-91 silly linkStuff foundation-apps-template@1.1.0 has /Users/EMeta/Documents/thesis as its parent node_modules
-92 verbose linkBins foundation-apps-template@1.1.0
-93 verbose linkMans foundation-apps-template@1.1.0
-94 verbose rebuildBundles foundation-apps-template@1.1.0
-95 verbose rebuildBundles [ '.bin',
-95 verbose rebuildBundles   'body',
-95 verbose rebuildBundles   'body-parser',
-95 verbose rebuildBundles   'browser-sync',
-95 verbose rebuildBundles   'browserify',
-95 verbose rebuildBundles   'express',
-95 verbose rebuildBundles   'front-router',
-95 verbose rebuildBundles   'gulp',
-95 verbose rebuildBundles   'gulp-autoprefixer',
-95 verbose rebuildBundles   'gulp-browserify',
-95 verbose rebuildBundles   'gulp-concat',
-95 verbose rebuildBundles   'gulp-if',
-95 verbose rebuildBundles   'gulp-load-plugins',
-95 verbose rebuildBundles   'gulp-ng-html2js',
-95 verbose rebuildBundles   'gulp-nodemon',
-95 verbose rebuildBundles   'gulp-sass',
-95 verbose rebuildBundles   'gulp-uglify',
-95 verbose rebuildBundles   'gulp-webserver',
-95 verbose rebuildBundles   'http',
-95 verbose rebuildBundles   'http-request',
-95 verbose rebuildBundles   'morgan',
-95 verbose rebuildBundles   'parser',
-95 verbose rebuildBundles   'q',
-95 verbose rebuildBundles   'rimraf',
-95 verbose rebuildBundles   'run-sequence',
-95 verbose rebuildBundles   'xml2js',
-95 verbose rebuildBundles   'yargs' ]
-96 verbose rebuild bundle /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/body
-97 info build /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/body
-98 info preinstall body@5.1.0
-99 info linkStuff body@5.1.0
-100 silly linkStuff body@5.1.0 has /Users/EMeta/Documents/thesis/New-Neighbors/node_modules as its parent node_modules
-101 verbose linkBins body@5.1.0
-102 verbose linkMans body@5.1.0
-103 verbose rebuildBundles body@5.1.0
-104 verbose rebuildBundles [ 'continuable-cache', 'error', 'raw-body', 'safe-json-parse' ]
-105 info install body@5.1.0
-106 info postinstall body@5.1.0
-107 verbose rebuild bundle /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/body-parser
-108 info build /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/body-parser
-109 info preinstall body-parser@1.13.3
-110 info linkStuff body-parser@1.13.3
-111 silly linkStuff body-parser@1.13.3 has /Users/EMeta/Documents/thesis/New-Neighbors/node_modules as its parent node_modules
-112 verbose linkBins body-parser@1.13.3
-113 verbose linkMans body-parser@1.13.3
-114 verbose rebuildBundles body-parser@1.13.3
-115 verbose rebuildBundles [ 'bytes',
-115 verbose rebuildBundles   'content-type',
-115 verbose rebuildBundles   'debug',
-115 verbose rebuildBundles   'depd',
-115 verbose rebuildBundles   'http-errors',
-115 verbose rebuildBundles   'iconv-lite',
-115 verbose rebuildBundles   'on-finished',
-115 verbose rebuildBundles   'qs',
-115 verbose rebuildBundles   'raw-body',
-115 verbose rebuildBundles   'type-is' ]
-116 info install body-parser@1.13.3
-117 info postinstall body-parser@1.13.3
-118 verbose rebuild bundle /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/browser-sync
-119 info build /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/browser-sync
-120 info preinstall browser-sync@2.8.2
-121 info linkStuff browser-sync@2.8.2
-122 silly linkStuff browser-sync@2.8.2 has /Users/EMeta/Documents/thesis/New-Neighbors/node_modules as its parent node_modules
-123 verbose linkBins browser-sync@2.8.2
-124 verbose link bins [ { 'browser-sync': 'bin/browser-sync.js' },
-124 verbose link bins   '/Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin',
-124 verbose link bins   false ]
-125 verbose linkMans browser-sync@2.8.2
-126 verbose rebuildBundles browser-sync@2.8.2
-127 verbose rebuildBundles [ '.bin',
-127 verbose rebuildBundles   'anymatch',
-127 verbose rebuildBundles   'async-each-series',
-127 verbose rebuildBundles   'browser-sync-client',
-127 verbose rebuildBundles   'browser-sync-ui',
-127 verbose rebuildBundles   'chokidar',
-127 verbose rebuildBundles   'connect',
-127 verbose rebuildBundles   'dev-ip',
-127 verbose rebuildBundles   'easy-extender',
-127 verbose rebuildBundles   'eazy-logger',
-127 verbose rebuildBundles   'emitter-steward',
-127 verbose rebuildBundles   'foxy',
-127 verbose rebuildBundles   'immutable',
-127 verbose rebuildBundles   'localtunnel',
-127 verbose rebuildBundles   'lodash',
-127 verbose rebuildBundles   'longest',
-127 verbose rebuildBundles   'meow',
-127 verbose rebuildBundles   'opn',
-127 verbose rebuildBundles   'pad-left',
-127 verbose rebuildBundles   'portscanner',
-127 verbose rebuildBundles   'query-string',
-127 verbose rebuildBundles   'resp-modifier',
-127 verbose rebuildBundles   'serve-index',
-127 verbose rebuildBundles   'serve-static',
-127 verbose rebuildBundles   'socket.io',
-127 verbose rebuildBundles   'ua-parser-js',
-127 verbose rebuildBundles   'ucfirst' ]
-128 silly gentlyRm /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/browser-sync is being purged
-129 verbose gentlyRm don't care about contents; nuking /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/browser-sync
-130 silly vacuum-fs purging /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/browser-sync
-131 verbose stack Error: EACCES, unlink '/Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/browser-sync'
-131 verbose stack     at Error (native)
-132 verbose cwd /Users/EMeta/Documents/thesis/New-Neighbors
-133 error Darwin 14.4.0
-134 error argv "node" "/usr/local/bin/npm" "install"
-135 error node v0.12.4
-136 error npm  v2.10.1
-137 error path /Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/browser-sync
-138 error code EACCES
-139 error errno -13
-140 error Error: EACCES, unlink '/Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/browser-sync'
-140 error     at Error (native)
-140 error  { [Error: EACCES, unlink '/Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/browser-sync']
-140 error   errno: -13,
-140 error   code: 'EACCES',
-140 error   path: '/Users/EMeta/Documents/thesis/New-Neighbors/node_modules/.bin/browser-sync' }
-141 error Please try running this command again as root/Administrator.
-142 verbose exit [ -13, true ]
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info prestart foundation-apps-template@1.1.0
+6 info start foundation-apps-template@1.1.0
+7 verbose unsafe-perm in lifecycle true
+8 info foundation-apps-template@1.1.0 Failed to exec start script
+9 verbose stack Error: foundation-apps-template@1.1.0 start: `gulp`
+9 verbose stack Exit status 1
+9 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
+9 verbose stack     at EventEmitter.emit (events.js:110:17)
+9 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+9 verbose stack     at ChildProcess.emit (events.js:110:17)
+9 verbose stack     at maybeClose (child_process.js:1015:16)
+9 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1087:5)
+10 verbose pkgid foundation-apps-template@1.1.0
+11 verbose cwd /Users/EMeta/Documents/thesis/New-Neighbors
+12 error Darwin 14.4.0
+13 error argv "node" "/usr/local/bin/npm" "start"
+14 error node v0.12.4
+15 error npm  v2.10.1
+16 error code ELIFECYCLE
+17 error foundation-apps-template@1.1.0 start: `gulp`
+17 error Exit status 1
+18 error Failed at the foundation-apps-template@1.1.0 start script 'gulp'.
+18 error This is most likely a problem with the foundation-apps-template package,
+18 error not with npm itself.
+18 error Tell the author that this fails on your system:
+18 error     gulp
+18 error You can get their info via:
+18 error     npm owner ls foundation-apps-template
+18 error There is likely additional logging output above.
+19 verbose exit [ 1, true ]

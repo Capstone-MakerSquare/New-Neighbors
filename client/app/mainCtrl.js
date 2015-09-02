@@ -14,7 +14,7 @@ angular.module('myApp',[])
   }
 
   main.dothis = function() {
-    console.log('doing the thing');
+    console.log('doing the thing');  //make the submit button work
   }
 
   main.submitAddress = function() {
