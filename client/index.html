@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="en" ng-app="application">
+<html lang="en" ng-app="myApp">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movein Assistant</title>
     <link href="assets/css/app.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="./assets/css/foundation-icons.css">
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/routes.js"></script>
-    <script src="assets/js/angular.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/mainCtrl.js"></script>
   </head>
 
-  <body>
+  <body ng-controller="MainController as main">
     <div class="grid-block shrink wrap search-header"> <!-- start search header -->
       <div class="grid-content menu-bar dark align-left small-12 medium-5 search-header-left">
           <img src="../assets/images/app-icon.png" alt="logo">
@@ -20,7 +20,7 @@
 
       <div class="grid-content collapse menu-bar dark search-header-right small-12 medium-7">
         <div class="grid-content small-9 medium-10 search-header-right">
-          <span class="inline-label">
+          <span class="inline-label" ng-submit="main.dothis()">
             <input type="search" placeholder="Enter an address">
             <div class="button">
               <a href="#">Search</a>
