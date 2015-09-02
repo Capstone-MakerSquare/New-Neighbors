@@ -9,7 +9,6 @@ var _ = require('underscore');
 app = express();
 middleware(app,express);
 
-app.use(express.static(__dirname + '/../client'));
 
 //Global Variables
 var userDestination;
