@@ -11,6 +11,7 @@ var gulp     = require('gulp');
 var rimraf   = require('rimraf');
 var router   = require('front-router');
 var sequence = require('run-sequence');
+var nodemon = require('gulp-nodemon');
 
 // Check for --production flag
 var isProduction = !!(argv.production);
@@ -54,6 +55,12 @@ var paths = {
 // Cleans the build directory
 gulp.task('clean', function(cb) {
   rimraf('./build', cb);
+});
+
+ // TEST
+
+gulp.task('test', function() {
+  console.log("gulp test running!");
 });
 
 // Copies everything in the client folder except templates, Sass, and JS
@@ -149,21 +156,31 @@ gulp.task('uglify:app', function() {
 });
 
 // Starts a test server, which you can view at http://localhost:8079
-gulp.task('server', ['build'], function() {
-  gulp.src('./build')
-    .pipe($.webserver({
-      port: 8079,
-      host: 'localhost',
-      fallback: 'index.html',
-      livereload: true,
-      open: true
-    }))
-  ;
+// gulp.task('server', ['build'], function() {
+//   gulp.src('./build')
+//     .pipe($.webserver({
+//       port: 8079,
+//       host: 'localhost',
+//       fallback: 'index.html',
+//       livereload: true,
+//       open: true
+//     }))
+//   ;
+// });
+
+gulp.task('server', ['build'], function () {
+  nodemon({
+    script: 'index.js'
+  , ext: 'js html'
+  , env: { 'NODE_ENV': 'development' }
+  })
 });
+
+
 
 // Builds your entire app once, without starting a server
 gulp.task('build', function(cb) {
-  sequence('clean', ['copy', 'copy:foundation', 'copy:icons', 'sass', 'uglify'], 'copy:templates', cb);
+  sequence('clean', ['copy', 'test', 'copy:foundation', 'copy:icons', 'sass', 'uglify'], 'copy:templates', cb);
 });
 
 // Default task: builds your app, starts a server, and recompiles assets when they change

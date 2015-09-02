@@ -20,12 +20,12 @@
 
       <div class="grid-content collapse menu-bar dark search-header-right small-12 medium-7">
         <div class="grid-content small-9 medium-10 search-header-right">
-          <span class="inline-label" ng-submit="main.dothis()">
+          <form class="inline-label" ng-submit="main.dothis()">
             <input type="search" placeholder="Enter an address">
-            <div class="button">
+            <div class="button" type="submit">
               <a href="#">Search</a>
             </div>
-          </span>
+          </form>
         </div>
         <div class="grid-content small-2 medium-2 search-header-signup">
           <a href="#">Signup</a>
@@ -93,7 +93,7 @@
                 <label>Max Monthly Price:</label>
               </div>
               <div class="grid-content medium-9">
-                <input type="range">
+                <input type="range" name="rentRange" min="400" max="1000">
               </div>
             </div>
             <div class="grid-block small-12 medium-12 filter-row">
