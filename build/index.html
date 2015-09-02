@@ -1,14 +1,268 @@
+<!doctype html>
+<html lang="en" ng-app="application">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movein Assistant</title>
+    <link href="assets/css/app.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./assets/css/foundation-icons.css">
+    <script src="app/app.js"></script>
+    <script src="lib/angular/angular.js"></script>
+  </head>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>MKS20 Site Deploy</title>
-</head>
-<body>
-  <h1>Hello, World!</h1>
-</body>
-</html>
+  <body>
+    <div class="grid-block shrink wrap search-header"> <!-- start search header -->
+      <div class="grid-content menu-bar dark align-left small-12 medium-5 search-header-left">
+          <img src="../assets/images/app-icon.png" alt="logo">
+          <h3>Move-in Assistant</h3>
+      </div>
 
+      <div class="grid-content collapse menu-bar dark search-header-right small-12 medium-7">
+        <div class="grid-content small-9 medium-10 search-header-right">
+          <span class="inline-label">
+            <input type="search" placeholder="Enter an address">
+            <div class="button">
+              <a href="#">Search</a>
+            </div>
+          </span>
+        </div>
+        <div class="grid-content small-2 medium-2 search-header-signup">
+          <a href="#">Signup</a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="grid-block"> <!-- start map and results grid -->
+      <div class="grid-block show-for-medium medium-5"> <!-- start map section -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12697.758051669445!2d-121.95161!3d37.284716!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xe18714a9ccfec34d!2sZURB!5e0!3m2!1sen!2sus!4v1417659982534" width="100%" height="1200px" frameborder="0" style="border:0"></iframe>
+      </div> <!-- end map section -->
+
+      <div class="grid-block small-12 medium-7 wrap results"> <!-- start results section -->
+        <div class="results"> <!-- start of results-vertical-grid -->
+
+          <div class="vertical grid-block filter"> <!-- start filter section -->
+            <div class="grid-block small-11 small-up-2 medium-12 filter-row">
+              <div class="grid-content medium-2">
+                <label>Type of Place:</label>
+              </div>
+              <div class="grid-content medium-3">
+                <ul class="button-group segmented">
+                  <li>
+                    <input type="radio" name="housing-rent" value="rent" id="rent" checked="">
+                    <label for="housing-rent">Rent</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="housing-buy" value="buy" id="buy">
+                    <label for="housing-buy">Buy</label>
+                  </li>
+                </ul>
+              </div>
+              <div class="grid-content medium-1">
+                <label>Bed:</label>
+              </div>
+              <div class="grid-content medium-2">
+                <select name="" id="">
+                  <option value="">1 bed</option>
+                  <option value="">2 bed</option>
+                  <option value="">3 bed</option>
+                  <option value="">4 bed</option>
+                  <option value="">5 bed</option>
+                  <option value="">6 bed</option>
+                  <option value="">7+ bed</option>
+                </select>
+              </div>
+              <div class="grid-content medium-1">
+                <label>Bath:</label>
+              </div>
+              <div class="grid-content medium-2">
+                <select name="" id="">
+                  <option value="">1 bath</option>
+                  <option value="">2 bath</option>
+                  <option value="">3 bath</option>
+                  <option value="">4 bath</option>
+                  <option value="">5 bath</option>
+                  <option value="">6 bath</option>
+                  <option value="">7+ bath</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid-block small-11 medium-12 filter-row">
+              <div class="grid-content medium-2">
+                <label>Max Monthly Price:</label>
+              </div>
+              <div class="grid-content medium-9">
+                <input type="range">
+              </div>
+            </div>
+            <div class="grid-block small-12 medium-12 filter-row">
+              <div class="grid-content medium-2">
+                <label>Max Time:</label>
+              </div>
+              <div class="grid-content medium-2">
+                <select name="" id="">
+                  <option value="">15 min</option>
+                  <option value="">30 min</option>
+                  <option value="">45 min</option>
+                  <option value="">1 hr</option>
+                  <option value="">1 hr 15 min</option>
+                  <option value="">1 hr 30 min</option>
+                  <option value="">1 hr 45 min</option>
+                  <option value="">2 hr</option>
+                  <option value="">2 hr 15 min</option>
+                  <option value="">2 hr 30 min</option>
+                </select>
+              </div>
+              <div class="grid-content medium-2">
+                  <label>Max Distance:</label>
+              </div>
+                <div class="grid-content medium-3">
+                  <select name="" id="">
+                    <option value="">5 miles</option>
+                    <option value="">10 miles</option>
+                    <option value="">15 miles</option>
+                    <option value="">20 miles</option>
+                    <option value="">25 miles</option>
+                    <option value="">30 miles</option>
+                    <option value="">35 miles</option>
+                    <option value="">40 miles</option>
+                    <option value="">45 miles</option>
+                    <option value="">50 miles</option>
+                    <option value="">55 miles</option>
+                    <option value="">60 miles</option>
+                    <option value="">65 miles</option>
+                    <option value="">70 miles</option>
+                  </select>
+                </div>
+              </div>
+            </div> <!-- end filter section -->
+
+            <hr>
+
+            <div class="grid-block small-11 small-up-1 medium-12 medium-up-3 align-center shrink"> <!-- start glance-card-results section -->
+              <div class="grid-block shrink">
+                <div class="card glance-card">
+                  <div class="card-divider glance-background">
+                      Santa Monica
+                  </div>
+                  <div class="grid-block glance-content">
+                    <div class="grid-content">
+                      <h4>Rent</h4>
+                      <p>$465-$490</p>
+                    </div>
+                    <div class="grid-content">
+                      <h4>Commute</h4>
+                      <p>45min</p>
+                    </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="grid-block shrink">
+              <div class="card glance-card">
+                <div class="card-divider glance-background">
+                    Santa Monica
+                </div>
+                <div class="grid-block glance-content">
+                  <div class="grid-content">
+                    <h4>Rent</h4>
+                    <p>$465-$490</p>
+                  </div>
+                  <div class="grid-content">
+                    <h4>Commute</h4>
+                    <p>45min</p>
+                  </div>
+                </div>
+             </div>
+          </div>
+
+             <div class="grid-block shrink">
+              <div class="card glance-card">
+                <div class="card-divider glance-background">
+                    Santa Monica
+                </div>
+                <div class="grid-block glance-content">
+                  <div class="grid-content">
+                    <h4>Rent</h4>
+                    <p>$465-$490</p>
+                  </div>
+                  <div class="grid-content">
+                    <h4>Commute</h4>
+                    <p>45min</p>
+                  </div>
+                </div>
+             </div>
+            </div>
+
+             <div class="grid-block shrink">
+                <div class="card glance-card">
+                  <div class="card-divider glance-background">
+                      Santa Monica
+                  </div>
+                  <div class="grid-block glance-content">
+                    <div class="grid-content">
+                      <h4>Rent</h4>
+                      <p>$465-$490</p>
+                    </div>
+                    <div class="grid-content">
+                      <h4>Commute</h4>
+                      <p>45min</p>
+                    </div>
+                  </div>
+               </div>
+            </div>
+
+             <div class="grid-block shrink">
+                <div class="card glance-card">
+                  <div class="card-divider glance-background">
+                      Santa Monica
+                  </div>
+                  <div class="grid-block glance-content">
+                    <div class="grid-content">
+                      <h4>Rent</h4>
+                      <p>$465-$490</p>
+                    </div>
+                    <div class="grid-content">
+                      <h4>Commute</h4>
+                      <p>45min</p>
+                    </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="grid-block shrink">
+              <div class="card glance-card">
+                <div class="card-divider glance-background">
+                    Santa Monica
+                </div>
+                <div class="grid-block glance-content">
+                  <div class="grid-content">
+                    <h4>Rent</h4>
+                    <p>$465-$490</p>
+                  </div>
+                  <div class="grid-content">
+                    <h4>Commute</h4>
+                    <p>45min</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end glance-card-results sections -->
+
+          <hr>
+
+          <div class="grid-block small-10 medium-12 footer"> <!-- start footer section -->
+            <ul>
+              <li>&copy; Move-in Assistant</li>
+              <li>Raghav Abboy,</li>
+              <li>Melinda Bernardo,</li>
+              <li>Evan Mencke,</li>
+              <li>and Kalisa Falizone</li>
+            </ul>
+          </div> <!-- end footer section -->
+
+        </div> <!-- end results section -->
+      </div> <!-- end map and results grid -->
+    </div> <!-- end search grid -->
   </body>
 </html>
