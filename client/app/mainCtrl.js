@@ -1,5 +1,5 @@
-angular.module('app',['app.services'])
-.controller('MainController', ['Api', function (Api){
+angular.module('myApp',[])
+.controller('MainController', [function (){
   var main = this;
 
   main.address = '';
@@ -11,6 +11,10 @@ angular.module('app',['app.services'])
 
   main.initMap = function() {
 
+  }
+
+  main.dothis = function() {
+    console.log('doing the thing');
   }
 
   main.submitAddress = function() {
@@ -28,7 +32,7 @@ angular.module('app',['app.services'])
         console.log('results address', results[0].formatted_address);
         if (!isNaN(results[0].formatted_address[0])) {
           main.searchInfo.address = results[0].formatted_address;
-          Api.submit(main.searchInfo);
+          // Api.submit(main.searchInfo);
         } else {
           alert("Please insert a valid U.S. address");
         }
