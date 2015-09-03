@@ -9,33 +9,25 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
   main.buyOrRent = 'rent';
 
   main.searchInfo = { };
-
-  //----------------------------------------------------------------------------------
-  //Function to initialize and draw the map, centering on the user's current location
-  main.initMap = function() {
-    //test coordinates
-    var coordinates = {
+  main.coordinates = {
       latitude: 40.5,
       longitude: -98
-    };
+  };
 
-    Map.initialize(coordinates);
+  //----------------------------------------------------------------------------------
+  //Function to initialize and draw the map, centering on the the center of the U.S. or user-inputted coordinates
+  main.initMap = function() {
+    //test coordinates
+    Map.initialize(main.coordinates);
   }
 
   //----------------------------------------------------------------------------------
   //Function to test new methods defined in mapService
   //remove
   main.testMap = function() {
-    console.log('mainCtrl.js says: Calling Maps test');  //make the submit button work
-    Map.test();
-    Map.panAndFocus({
-      latitude: 32,
-      longitude: -110
-    });
-    Map.dropMarker({
-      latitude: 32,
-      longitude: -110
-    });
+    console.log('mainCtrl.js says: testMap called');  //make the submit button work
+    Map.panAndFocus(main.coordinates);
+    Map.dropMarker(main.coordinates);
   }
 
   //----------------------------------------------------------------------------------
@@ -48,8 +40,9 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
 
   //----------------------------------------------------------------------------------
   //Function to add a marker on the map
-  main.addMarker = function (coordinates) {
-    Map.dropMarker(coordinates);
+  main.addMarker = function (coordinates, title) {
+    var title = 'Test marker' || title;
+    Map.dropMarker(coordinates, title);
   };
 
 
@@ -94,6 +87,7 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
   }
 
   //----------------------------------------------------------------------------------
+  //Initialize the map view
   main.initMap();
   main.autoCompleteInit();
 

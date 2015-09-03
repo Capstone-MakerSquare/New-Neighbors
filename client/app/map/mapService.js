@@ -1,11 +1,6 @@
 var map = angular.module('myApp.mapServices',[])
 .factory('Map', function () {
 
-  //remove
-  var test = function () {
-    console.log('mapService.js says: called.');
-  }
-
   var map;
   var mapOptions = {
     center: {
@@ -35,19 +30,18 @@ var map = angular.module('myApp.mapServices',[])
 
   //----------------------------------------------------------------------------------
   //Drop a marker
-  var dropMarker = function (coordinates) {
+  var dropMarker = function (coordinates, title) {
     var myLatLng = {lat: coordinates.latitude, lng: coordinates.longitude};
     panAndFocus(coordinates);
 
     var marker = new google.maps.Marker({
       position: myLatLng,
       map: map,
-      title: 'Test Marker'
+      title: title
     });
   }
 
   return {
-    test: test,
     initialize: initialize,
     panAndFocus: panAndFocus,
     dropMarker: dropMarker
