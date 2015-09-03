@@ -1,5 +1,5 @@
-angular.module('myApp',['myApp.mapServices', 'myApp.services'])
-.controller('MainController', ['Map', 'Api', function (Map, Api){
+angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
+.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   var main = this;
 
   main.neighborhoodsObj;
@@ -19,7 +19,7 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
   main.initMap = function() {
     //test coordinates
     Map.initialize(main.coordinates);
-  }
+  };
 
   //----------------------------------------------------------------------------------
   //Function to test new methods defined in mapService
@@ -28,7 +28,7 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
     console.log('mainCtrl.js says: testMap called');  //make the submit button work
     Map.panAndFocus(main.coordinates);
     Map.dropMarker(main.coordinates);
-  }
+  };
 
   //----------------------------------------------------------------------------------
   //Function to set up autocomplete feature for the search field
@@ -63,7 +63,7 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
     //     console.log('results address', results[0].formatted_address);
     //     if (!isNaN(results[0].formatted_address[0])) {
     //       main.searchInfo.address = results[0].formatted_address;
-    //       // Api.submit(main.searchInfo);
+    //       // ServerApi.submit(main.searchInfo);
     //     } else {
     //       alert("Please insert a valid U.S. address");
     //     }
@@ -80,11 +80,11 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
   //----------------------------------------------------------------------------------
   // Function to make an API request for neighborhoods
   var requestNeighborhoods = function () {
-    Api.submit(main.searchInfo).then(function(data) {
+    ServerApi.submit(main.searchInfo).then(function(data) {
      console.log('mainControllerJS dataobj', data);
      main.neighborhoodsObj = data;
     });
-  }
+  };
 
   //----------------------------------------------------------------------------------
   //Initialize the map view
