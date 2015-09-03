@@ -33,10 +33,12 @@
         <div class="grid-content small-9 medium-10 search-header-right">
 
           <form class="inline-label" ng-submit="main.submitAddress()">
-            <input type="search" id="place-search" placeholder="Enter an address">
+            <input type="search" id="place-search" placeholder="Enter an address" ng-model='main.searchInfo.address'>
 
-            <div class="button" type="submit">
-              <a href="#">Search</a>
+            <div>
+              <button class="button" type="submit">
+                Search
+              </button>
             </div>
           </form>
 
@@ -78,28 +80,28 @@
                 <label>Bed:</label>
               </div>
               <div class="grid-content medium-2">
-                <select name="" id="">
-                  <option value="">1 bed</option>
-                  <option value="">2 bed</option>
-                  <option value="">3 bed</option>
-                  <option value="">4 bed</option>
-                  <option value="">5 bed</option>
-                  <option value="">6 bed</option>
-                  <option value="">7+ bed</option>
+                <select name="bedrooms" ng-model="main.searchInfo.bedrooms">
+                  <option value="1">1 bed</option>
+                  <option value="2">2 bed</option>
+                  <option value="3">3 bed</option>
+                  <option value="4">4 bed</option>
+                  <option value="5">5 bed</option>
+                  <option value="6">6 bed</option>
+                  <option value="7">7+ bed</option>
                 </select>
               </div>
               <div class="grid-content medium-1">
                 <label>Bath:</label>
               </div>
-              <div class="grid-content medium-2">
-                <select name="" id="">
-                  <option value="">1 bath</option>
-                  <option value="">2 bath</option>
-                  <option value="">3 bath</option>
-                  <option value="">4 bath</option>
-                  <option value="">5 bath</option>
-                  <option value="">6 bath</option>
-                  <option value="">7+ bath</option>
+              <div class="grid-content medium-3">
+                <select name="bathrooms" ng-model="main.searchInfo.bathrooms">
+                  <option value="1">1 bath</option>
+                  <option value="2">2 bath</option>
+                  <option value="3">3 bath</option>
+                  <option value="4">4 bath</option>
+                  <option value="5">5 bath</option>
+                  <option value="6">6 bath</option>
+                  <option value="7">7+ bath</option>
                 </select>
               </div>
             </div>
@@ -115,42 +117,49 @@
               <div class="grid-content medium-2">
                 <label>Max Time:</label>
               </div>
-              <div class="grid-content medium-2">
-                <select name="" id="">
-                  <option value="">15 min</option>
-                  <option value="">30 min</option>
-                  <option value="">45 min</option>
-                  <option value="">1 hr</option>
-                  <option value="">1 hr 15 min</option>
-                  <option value="">1 hr 30 min</option>
-                  <option value="">1 hr 45 min</option>
-                  <option value="">2 hr</option>
-                  <option value="">2 hr 15 min</option>
-                  <option value="">2 hr 30 min</option>
+              <div class="grid-content medium-3">
+                <select name="commuteTime" ng-model="main.searchInfo.commuteTime">
+                  <option value="15">15 min</option>
+                  <option value="30">30 min</option>
+                  <option value="45">45 min</option>
+                  <option value="60">1 hr</option>
+                  <option value="75">1 hr 15 min</option>
+                  <option value="90">1 hr 30 min</option>
+                  <option value="105">1 hr 45 min</option>
+                  <option value="120">2 hr</option>
+                  <option value="135">2 hr 15 min</option>
+                  <option value="150">2 hr 30 min</option>
                 </select>
               </div>
               <div class="grid-content medium-2">
                   <label>Max Distance:</label>
               </div>
                 <div class="grid-content medium-3">
-                  <select name="" id="">
-                    <option value="">5 miles</option>
-                    <option value="">10 miles</option>
-                    <option value="">15 miles</option>
-                    <option value="">20 miles</option>
-                    <option value="">25 miles</option>
-                    <option value="">30 miles</option>
-                    <option value="">35 miles</option>
-                    <option value="">40 miles</option>
-                    <option value="">45 miles</option>
-                    <option value="">50 miles</option>
-                    <option value="">55 miles</option>
-                    <option value="">60 miles</option>
-                    <option value="">65 miles</option>
-                    <option value="">70 miles</option>
+                  <select name="commuteDistance" ng-model="main.searchInfo.commuteDistance">
+                    <option value="5">5 miles</option>
+                    <option value="10">10 miles</option>
+                    <option value="15">15 miles</option>
+                    <option value="20">20 miles</option>
+                    <option value="25">25 miles</option>
+                    <option value="30">30 miles</option>
+                    <option value="35">35 miles</option>
+                    <option value="40">40 miles</option>
+                    <option value="45">45 miles</option>
+                    <option value="50">50 miles</option>
+                    <option value="55">55 miles</option>
+                    <option value="60">60 miles</option>
+                    <option value="65">65 miles</option>
+                    <option value="70">70 miles</option>
                   </select>
                 </div>
               </div>
+<!--               <pre>
+              main.searchInfo.address: {{main.searchInfo.address}}
+              main.searchInfo.commuteDistance: {{main.searchInfo.commuteDistance}}
+              main.searchInfo.commuteTime: {{main.searchInfo.commuteTime}}
+              main.searchInfo.bathrooms: {{main.searchInfo.bathrooms}}
+              main.searchInfo.bedrooms: {{main.searchInfo.bedrooms}}
+            </pre> -->
             </div> <!-- end filter section -->
 
             <hr>

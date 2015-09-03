@@ -2,16 +2,19 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
 .controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   var main = this;
 
-  main.neighborhoodsObj;
-  main.address = '';
-  main.bedrooms = '';
-  main.bathrooms = '';
-  main.buyOrRent = 'rent';
-
   main.searchInfo = { };
+  main.searchInfo.neighborhoodsObj;
+  main.searchInfo.address = '';
+  main.searchInfo.buyOrRent = 'rent';
+  main.searchInfo.bedrooms = '1';
+  main.searchInfo.bathrooms = '1';
+  main.searchInfo.maxRent = '';
+  main.searchInfo.commuteTime = '30';
+  main.searchInfo.commuteDistance = '30';
+
   main.coordinates = {
-      latitude: 40.5,
-      longitude: -98
+      latitude: 37.7833,
+      longitude: -122.4167
   };
 
   //----------------------------------------------------------------------------------
@@ -36,6 +39,8 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
     var input = document.getElementById('place-search');
     var options = { types: [] };
     var autocomplete = new google.maps.places.Autocomplete(input, options);
+    // console.log(JSON.stringify(autocomplete[0]));
+    // main.searchInfo.address = autocomplete;
   };
 
   //----------------------------------------------------------------------------------
@@ -49,11 +54,8 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   //----------------------------------------------------------------------------------
   //Function to fetch address and validate it
   main.submitAddress = function() {
-    console.log('mainCtrl.js says: Submitted address:', main.address);
-
-    main.searchInfo.bedrooms = main.bedrooms;
-    main.searchInfo.bathrooms = main.bathrooms;
-    main.searchInfo.buyOrRent = main.buyOrRent;
+    console.log('mainCtrl.js says: Submitted address:', main.searchInfo.address);
+    main.searchInfo.address = main.searchInfo.address;
 
 
     // geocoder = new google.maps.Geocoder();
