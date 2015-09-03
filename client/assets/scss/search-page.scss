@@ -72,9 +72,19 @@
 
 .glance-content h4,
 .glance-content p {
-  margin:0 auto;
   color:#000;
   text-align: center;
+}
+
+.rent {
+  padding: 3px;
+  margin-bottom: -20px;
+}
+
+.zilpy {
+  font-size: 10px;
+  color: gray;
+  font-style: italic;
 }
 
 @media only screen and (min-width: 40em) {

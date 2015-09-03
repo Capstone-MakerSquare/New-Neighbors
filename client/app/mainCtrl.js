@@ -1,7 +1,8 @@
-angular.module('myApp',[])
-.controller('MainController', [function (){
+angular.module('myApp',['myApp.services'])
+.controller('MainController', ['Api', function (Api){
   var main = this;
-
+  
+  main.neighborhoodsObj;
   main.address = '';
   main.bedrooms = '';
   main.bathrooms = '';
@@ -11,10 +12,6 @@ angular.module('myApp',[])
 
   main.initMap = function() {
 
-  }
-
-  main.dothis = function() {
-    console.log('doing the thing');  //make the submit button work
   }
 
   main.submitAddress = function() {
@@ -40,9 +37,18 @@ angular.module('myApp',[])
         console.log('error: ', status, ' ', results)
       }
     });
-
-
   };
 
-
+  main.submitAddress = function() {
+    console.log('mainCtrl.js says: Submitted address:', main.address);
+    
+    main.searchInfo.address = main.address;
+    main.searchInfo.bedrooms = main.bedrooms;
+    main.searchInfo.bathrooms = main.bathrooms;
+    
+    Api.submit(main.searchInfo).then(function(data) {
+     console.log('mainControllerJS dataobj', data);
+     main.neighborhoodsObj = data;
+    });
+  };
 }]);

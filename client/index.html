@@ -9,6 +9,7 @@
     <script src="lib/angular/angular.js"></script>
     <script src="app/app.js"></script>
     <script src="app/mainCtrl.js"></script>
+    <script src="app/services.js"></script>
   </head>
 
   <body ng-controller="MainController as main">
@@ -20,7 +21,7 @@
 
       <div class="grid-content collapse menu-bar dark search-header-right small-12 medium-7">
         <div class="grid-content small-9 medium-10 search-header-right">
-          <form class="inline-label" ng-submit="main.dothis()">
+          <form class="inline-label" ng-submit="main.submitAddress()">
             <input type="search" placeholder="Enter an address">
             <div class="button" type="submit">
               <a href="#">Search</a>
@@ -141,113 +142,26 @@
             <hr>
 
             <div class="grid-block small-11 small-up-1 medium-12 medium-up-3 align-center shrink"> <!-- start glance-card-results section -->
-              <div class="grid-block shrink">
+              <!---single glance card start-->
+              <div class="grid-block shrink" ng-repeat="neighborhood in main.neighborhoodsObj">
                 <div class="card glance-card">
                   <div class="card-divider glance-background">
-                      Santa Monica
+                      {{neighborhood.name}}
                   </div>
                   <div class="grid-block glance-content">
                     <div class="grid-content">
                       <h4>Rent</h4>
-                      <p>$465-$490</p>
+                      <p class="rent">${{neighborhood.rentEstimate.estimateLow || N/A }}-${{neighborhood.rentEstimate.estimateHigh || N/A }}</p>
+                      <small class="zilpy">Powered by Zilpy</small>
                     </div>
                     <div class="grid-content">
                       <h4>Commute</h4>
-                      <p>45min</p>
+                      <p>{{neighborhood.commuteInfo.commuteDistance}} miles | {{neighborhood.commuteInfo.commuteTime}} min</p>
                     </div>
                   </div>
                </div>
             </div>
-
-            <div class="grid-block shrink">
-              <div class="card glance-card">
-                <div class="card-divider glance-background">
-                    Santa Monica
-                </div>
-                <div class="grid-block glance-content">
-                  <div class="grid-content">
-                    <h4>Rent</h4>
-                    <p>$465-$490</p>
-                  </div>
-                  <div class="grid-content">
-                    <h4>Commute</h4>
-                    <p>45min</p>
-                  </div>
-                </div>
-             </div>
-          </div>
-
-             <div class="grid-block shrink">
-              <div class="card glance-card">
-                <div class="card-divider glance-background">
-                    Santa Monica
-                </div>
-                <div class="grid-block glance-content">
-                  <div class="grid-content">
-                    <h4>Rent</h4>
-                    <p>$465-$490</p>
-                  </div>
-                  <div class="grid-content">
-                    <h4>Commute</h4>
-                    <p>45min</p>
-                  </div>
-                </div>
-             </div>
-            </div>
-
-             <div class="grid-block shrink">
-                <div class="card glance-card">
-                  <div class="card-divider glance-background">
-                      Santa Monica
-                  </div>
-                  <div class="grid-block glance-content">
-                    <div class="grid-content">
-                      <h4>Rent</h4>
-                      <p>$465-$490</p>
-                    </div>
-                    <div class="grid-content">
-                      <h4>Commute</h4>
-                      <p>45min</p>
-                    </div>
-                  </div>
-               </div>
-            </div>
-
-             <div class="grid-block shrink">
-                <div class="card glance-card">
-                  <div class="card-divider glance-background">
-                      Santa Monica
-                  </div>
-                  <div class="grid-block glance-content">
-                    <div class="grid-content">
-                      <h4>Rent</h4>
-                      <p>$465-$490</p>
-                    </div>
-                    <div class="grid-content">
-                      <h4>Commute</h4>
-                      <p>45min</p>
-                    </div>
-                  </div>
-               </div>
-            </div>
-
-            <div class="grid-block shrink">
-              <div class="card glance-card">
-                <div class="card-divider glance-background">
-                    Santa Monica
-                </div>
-                <div class="grid-block glance-content">
-                  <div class="grid-content">
-                    <h4>Rent</h4>
-                    <p>$465-$490</p>
-                  </div>
-                  <div class="grid-content">
-                    <h4>Commute</h4>
-                    <p>45min</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <!---single glance card end-->
           </div> <!-- end glance-card-results sections -->
 
           <hr>
@@ -258,7 +172,7 @@
               <li>Raghav Abboy,</li>
               <li>Melinda Bernardo,</li>
               <li>Evan Mencke,</li>
-              <li>and Kalisa Falizone</li>
+              <li>and Kalisa Falzone</li>
             </ul>
           </div> <!-- end footer section -->
 

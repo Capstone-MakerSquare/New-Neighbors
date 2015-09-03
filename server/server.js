@@ -91,6 +91,7 @@ var findNeighborhoods = function (geoCode) {
 			_.each(results, function (result) {
 				neighborhoodObj[result.name] = neighborhoodObj[result.name] ||
 				{
+          name: result.name,
 					latitude: result.geometry.location.lat,
 					longitude: result.geometry.location.lng,
 					placeId: result.place_id
@@ -189,7 +190,7 @@ var zilpy = function (searchInfo, neighborhood) {
 
 	getRequest(zilpyUrl)
 	.then(function (zilpyData) {
-		// console.log(neighborhood);
+		 console.log(neighborhood);
 		// console.log('Zilpy Data:',zilpyData);
 		deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
 	});
