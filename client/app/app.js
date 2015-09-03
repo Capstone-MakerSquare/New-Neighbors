@@ -1,1 +1,1 @@
-angular.module('myApp', ['myApp.services', 'myApp.mapServices']);
+angular.module('myApp', ['myApp.requestHoodServices', 'myApp.mapServices']);
