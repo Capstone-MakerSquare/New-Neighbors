@@ -6,13 +6,23 @@
     <title>Movein Assistant</title>
     <link href="assets/css/app.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="./assets/css/foundation-icons.css">
+
+    <!-- Google Maps -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js"></script> -->
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+
+
+    <!-- Source JS files -->
     <script src="lib/angular/angular.js"></script>
     <script src="app/app.js"></script>
     <script src="app/mainCtrl.js"></script>
     <script src="app/services.js"></script>
+    <script src="./app/map/mapService.js"></script>
+
   </head>
 
   <body ng-controller="MainController as main">
+
     <div class="grid-block shrink wrap search-header"> <!-- start search header -->
       <div class="grid-content menu-bar dark align-left small-12 medium-5 search-header-left">
           <img src="../assets/images/app-icon.png" alt="logo">
@@ -21,12 +31,15 @@
 
       <div class="grid-content collapse menu-bar dark search-header-right small-12 medium-7">
         <div class="grid-content small-9 medium-10 search-header-right">
+
           <form class="inline-label" ng-submit="main.submitAddress()">
-            <input type="search" placeholder="Enter an address">
+            <input type="search" id="place-search" placeholder="Enter an address">
+
             <div class="button" type="submit">
               <a href="#">Search</a>
             </div>
           </form>
+
         </div>
         <div class="grid-content small-2 medium-2 search-header-signup">
           <a href="#">Signup</a>
@@ -36,12 +49,13 @@
 
 
     <div class="grid-block"> <!-- start map and results grid -->
-      <div class="grid-block show-for-medium medium-5"> <!-- start map section -->
-        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12697.758051669445!2d-121.95161!3d37.284716!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xe18714a9ccfec34d!2sZURB!5e0!3m2!1sen!2sus!4v1417659982534" width="100%" height="1200px" frameborder="0" style="border:0"></iframe>
-      </div> <!-- end map section -->
+
+      <!-- Map Canvas -->
+      <div class="grid-block show-for-medium medium-5" id="map-canvas">
+      </div>
 
       <div class="grid-block small-12 medium-7 wrap results"> <!-- start results section -->
-        <div class="results"> <!-- start of results-vertical-grid -->
+        <!-- <div class="results"> --> <!-- start of results-vertical-grid -->
 
           <div class="vertical grid-block filter"> <!-- start filter section -->
             <div class="grid-block small-11 small-up-2 medium-12 filter-row">
@@ -179,5 +193,7 @@
         </div> <!-- end results section -->
       </div> <!-- end map and results grid -->
     </div> <!-- end search grid -->
+
+
   </body>
 </html>
