@@ -64,18 +64,20 @@
               <div class="grid-content medium-2">
                 <label>Type of Place:</label>
               </div>
+              <!--start of rent/buy section -->
               <div class="grid-content medium-3">
-                <ul class="button-group segmented">
-                  <li>
-                    <input type="radio" name="housing-rent" value="rent" id="rent" checked="">
-                    <label for="housing-rent">Rent</label>
+                <ul class="button-group segmented"> <!-- class="button-group segmented" -->
+                  <li ng-click="main.setValueRent()">
+                    <input type="radio" name="rentBuy" value="rent" ng-model="main.searchInfo.buyOrRent">
+                    <label for="rentBuy">Rent</label>
                   </li>
-                  <li>
-                    <input type="radio" name="housing-buy" value="buy" id="buy">
-                    <label for="housing-buy">Buy</label>
+                  <li ng-click="main.setValueBuy()">
+                    <input type="radio" name="rentBuy" value="buy" ng-model="main.searchInfo.buyOrRent" checked="">
+                    <label for="rentBuy">Buy</label>
                   </li>
                 </ul>
               </div>
+              <!--end of rent/buy section -->
               <div class="grid-content medium-1">
                 <label>Bed:</label>
               </div>
@@ -109,8 +111,8 @@
               <div class="grid-content medium-2">
                 <label>Max Monthly Price:</label>
               </div>
-              <div class="grid-content medium-9">
-                <input type="range" name="rentRange" min="400" max="1000">
+              <div class="grid-content medium-9">${{main.searchInfo.maxRent}}
+                <input type="range" name="rentRange" min="0" max="8000" value="1000" step="25" ng-model="main.searchInfo.maxRent">
               </div>
             </div>
             <div class="grid-block small-12 medium-12 filter-row">
@@ -153,20 +155,36 @@
                   </select>
                 </div>
               </div>
-<!--               <pre>
+
+              <div class="grid-content medium-5 align-right">
+                <label>Order Results By:</label>
+                <select name="selectOrder" ng-model="main.filter">
+                  <option value="rentEstimate.estimateLow">Least Expensive Rent First</option>
+                  <option value="rentEstimate.estimateHigh">Most Expensive Rent First</option>
+                  <option value="commuteInfo.commuteTime">Shortest Commute Time First</option>
+                  <option value="-commuteInfo.commuteTime">Longest Commute Time First</option>
+                  <option value="commuteInfo.commuteDistance">Closest First</option>
+                  <option value="-commuteInfo.commuteDistance">Furthest Away First</option>
+                </select>
+              </div>
+
+              <pre>
+              main.filter: {{ main.filter }}
               main.searchInfo.address: {{main.searchInfo.address}}
               main.searchInfo.commuteDistance: {{main.searchInfo.commuteDistance}}
               main.searchInfo.commuteTime: {{main.searchInfo.commuteTime}}
               main.searchInfo.bathrooms: {{main.searchInfo.bathrooms}}
               main.searchInfo.bedrooms: {{main.searchInfo.bedrooms}}
-            </pre> -->
+              main.searchInfo.buyOrRent: {{main.searchInfo.buyOrRent}}
+              main.searchInfo.maxRent: {{main.searchInfo.maxRent}}
+            </pre>
             </div> <!-- end filter section -->
 
             <hr>
 
             <div class="grid-block small-11 small-up-1 medium-12 medium-up-3 align-center shrink"> <!-- start glance-card-results section -->
               <!---single glance card start-->
-              <div class="grid-block shrink" ng-repeat="neighborhood in main.neighborhoodsObj">
+              <div class="grid-block shrink" ng-repeat="neighborhood in main.neighborhoodsObj | orderBy:'{{main.filter}}'">
                 <div class="card glance-card">
                   <div class="card-divider glance-background">
                       {{neighborhood.name}}

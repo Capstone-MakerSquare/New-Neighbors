@@ -6,11 +6,11 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   main.searchInfo.neighborhoodsObj;
   main.searchInfo.address = '';
   main.searchInfo.buyOrRent = 'rent';
-  main.searchInfo.bedrooms = '1';
-  main.searchInfo.bathrooms = '1';
+  main.searchInfo.bedrooms = 1;
+  main.searchInfo.bathrooms = 1;
   main.searchInfo.maxRent = '';
-  main.searchInfo.commuteTime = '30';
-  main.searchInfo.commuteDistance = '30';
+  main.searchInfo.commuteTime = 30;
+  main.searchInfo.commuteDistance = 30;
 
   main.coordinates = {
       latitude: 37.7833,
@@ -22,6 +22,16 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   main.initMap = function() {
     //test coordinates
     Map.initialize(main.coordinates);
+  };
+
+  //Function to set the selected type of housing to 'rent'
+  main.setValueRent = function() {
+    main.searchInfo.buyOrRent = 'rent';
+  };
+
+  //Function to set the selected type of housing to 'buy'
+  main.setValueBuy = function() {
+    main.searchInfo.buyOrRent = 'buy';
   };
 
   //----------------------------------------------------------------------------------
@@ -83,8 +93,13 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   // Function to make an API request for neighborhoods
   var requestNeighborhoods = function () {
     ServerApi.submit(main.searchInfo).then(function(data) {
-     console.log('mainControllerJS dataobj', data);
+     console.log('mainControllerJS dataobj', JSON.stringify(data));
+     // var filteredNeighborhoods = {};
+     // data.forEach(function(){
+     //   if ()
+     // })
      main.neighborhoodsObj = data;
+
     });
   };
 
