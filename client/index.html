@@ -159,32 +159,21 @@
               <div class="grid-content medium-5 align-right">
                 <label>Order Results By:</label>
                 <select name="selectOrder" ng-model="main.filter">
-                  <option value="rentEstimate.estimateLow">Least Expensive Rent First</option>
-                  <option value="rentEstimate.estimateHigh">Most Expensive Rent First</option>
-                  <option value="commuteInfo.commuteTime">Shortest Commute Time First</option>
-                  <option value="-commuteInfo.commuteTime">Longest Commute Time First</option>
-                  <option value="commuteInfo.commuteDistance">Closest First</option>
-                  <option value="-commuteInfo.commuteDistance">Furthest Away First</option>
+                  <option value="estimateLow">Lowest Rent</option>
+                  <option value="-estimateLow">Highest Rent</option>
+                  <option value="commuteTime">Shortest Commute</option>
+                  <option value="-commuteTime">Longest Commute</option>
+                  <option value="commuteDistance">Closest Distance</option>
+                  <option value="-commuteDistance">Furthest Distance</option>
                 </select>
               </div>
-
-              <pre>
-              main.filter: {{ main.filter }}
-              main.searchInfo.address: {{main.searchInfo.address}}
-              main.searchInfo.commuteDistance: {{main.searchInfo.commuteDistance}}
-              main.searchInfo.commuteTime: {{main.searchInfo.commuteTime}}
-              main.searchInfo.bathrooms: {{main.searchInfo.bathrooms}}
-              main.searchInfo.bedrooms: {{main.searchInfo.bedrooms}}
-              main.searchInfo.buyOrRent: {{main.searchInfo.buyOrRent}}
-              main.searchInfo.maxRent: {{main.searchInfo.maxRent}}
-            </pre>
             </div> <!-- end filter section -->
 
             <hr>
 
             <div class="grid-block small-11 small-up-1 medium-12 medium-up-3 align-center shrink"> <!-- start glance-card-results section -->
               <!---single glance card start-->
-              <div class="grid-block shrink" ng-repeat="neighborhood in main.neighborhoodsObj | orderBy:'{{main.filter}}'">
+              <div class="grid-block shrink" ng-repeat="neighborhood in main.neighborhoodArray | orderBy:main.filter">
                 <div class="card glance-card">
                   <div class="card-divider glance-background">
                       {{neighborhood.name}}
@@ -192,12 +181,12 @@
                   <div class="grid-block glance-content">
                     <div class="grid-content">
                       <h4>Rent</h4>
-                      <p class="rent">${{neighborhood.rentEstimate.estimateLow || N/A }}-${{neighborhood.rentEstimate.estimateHigh || N/A }}</p>
+                      <p class="rent">${{neighborhood.estimateLow || N/A }}-${{neighborhood.estimateHigh || N/A }}</p>
                       <small class="zilpy">Powered by Zilpy</small>
                     </div>
                     <div class="grid-content">
                       <h4>Commute</h4>
-                      <p>{{neighborhood.commuteInfo.commuteDistance}} miles | {{neighborhood.commuteInfo.commuteTime}} min</p>
+                      <p>{{neighborhood.commuteDistance}} miles | {{neighborhood.commuteTime}} min</p>
                     </div>
                   </div>
                </div>
