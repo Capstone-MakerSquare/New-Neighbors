@@ -39,14 +39,6 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
     return arr;
   };
 
-
-  //----------------------------------------------------------------------------------
-  //Function to initialize and draw the map, centering on the the center of the U.S. or user-inputted coordinates
-  main.initMap = function() {
-    //test coordinates
-    Map.initialize(main.coordinates);
-  };
-
   //Function to set the selected type of housing to 'rent'
   main.setValueRent = function() {
     main.searchInfo.buyOrRent = 'rent';
@@ -57,14 +49,6 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
     main.searchInfo.buyOrRent = 'buy';
   };
 
-  //----------------------------------------------------------------------------------
-  //Function to test new methods defined in mapService
-  //remove
-  main.testMap = function() {
-    console.log('mainCtrl.js says: testMap called');  //make the submit button work
-    Map.panAndFocus(main.coordinates);
-    Map.dropMarker(main.coordinates);
-  };
 
   //----------------------------------------------------------------------------------
   //Function to set up autocomplete feature for the search field
@@ -82,15 +66,9 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
         main.submitAddress();
       }
     });
-
   };
 
-  //----------------------------------------------------------------------------------
-  //Function to add a marker on the map
-  main.addMarker = function (coordinates, title) {
-    title = 'Test marker' || title;
-    Map.dropMarker(coordinates, title);
-  };
+
 
 
   //----------------------------------------------------------------------------------
@@ -100,9 +78,7 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
     console.log('mainCtrl.js says: Submitted address (angular):', main.searchInfo.address);
 
     main.searchInfo.address = main.searchInfo.address;
-    // main.searchInfo.bedrooms = main.bedrooms;
-    // main.searchInfo.bathrooms = main.bathrooms;
-    // main.searchInfo.buyOrRent = main.buyOrRent;
+    requestNeighborhoods();
 
 
     // geocoder = new google.maps.Geocoder();
@@ -120,11 +96,7 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
     //     console.log('error: ', status, ' ', results)
     //   }
     // });
-
-    main.testMap();
-    requestNeighborhoods();
   };
-
 
   //----------------------------------------------------------------------------------
   // Function to make an API request for neighborhoods
@@ -140,9 +112,40 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   };
 
   //----------------------------------------------------------------------------------
-  //Initialize the map view
+  //Initialization functions
   main.initMap();
   main.autoCompleteInit();
+
+
+  //----------------------------------------------------------------------------------
+  // Helper functions - GOOGLE MAPS
+
+  //----------------------------------------------------------------------------------
+  //Function to initialize and draw the map, centering on the the center of the U.S.
+  main.initMap = function() {
+    var centerUS = {
+      latitude: 38.5,
+      longitude: -96
+    };
+    //test coordinates
+    Map.initialize(centerUS);
+  };
+
+  //----------------------------------------------------------------------------------
+  //Function to add a marker on the map
+  main.addMarker = function (coordinates, title) {
+    title = 'Test marker' || title;
+    Map.dropMarker(coordinates, title);
+  };
+
+  //----------------------------------------------------------------------------------
+  //Function to test new methods defined in mapService
+  //remove
+  main.testMap = function() {
+    console.log('mainCtrl.js says: testMap called');  //make the submit button work
+    Map.panAndFocus(main.coordinates);
+    Map.dropMarker(main.coordinates);
+  };
 
 }]);
 
