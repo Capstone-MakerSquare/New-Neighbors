@@ -13,7 +13,18 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   main.searchInfo.commuteTime = 30;
   main.searchInfo.commuteDistance = 30;
 
+  main.coordinates = {
+      latitude: 37.7833,
+      longitude: -122.4167
+  };
 
+  //unscoped local variables
+  var autocomplete;
+
+  //----------------------------------------------------------------------------------
+  // Function to flatten the object so that the array can be sorted by a parameter
+  // Input: neighborhoodsObj
+  // Output: flattened array of objects
   main.orderByArray = function(neighborhoods){
     var arr = [];
     for (var i = 0; i < neighborhoods.length; i++) {
@@ -28,13 +39,6 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
     return arr;
   };
 
-  main.coordinates = {
-      latitude: 37.7833,
-      longitude: -122.4167
-  };
-
-  //unscoped local variables
-  var autocomplete;
 
   //----------------------------------------------------------------------------------
   //Function to initialize and draw the map, centering on the the center of the U.S. or user-inputted coordinates
@@ -70,10 +74,14 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
     autocomplete = new google.maps.places.Autocomplete(input, options);
 
     //listener to listen to a place change
-    // autocomplete.addListener('place_changed', function() {
-    //   var place = autocomplete.getPlace();
-    //   console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
-    // });
+    autocomplete.addListener('place_changed', function() {
+      var place = autocomplete.getPlace();
+      console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
+      if(place.formatted_address || main.searchInfo.address.length > 0) {
+        main.searchInfo.address = place.formatted_address || main.searchInfo.address;
+        main.submitAddress();
+      }
+    });
 
   };
 
@@ -88,18 +96,17 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   //----------------------------------------------------------------------------------
   //Function to fetch address and validate it
   main.submitAddress = function() {
-    var place = autocomplete.getPlace()
-    console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
-    console.log('mainCtrl.js says: Submitted address (angular):', main.address);
+    // console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
+    console.log('mainCtrl.js says: Submitted address (angular):', main.searchInfo.address);
 
-    main.searchInfo.address = place.formatted_address;
-    main.searchInfo.bedrooms = main.bedrooms;
-    main.searchInfo.bathrooms = main.bathrooms;
-    main.searchInfo.buyOrRent = main.buyOrRent;
+    main.searchInfo.address = main.searchInfo.address;
+    // main.searchInfo.bedrooms = main.bedrooms;
+    // main.searchInfo.bathrooms = main.bathrooms;
+    // main.searchInfo.buyOrRent = main.buyOrRent;
 
 
     // geocoder = new google.maps.Geocoder();
-    // geocoder.geocode({ 'address': main.address }, function(results, status) {
+    // geocoder.geocode({ 'address': main.searchInfo.address }, function(results, status) {
     //   if (status == google.maps.GeocoderStatus.OK) {
     //     console.log(results[0].geometry.location);
     //     console.log('results address', results[0].formatted_address);
@@ -122,13 +129,13 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   //----------------------------------------------------------------------------------
   // Function to make an API request for neighborhoods
   var requestNeighborhoods = function () {
-    ServerApi.submit(main.searchInfo).then(function(data) {
-     main.neighborhoods = Object.keys(data).map(function(key) {
+    ServerApi.submit(main.searchInfo)
+    .then(function(data) {
+       main.neighborhoods = Object.keys(data).map(function(key) {
        return data[key];
      });
      main.neighborhoodArray = main.orderByArray(main.neighborhoods);
      console.log('order by array', main.neighborhoodArray);
-
     });
   };
 

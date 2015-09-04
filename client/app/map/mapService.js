@@ -22,10 +22,11 @@ var map = angular.module('myApp.mapServices',[])
 
   //----------------------------------------------------------------------------------
   //Pan and focus on the coordinate set of interest
-  var panAndFocus = function (coordinates) {
+  var panAndFocus = function (coordinates, zoom) {
+    zoom = zoom || 11;
     // var latLng = new google.maps.LatLng(coordinates.latitude, coordinates.longitude);
     map.panTo({lat: coordinates.latitude, lng: coordinates.longitude});
-    map.setZoom(mapOptions.zoom);
+    map.setZoom(zoom);
   }
 
   //----------------------------------------------------------------------------------
