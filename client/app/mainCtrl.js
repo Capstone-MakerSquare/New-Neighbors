@@ -2,16 +2,35 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
 .controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   var main = this;
 
-  main.neighborhoodsObj;
-  main.address = '';
-  main.bedrooms = 2;
-  main.bathrooms = 2;
-  main.buyOrRent = 'rent';
+  main.neighborhoodsObj = {}; //this is the response from the server
 
-  main.searchInfo = { };
+  main.searchInfo = {}; // JSON obj to send to server
+  main.searchInfo.address = '';
+  main.searchInfo.buyOrRent = 'rent';
+  main.searchInfo.bedrooms = 1;
+  main.searchInfo.bathrooms = 1;
+  main.searchInfo.maxRent = '';
+  main.searchInfo.commuteTime = 30;
+  main.searchInfo.commuteDistance = 30;
+
+
+  main.orderByArray = function(neighborhoods){
+    var arr = [];
+    for (var i = 0; i < neighborhoods.length; i++) {
+      arr.push({
+          name: neighborhoods[i].name,
+          commuteTime: neighborhoods[i].commuteInfo.commuteTime,
+          commuteDistance: neighborhoods[i].commuteInfo.commuteDistance,
+          estimateHigh: neighborhoods[i].rentEstimate.estimateHigh,
+          estimateLow: neighborhoods[i].rentEstimate.estimateLow
+      });
+    }
+    return arr;
+  };
+
   main.coordinates = {
-      latitude: 40.5,
-      longitude: -98
+      latitude: 37.7833,
+      longitude: -122.4167
   };
 
   //unscoped local variables
@@ -22,6 +41,16 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   main.initMap = function() {
     //test coordinates
     Map.initialize(main.coordinates);
+  };
+
+  //Function to set the selected type of housing to 'rent'
+  main.setValueRent = function() {
+    main.searchInfo.buyOrRent = 'rent';
+  };
+
+  //Function to set the selected type of housing to 'buy'
+  main.setValueBuy = function() {
+    main.searchInfo.buyOrRent = 'buy';
   };
 
   //----------------------------------------------------------------------------------
@@ -51,7 +80,7 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   //----------------------------------------------------------------------------------
   //Function to add a marker on the map
   main.addMarker = function (coordinates, title) {
-    var title = 'Test marker' || title;
+    title = 'Test marker' || title;
     Map.dropMarker(coordinates, title);
   };
 
@@ -94,8 +123,12 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   // Function to make an API request for neighborhoods
   var requestNeighborhoods = function () {
     ServerApi.submit(main.searchInfo).then(function(data) {
-     console.log('mainControllerJS dataobj', data);
-     main.neighborhoodsObj = data;
+     main.neighborhoods = Object.keys(data).map(function(key) {
+       return data[key];
+     });
+     main.neighborhoodArray = main.orderByArray(main.neighborhoods);
+     console.log('order by array', main.neighborhoodArray);
+
     });
   };
 
@@ -105,6 +138,8 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   main.autoCompleteInit();
 
 }]);
+
+
 
 
 
