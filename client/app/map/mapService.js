@@ -10,6 +10,9 @@ var map = angular.module('myApp.mapServices',[])
     zoom: 4
   };
 
+  var marker;
+  var circle;
+
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
   var initialize = function (coordinates) {
@@ -23,43 +26,72 @@ var map = angular.module('myApp.mapServices',[])
   //----------------------------------------------------------------------------------
   //Pan and focus on the coordinate set of interest
   var panAndFocus = function (coordinates, zoom) {
-    zoom = zoom || 11;
-    // var latLng = new google.maps.LatLng(coordinates.latitude, coordinates.longitude);
-    map.panTo({lat: coordinates.latitude, lng: coordinates.longitude});
+    var latLng = { lat: coordinates.latitude, lng: coordinates.longitude };
+    zoom = zoom || 11;    //11 corresponds to a radius of 20 kms
+
+    map.panTo(latLng);
     map.setZoom(zoom);
   }
 
   //----------------------------------------------------------------------------------
   //Drop a marker
   var dropMarker = function (coordinates, title) {
-    var myLatLng = {lat: coordinates.latitude, lng: coordinates.longitude};
-    panAndFocus(coordinates);
+    var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
 
-    var marker = new google.maps.Marker({
-      position: myLatLng,
+    if(marker) { marker.setMap(null); }
+    marker = new google.maps.Marker({
+      position: latLng,
       map: map,
       title: title
+    });
+  }
+
+  //----------------------------------------------------------------------------------
+  //Drop a marker with LABEL
+  var dropMarkerWithLabel = function (coordinates, title) {
+    var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
+
+    var markerLabel = new MarkerWithLabel({
+      position: latLng,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 0, //tamaño 0
+      },
+      map: map,
+      draggable: true,
+      labelAnchor: new google.maps.Point(10, 10),
+      labelClass: "label", // the CSS class for the label
+    });
+  }
+
+  //----------------------------------------------------------------------------------
+  //Draw a circle with a given radius
+  var drawCircle = function (coordinates, radius, color) {
+    var radius = radius || 4000;
+    var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
+
+    // console.log('radius:', radius);
+    // console.log('latLng:', latLng);
+
+    // if(circle) { circle.setMap(null); }
+    circle = new google.maps.Circle({
+      strokeColor: '#FF0000',
+      strokeOpacity: .6,
+      strokeWeight: 0,
+      fillColor: '#AF3A49',
+      fillOpacity: 0.25,
+      map: map,
+      center: latLng,
+      radius: radius
     });
   }
 
   return {
     initialize: initialize,
     panAndFocus: panAndFocus,
-    dropMarker: dropMarker
+    dropMarker: dropMarker,
+    drawCircle: drawCircle,
+    dropMarkerWithLabel: dropMarkerWithLabel
   };
 
-  // var map, center;
-
-  // var init = function(mapCanvas) {
-  //   map = new google.maps.Map(mapCanvas, MapOptions);
-  // };
-
-  // var getMap = function() {
-  //   return map;
-  // };
-
-  // return {
-  //   init: init,
-  //   getMap: getMap
-  // };
 });

@@ -6,10 +6,12 @@
     <title>Movein Assistant</title>
     <link href="assets/css/app.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="./assets/css/foundation-icons.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+
 
     <!-- Google Maps -->
-    <!-- <script src="https://maps.googleapis.com/maps/api/js"></script> -->
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <script src="https://google-maps-utility-library-v3.googlecode.com/svn-history/r391/trunk/markerwithlabel/src/markerwithlabel.js"></script>
 
 
     <!-- Source JS files -->
@@ -175,7 +177,7 @@
             <div class="grid-block small-11 small-up-1 medium-12 medium-up-3 align-center shrink"> <!-- start glance-card-results section -->
               <!---single glance card start-->
               <div class="grid-block shrink" ng-repeat="neighborhood in main.neighborhoodArray | orderBy:main.filter">
-                <div class="card glance-card">
+                <div class="card glance-card" ng-click="main.selectNeighborhood(neighborhood)">
                   <div class="card-divider glance-background">
                       {{neighborhood.name}}
                   </div>
