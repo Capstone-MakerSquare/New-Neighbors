@@ -70,10 +70,14 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
     autocomplete = new google.maps.places.Autocomplete(input, options);
 
     //listener to listen to a place change
-    // autocomplete.addListener('place_changed', function() {
-    //   var place = autocomplete.getPlace();
-    //   console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
-    // });
+    autocomplete.addListener('place_changed', function() {
+      var place = autocomplete.getPlace();
+      console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
+      if(place.formatted_address || main.address.length > 0) {
+        main.address = place.formatted_address || main.address;
+        main.submitAddress();
+      }
+    });
 
   };
 
@@ -88,11 +92,10 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   //----------------------------------------------------------------------------------
   //Function to fetch address and validate it
   main.submitAddress = function() {
-    var place = autocomplete.getPlace()
-    console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
+    // console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
     console.log('mainCtrl.js says: Submitted address (angular):', main.address);
 
-    main.searchInfo.address = place.formatted_address;
+    main.searchInfo.address = main.address;
     main.searchInfo.bedrooms = main.bedrooms;
     main.searchInfo.bathrooms = main.bathrooms;
     main.searchInfo.buyOrRent = main.buyOrRent;

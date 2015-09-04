@@ -38,7 +38,7 @@ app.post('/api/getNeighbors', function (req, res) {
 	})
 	.then(function (neighborhoodObj) {
 		console.log('Neighborhoods fetched.');
-		// console.log('Neighborhood list:',neighborhoodObj);
+    if(Object.keys(neighborhoodObj).length === 0) { checkAndRespond({'YouAre': 'Insane.'}); }
 		return getStreetAddresses(neighborhoodObj);
 	})
 	.then(function (neighborhoodObj) {
@@ -194,6 +194,11 @@ var zilpy = function (searchInfo, neighborhood) {
 	var zilpyUrl = zilpyUrl_address + searchInfo.address + zilpyUrl_bedrooms + searchInfo.bedrooms + zilpyUrl_bathrooms + searchInfo.bathrooms;
   // console.log('zilpyUrl', zilpyUrl);
 
+  //remove
+  // deferred.resolve(['ZTO', 'ZTO', neighborhood]);
+
+  // UNCOMMENT - ZILPY TEMPORARILY DISABLED
+  //----------------------------------------------------------------------------
 	getRequest(zilpyUrl)
 	.then(function (zilpyData) {
 		 console.log('Neighborhood fetched:',neighborhood);
@@ -297,6 +302,10 @@ var getStreetAddresses = function (neighborhoodObj) {
 	// console.log('List of neighborhoods');
 
 	var neighborhoodList = Object.keys(neighborhoodObj);
+
+  //remove
+  console.log('Number of neighborhoods:', neighborhoodList.length);
+
 	var lastNeighborhood = neighborhoodList[neighborhoodList.length - 1];
 	var numNeighborhoods = neighborhoodList.length;
 	var numEvents = 0;
