@@ -124,8 +124,8 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   //Function to initialize and draw the map, centering on the the center of the U.S.
   main.initMap = function() {
     var centerUS = {
-      latitude: 41,
-      longitude: -97
+      latitude: 38.5,
+      longitude: -96
     };
     //test coordinates
     Map.initialize(centerUS);
