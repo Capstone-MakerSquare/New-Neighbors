@@ -9,9 +9,9 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   main.searchInfo.buyOrRent = 'rent';
   main.searchInfo.bedrooms = 1;
   main.searchInfo.bathrooms = 1;
-  main.searchInfo.maxRent = '';
-  main.searchInfo.commuteTime = 30;
-  main.searchInfo.commuteDistance = 30;
+  main.searchInfo.maxRent = 8000;
+  main.searchInfo.commuteTime = 150;
+  main.searchInfo.commuteDistance = 70;
 
   main.coordinates = {
       latitude: 37.7833,
@@ -69,9 +69,6 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
     });
   };
 
-
-
-
   //----------------------------------------------------------------------------------
   //Function to fetch address and validate it
   main.submitAddress = function() {
@@ -112,19 +109,27 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
 
   //----------------------------------------------------------------------------------
   // Function to make an API request for neighborhoods
-  var requestNeighborhoods = function () {
+  var requestNeighborhoods = function() {
     ServerApi.submit(main.searchInfo)
     .then(function(data) {
        main.neighborhoods = Object.keys(data).map(function(key) {
        return data[key];
      });
      main.neighborhoodArray = main.orderByArray(main.neighborhoods);
-
-     //remove
-     // console.log('order by array', main.neighborhoodArray);
+     main.filterNeighborhoods();
+     console.log('order by array', main.neighborhoodArray);
     });
   };
 
+  //----------------------------------------------------------------------------------
+  // Function to filter neighborhoods by user's filter options 
+  main.filterNeighborhoods = function() {
+    main.filteredNeighborhoodArray = main.neighborhoodArray.filter(function(obj) {
+      return main.searchInfo.maxRent > obj.estimateLow && 
+      main.searchInfo.commuteTime > obj.commuteTime && 
+      main.searchInfo.commuteDistance > obj.commuteDistance;
+    });
+  };
 
   //----------------------------------------------------------------------------------
   // Helper functions - GOOGLE MAPS
@@ -167,13 +172,10 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
 
   }
 
-
   //----------------------------------------------------------------------------------
   //Initialization functions
   main.initMap();
   main.autoCompleteInit();
-
-
 }]);
 
 
