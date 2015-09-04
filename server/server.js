@@ -125,6 +125,10 @@ var getEstimates = function (neighborhoodObj, searchInfo) {
 	var numNeighborhoods = neighborhoodList.length;
 	var numEvents = 0;
 
+  //remove
+  console.log('Getting estimates for rent:');
+  console.log('Number of neighborhoods:', numNeighborhoods);
+
 	for(var neighborhood in neighborhoodObj) {
 		//console.log(neighborhoodObj[neighborhood]);
 		var zilpySearchInfo = {
@@ -142,13 +146,14 @@ var getEstimates = function (neighborhoodObj, searchInfo) {
 			numEvents++;
 
 			//remove
-			// console.log(neighborhood);
+      console.log('Neighborhood:',neighborhood);
+      console.log("Completed:",numEvents);
 
 			neighborhoodObj[neighborhood].rentEstimate = rentEstimate;
 			neighborhoodObj[neighborhood].propertyType = propertyType;
 
 			if(numEvents === numNeighborhoods) {
-				//console.log('Resolved.');
+				console.log('Resolved.');
 				deferred.resolve(neighborhoodObj);
 			}
 
@@ -187,13 +192,19 @@ var zilpy = function (searchInfo, neighborhood) {
 	var zilpyUrl_bathrooms = '&ba=';
 
 	var zilpyUrl = zilpyUrl_address + searchInfo.address + zilpyUrl_bedrooms + searchInfo.bedrooms + zilpyUrl_bathrooms + searchInfo.bathrooms;
+  // console.log('zilpyUrl', zilpyUrl);
 
 	getRequest(zilpyUrl)
 	.then(function (zilpyData) {
-		 console.log(neighborhood);
-		// console.log('Zilpy Data:',zilpyData);
+		 console.log('Neighborhood fetched:',neighborhood);
+		 // console.log('Zilpy Data:',zilpyData);
+     // console.log('************************');
 		deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
-	});
+	}, function (errorMessage) {
+    console.log('Error/server not responding.');
+    console.log('errorMessage:', errorMessage);
+    deferred.resolve(['N/A', 'N/A', neighborhood]);
+  });
 
 	return deferred.promise;
 }
@@ -453,9 +464,14 @@ var getRequest = function (url) {
 	// console.log('getRequest called. url:',url);
 
 	request(url, function (error, response, body) {
-	  if(error) { console.log('Error for url:', url); deferred.resolve('Not Available'); }
-	  if (!error && response.statusCode == 200) { deferred.resolve(JSON.parse(body)); }
-	  else { deferred.resolve("Not Available"); }
+
+    //remove
+    console.log('Response status:', response.statusCode);
+
+    if(error) { console.log('Error for url:', url); deferred.reject("Not Available"); }
+    if (!error && response.statusCode == 200) { deferred.resolve(JSON.parse(body)); }
+	  else { deferred.reject("Not Available"); }
+
 	});
 
 	return deferred.promise;
