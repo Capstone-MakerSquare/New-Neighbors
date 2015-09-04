@@ -11,6 +11,7 @@ var map = angular.module('myApp.mapServices',[])
   };
 
   var marker;
+  var circle;
 
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
@@ -45,10 +46,52 @@ var map = angular.module('myApp.mapServices',[])
     });
   }
 
+  //----------------------------------------------------------------------------------
+  //Drop a marker with LABEL
+  var dropMarkerWithLabel = function (coordinates, title) {
+    var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
+
+    var markerLabel = new MarkerWithLabel({
+      position: latLng,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 0, //tamaño 0
+      },
+      map: map,
+      draggable: true,
+      labelAnchor: new google.maps.Point(10, 10),
+      labelClass: "label", // the CSS class for the label
+    });
+  }
+
+  //----------------------------------------------------------------------------------
+  //Draw a circle with a given radius
+  var drawCircle = function (coordinates, radius, color) {
+    var radius = radius || 4000;
+    var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
+
+    // console.log('radius:', radius);
+    // console.log('latLng:', latLng);
+
+    // if(circle) { circle.setMap(null); }
+    circle = new google.maps.Circle({
+      strokeColor: '#FF0000',
+      strokeOpacity: .6,
+      strokeWeight: 0,
+      fillColor: '#AF3A49',
+      fillOpacity: 0.25,
+      map: map,
+      center: latLng,
+      radius: radius
+    });
+  }
+
   return {
     initialize: initialize,
     panAndFocus: panAndFocus,
-    dropMarker: dropMarker
+    dropMarker: dropMarker,
+    drawCircle: drawCircle,
+    dropMarkerWithLabel: dropMarkerWithLabel
   };
 
 });

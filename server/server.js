@@ -79,7 +79,7 @@ var findNeighborhoods = function (geoCode) {
 	var key = keys.googleAPIKey;
 	var types = 'locality|sublocality|neighborhood|administrative_area_level_1|administrative_area_level_2|administrative_area_level_3|administrative_area_level_4|administrative_area_level_5|sublocality_level_4|sublocality_level_3|sublocality_level_2|sublocality_level_1';
 
-  for(radius = 1000; radius<=20000; radius+=1000) {
+  for(radius = 1000; radius<=20000; radius+=500) {
 		var gPlacesUrl = gPlacesUrl_location + geoCode.coordinates.latitude + ',' + geoCode.coordinates.longitude +
 										 gPlacesUrl_radius + radius +
 										 gPlacesUrl_types + types +
@@ -101,7 +101,7 @@ var findNeighborhoods = function (geoCode) {
 			//remove
 			// console.log('Neighborhoods fetched:',numResponses);
 
-			if(numResponses === 20) { deferred.resolve(neighborhoodObj); }
+			if(numResponses === 39) { deferred.resolve(neighborhoodObj); }
 			else { numResponses++; }
 		});
 
@@ -146,8 +146,8 @@ var getEstimates = function (neighborhoodObj, searchInfo) {
 			numEvents++;
 
 			//remove
-      console.log('Neighborhood:',neighborhood);
-      console.log("Completed:",numEvents);
+      // console.log('Neighborhood:',neighborhood);
+      // console.log("Completed:",numEvents);
 
 			neighborhoodObj[neighborhood].rentEstimate = rentEstimate;
 			neighborhoodObj[neighborhood].propertyType = propertyType;
@@ -195,21 +195,21 @@ var zilpy = function (searchInfo, neighborhood) {
   // console.log('zilpyUrl', zilpyUrl);
 
   //remove
-  // deferred.resolve(['ZTO', 'ZTO', neighborhood]);
+  deferred.resolve(['ZTO', 'ZTO', neighborhood]);
 
   // UNCOMMENT - ZILPY TEMPORARILY DISABLED
   //----------------------------------------------------------------------------
-	getRequest(zilpyUrl)
-	.then(function (zilpyData) {
-		 console.log('Neighborhood fetched:',neighborhood);
-		 // console.log('Zilpy Data:',zilpyData);
-     // console.log('************************');
-		deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
-	}, function (errorMessage) {
-    console.log('Error/server not responding.');
-    console.log('errorMessage:', errorMessage);
-    deferred.resolve(['N/A', 'N/A', neighborhood]);
-  });
+	// getRequest(zilpyUrl)
+	// .then(function (zilpyData) {
+	// 	 console.log('Neighborhood fetched:',neighborhood);
+	// 	 // console.log('Zilpy Data:',zilpyData);
+ //     // console.log('************************');
+	// 	deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
+	// }, function (errorMessage) {
+ //    console.log('Error/server not responding.');
+ //    console.log('errorMessage:', errorMessage);
+ //    deferred.resolve(['N/A', 'N/A', neighborhood]);
+ //  });
 
 	return deferred.promise;
 }

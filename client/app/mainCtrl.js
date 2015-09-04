@@ -33,7 +33,8 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
           commuteTime: neighborhoods[i].commuteInfo.commuteTime,
           commuteDistance: neighborhoods[i].commuteInfo.commuteDistance,
           estimateHigh: neighborhoods[i].rentEstimate.estimateHigh,
-          estimateLow: neighborhoods[i].rentEstimate.estimateLow
+          estimateLow: neighborhoods[i].rentEstimate.estimateLow,
+          coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude}
       });
     }
     return arr;
@@ -97,6 +98,12 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
         Map.panAndFocus(coordinates);
         Map.dropMarker(coordinates);
 
+        //testing an animated marker
+        //Map.dropMarkerWithLabel(coordinates);
+
+        //remove
+        Map.drawCircle(coordinates, 4000);
+
       } else {
         console.log('submitAddress():geocode says: Status, results: ', status, ',', results);
       }
@@ -145,10 +152,20 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   //remove
   main.testMap = function() {
     console.log('mainCtrl.js says: testMap called');  //make the submit button work
-    Map.panAndFocus(main.coordinates);
-    Map.dropMarker(main.coordinates);
+    // Map.panAndFocus(main.coordinates);
+    // Map.dropMarker(main.coordinates);
   };
 
+  //----------------------------------------------------------------------------------
+  //Function to drop a circle + marker on a selected neighborhood
+  main.selectNeighborhood = function (neighborhood) {
+    console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
+
+    Map.dropMarker(neighborhood.coordinates);
+    Map.panAndFocus(neighborhood.coordinates, 13);
+    Map.drawCircle(neighborhood.coordinates, 2000);
+
+  }
 
 
   //----------------------------------------------------------------------------------
