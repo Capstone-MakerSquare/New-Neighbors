@@ -77,6 +77,7 @@
                   </li>
                 </ul>
               </div>
+             
               <!--end of rent/buy section -->
               <div class="grid-content medium-1">
                 <label>Bed:</label>
@@ -107,6 +108,9 @@
                 </select>
               </div>
             </div>
+
+            <hr>
+
             <div class="grid-block small-11 medium-12 filter-row">
               <div class="grid-content medium-2">
                 <label>Max Monthly Price:</label>
@@ -125,14 +129,9 @@
                   <option value="30">30 min</option>
                   <option value="45">45 min</option>
                   <option value="60">1 hr</option>
-                  <option value="75">1 hr 15 min</option>
-                  <option value="90">1 hr 30 min</option>
-                  <option value="105">1 hr 45 min</option>
-                  <option value="120">2 hr</option>
-                  <option value="135">2 hr 15 min</option>
-                  <option value="150">2 hr 30 min</option>
                 </select>
               </div>
+
               <div class="grid-content medium-2">
                   <label>Max Distance:</label>
               </div>
@@ -144,31 +143,27 @@
                     <option value="20">20 miles</option>
                     <option value="25">25 miles</option>
                     <option value="30">30 miles</option>
-                    <option value="35">35 miles</option>
-                    <option value="40">40 miles</option>
-                    <option value="45">45 miles</option>
-                    <option value="50">50 miles</option>
-                    <option value="55">55 miles</option>
-                    <option value="60">60 miles</option>
-                    <option value="65">65 miles</option>
-                    <option value="70">70 miles</option>
                   </select>
                 </div>
               </div>
 
               <div class="grid-content medium-5 align-right">
+                <button class="button" ng-click="main.filterNeighborhoods()">Filter Search Results</button>
+              </div>
+
+              <hr>
+
+              <div class="grid-content medium-5 align-right">
                 <label>Order Results By:</label>
-                <select name="selectOrder" ng-model="main.filter">
+                <select name="selectOrder" ng-model="main.filterType">
                   <option value="estimateLow">Lowest Rent</option>
-                  <option value="-estimateLow">Highest Rent</option>
                   <option value="commuteTime">Shortest Commute</option>
-                  <option value="-commuteTime">Longest Commute</option>
                   <option value="commuteDistance">Closest Distance</option>
-                  <option value="-commuteDistance">Furthest Distance</option>
                 </select>
               </div>
             </div> <!-- end filter section -->
 
+           
             <hr>
 
             <!-- Remove -->
@@ -176,7 +171,8 @@
 
             <div class="grid-block small-11 small-up-1 medium-12 medium-up-3 align-center shrink"> <!-- start glance-card-results section -->
               <!---single glance card start-->
-              <div class="grid-block shrink" ng-repeat="neighborhood in main.neighborhoodArray | orderBy:main.filter">
+
+              <div class="grid-block shrink" ng-repeat="neighborhood in main.filteredNeighborhoodArray | orderBy:main.filterType">
                 <div class="card glance-card" ng-click="main.selectNeighborhood(neighborhood)">
                   <div class="card-divider glance-background">
                       {{neighborhood.name}}
