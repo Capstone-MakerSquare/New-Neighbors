@@ -81,7 +81,6 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   //Function to fetch address and validate it
   main.submitAddress = function() {
     console.log('mainCtrl.js says: Submitted address:', main.searchInfo.address);
-    main.searchInfo.address = main.searchInfo.address;
 
 
     // geocoder = new google.maps.Geocoder();
