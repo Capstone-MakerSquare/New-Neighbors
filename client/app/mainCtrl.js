@@ -4,8 +4,8 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
 
   main.neighborhoodsObj;
   main.address = '';
-  main.bedrooms = '';
-  main.bathrooms = '';
+  main.bedrooms = 2;
+  main.bathrooms = 2;
   main.buyOrRent = 'rent';
 
   main.searchInfo = { };
@@ -13,6 +13,9 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
       latitude: 40.5,
       longitude: -98
   };
+
+  //unscoped local variables
+  var autocomplete;
 
   //----------------------------------------------------------------------------------
   //Function to initialize and draw the map, centering on the the center of the U.S. or user-inputted coordinates
@@ -35,7 +38,14 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
   main.autoCompleteInit = function () {
     var input = document.getElementById('place-search');
     var options = { types: [] };
-    var autocomplete = new google.maps.places.Autocomplete(input, options);
+    autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    //listener to listen to a place change
+    // autocomplete.addListener('place_changed', function() {
+    //   var place = autocomplete.getPlace();
+    //   console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
+    // });
+
   };
 
   //----------------------------------------------------------------------------------
@@ -49,8 +59,11 @@ angular.module('myApp',['myApp.mapServices', 'myApp.services'])
   //----------------------------------------------------------------------------------
   //Function to fetch address and validate it
   main.submitAddress = function() {
-    console.log('mainCtrl.js says: Submitted address:', main.address);
+    var place = autocomplete.getPlace()
+    console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
+    console.log('mainCtrl.js says: Submitted address (angular):', main.address);
 
+    main.searchInfo.address = place.formatted_address;
     main.searchInfo.bedrooms = main.bedrooms;
     main.searchInfo.bathrooms = main.bathrooms;
     main.searchInfo.buyOrRent = main.buyOrRent;
