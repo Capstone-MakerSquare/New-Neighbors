@@ -4,33 +4,7 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
 
   main.neighborhoodsObj = {}; //this is the response from the server
 
-    //----------------------------------------
-  //Example data start
-  main.exampleData = {"Downtown":{
-  "name":"Downtown",
-  "latitude":34.040713,
-  "longitude":-118.2467693,
-  "placeId":"ChIJAf09JTTGwoARIKmlGd9S_iY",
-  "streetAddress":"513 East 7th Street, Los Angeles, CA 90014, USA",
-  "commuteInfo":{
-    "commuteDistance":0.8,
-    "commuteTime":3
-    },
-  "rentEstimate":{
-    "estimateHigh":2950,
-    "estimateLow":1695
-    },
-    "propertyType":"apartment_condo"
-  },
-  "Boyle Heights":{"name":"Boyle Heights","latitude":34.0297895,"longitude":-118.2117257,"placeId":"ChIJ6VmanALGwoARlDo5dgynnuw","streetAddress":"2754 East 7th Street, Los Angeles, CA 90023, USA","commuteInfo":{"commuteDistance":2,"commuteTime":8},"rentEstimate":{"estimateHigh":1550,"estimateLow":955},"propertyType":"apartment_condo"},"Fashion District":{"name":"Fashion District","latitude":34.0331364,"longitude":-118.2497386,"placeId":"ChIJf_9O_SzGwoARtrkWOBLCwII","streetAddress":"1016 Towne Avenue, Los Angeles, CA 90021, USA","commuteInfo":{"commuteDistance":0.7,"commuteTime":4},"rentEstimate":{"estimateHigh":2600,"estimateLow":1250},"propertyType":"apartment_condo"},"Vernon":{"name":"Vernon","latitude":34.003903,"longitude":-118.230073,"placeId":"ChIJr-7gz9PIwoARk3YHNju1ZSE","streetAddress":"4401-4421 Pacific Boulevard, Vernon, CA 90058, USA","commuteInfo":{"commuteDistance":2.5,"commuteTime":9},"rentEstimate":{},"propertyType":"apartment_condo"},"South Los Angeles":{"name":"South Los Angeles","latitude":33.9891116,"longitude":-118.2914872,"placeId":"ChIJ6bcf1Nu3woARGCYveWr_oiQ","streetAddress":"5818 South Vermont Avenue, Los Angeles, CA 90037, USA","commuteInfo":{"commuteDistance":7.4,"commuteTime":16},"rentEstimate":{"estimateHigh":1375,"estimateLow":795},"propertyType":"apartment_condo"},"Los Angeles":{"name":"Los Angeles","latitude":34.0522342,"longitude":-118.2436849,"placeId":"ChIJE9on3F3HwoAR9AhGJW_fL-I","streetAddress":"102 West 1st Street, Los Angeles, CA 90012, USA","commuteInfo":{"commuteDistance":1.8,"commuteTime":7},"rentEstimate":{"estimateHigh":2300,"estimateLow":1295},"propertyType":"apartment_condo"},"Northeast Los Angeles":{"name":"Northeast Los Angeles","latitude":34.105186,"longitude":-118.2175744,"placeId":"ChIJrSGF3LrGwoARIjminEcj03o","streetAddress":"4042 Marchena Drive, Los Angeles, CA 90065, USA","commuteInfo":{"commuteDistance":7.8,"commuteTime":19},"rentEstimate":{"estimateHigh":1795,"estimateLow":995},"propertyType":"apartment_condo"},"Commerce":{"name":"Commerce","latitude":34.0005691,"longitude":-118.1597929,"placeId":"ChIJJzP0XFjOwoARIDWu3A-zJwc","streetAddress":"2525-2549 South Eastern Avenue, Commerce, CA 90040, USA","commuteInfo":{"commuteDistance":7.4,"commuteTime":14},"rentEstimate":{"estimateHigh":1750,"estimateLow":900},"propertyType":"apartment_condo"},"South Montebello":{"name":"South Montebello","latitude":34.0054303,"longitude":-118.1239717,"placeId":"ChIJfQziLCXOwoARBMcSgO_hycE","streetAddress":"601 South Vail Avenue, Montebello, CA 90640, USA","commuteInfo":{"commuteDistance":7.7,"commuteTime":19},"rentEstimate":{"estimateHigh":1100,"estimateLow":750},"propertyType":"apartment_condo"},"Central LA":{"name":"Central LA","latitude":34.0686748,"longitude":-118.3228165,"placeId":"ChIJz-A_k1nHwoARloiyHDKVAm8","streetAddress":"304 South Plymouth Boulevard, Los Angeles, CA 90020, USA","commuteInfo":{"commuteDistance":8.4,"commuteTime":22},"rentEstimate":{"estimateHigh":1995,"estimateLow":1325},"propertyType":"apartment_condo"},"Pasadena":{"name":"Pasadena","latitude":34.1477849,"longitude":-118.1445155,"placeId":"ChIJUQszONzCwoARSo_RGhZBKwU","streetAddress":"279-299 East Holly Street, Pasadena, CA 91101, USA","commuteInfo":{"commuteDistance":12.7,"commuteTime":23},"rentEstimate":{"estimateHigh":3195,"estimateLow":1300},"propertyType":"apartment_condo"}
-  };
-
-  main.neighborhoodsObj = main.exampleData;
-
-  //Example Data end
-  //------------------------------------
-
-  main.searchInfo = { }; // JSON obj to send to server
+  main.searchInfo = {}; // JSON obj to send to server
   main.searchInfo.address = '';
   main.searchInfo.buyOrRent = 'rent';
   main.searchInfo.bedrooms = 1;
