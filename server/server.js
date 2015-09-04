@@ -195,21 +195,21 @@ var zilpy = function (searchInfo, neighborhood) {
   // console.log('zilpyUrl', zilpyUrl);
 
   //remove
-  deferred.resolve(['ZTO', 'ZTO', neighborhood]);
+  // deferred.resolve(['ZTO', 'ZTO', neighborhood]);
 
   // UNCOMMENT - ZILPY TEMPORARILY DISABLED
   //----------------------------------------------------------------------------
-	// getRequest(zilpyUrl)
-	// .then(function (zilpyData) {
-	// 	 console.log('Neighborhood fetched:',neighborhood);
-	// 	 // console.log('Zilpy Data:',zilpyData);
- //     // console.log('************************');
-	// 	deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
-	// }, function (errorMessage) {
- //    console.log('Error/server not responding.');
- //    console.log('errorMessage:', errorMessage);
- //    deferred.resolve(['N/A', 'N/A', neighborhood]);
- //  });
+	getRequest(zilpyUrl)
+	.then(function (zilpyData) {
+		 console.log('Neighborhood fetched:',neighborhood);
+		 // console.log('Zilpy Data:',zilpyData);
+     // console.log('************************');
+		deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
+	}, function (errorMessage) {
+    console.log('Error/server not responding.');
+    console.log('errorMessage:', errorMessage);
+    deferred.resolve(['N/A', 'N/A', neighborhood]);
+  });
 
 	return deferred.promise;
 }
