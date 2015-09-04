@@ -93,13 +93,13 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
         console.log('submitAddress():geocode says: Coordinates: ',coordinates);
 
         Map.panAndFocus(coordinates);
-        Map.dropMarker(coordinates);
+        //Map.dropMarker(coordinates);
 
         //testing an animated marker
-        //Map.dropMarkerWithLabel(coordinates);
+        Map.dropMarkerWithLabel(coordinates);
 
         //remove
-        Map.drawCircle(coordinates, 4000);
+        //Map.drawCircle(coordinates, 4000);
 
       } else {
         console.log('submitAddress():geocode says: Status, results: ', status, ',', results);

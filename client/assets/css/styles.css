@@ -1,13 +1,9 @@
-/*html, body, #map-canvas{
-  width: 100%;
-  height: 100%;
-}*/
 
-.label {
+.popper {
   box-sizing:border-box;
-  background: #05F24C;
-  box-shadow: 2px 2px 4px #333;
-  border:5px solid #346FF7;
+  background: #DDDDDD;
+  box-shadow: 1px 1px 2px #333;
+  border:5px solid #3476CA;
   height: 20px;
   width: 20px;
   border-radius: 10px;

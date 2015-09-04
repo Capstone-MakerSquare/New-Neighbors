@@ -60,7 +60,7 @@ var map = angular.module('myApp.mapServices',[])
       map: map,
       draggable: true,
       labelAnchor: new google.maps.Point(10, 10),
-      labelClass: "label", // the CSS class for the label
+      labelClass: "popper", // the CSS class for the label
     });
   }
 
@@ -75,10 +75,10 @@ var map = angular.module('myApp.mapServices',[])
 
     // if(circle) { circle.setMap(null); }
     circle = new google.maps.Circle({
-      strokeColor: '#FF0000',
+      strokeColor: '#DDDDDD',
       strokeOpacity: .6,
       strokeWeight: 0,
-      fillColor: '#AF3A49',
+      fillColor: '#FF2603',
       fillOpacity: 0.25,
       map: map,
       center: latLng,
