@@ -10,6 +10,8 @@ var map = angular.module('myApp.mapServices',[])
     zoom: 4
   };
 
+  var marker;
+
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
   var initialize = function (coordinates) {
@@ -23,20 +25,21 @@ var map = angular.module('myApp.mapServices',[])
   //----------------------------------------------------------------------------------
   //Pan and focus on the coordinate set of interest
   var panAndFocus = function (coordinates, zoom) {
-    zoom = zoom || 11;
-    // var latLng = new google.maps.LatLng(coordinates.latitude, coordinates.longitude);
-    map.panTo({lat: coordinates.latitude, lng: coordinates.longitude});
+    var latLng = { lat: coordinates.latitude, lng: coordinates.longitude };
+    zoom = zoom || 11;    //11 corresponds to a radius of 20 kms
+
+    map.panTo(latLng);
     map.setZoom(zoom);
   }
 
   //----------------------------------------------------------------------------------
   //Drop a marker
   var dropMarker = function (coordinates, title) {
-    var myLatLng = {lat: coordinates.latitude, lng: coordinates.longitude};
-    panAndFocus(coordinates);
+    var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
 
-    var marker = new google.maps.Marker({
-      position: myLatLng,
+    if(marker) { marker.setMap(null); }
+    marker = new google.maps.Marker({
+      position: latLng,
       map: map,
       title: title
     });
@@ -48,18 +51,4 @@ var map = angular.module('myApp.mapServices',[])
     dropMarker: dropMarker
   };
 
-  // var map, center;
-
-  // var init = function(mapCanvas) {
-  //   map = new google.maps.Map(mapCanvas, MapOptions);
-  // };
-
-  // var getMap = function() {
-  //   return map;
-  // };
-
-  // return {
-  //   init: init,
-  //   getMap: getMap
-  // };
 });

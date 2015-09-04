@@ -75,27 +75,32 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
   //Function to fetch address and validate it
   main.submitAddress = function() {
     // console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
-    console.log('mainCtrl.js says: Submitted address (angular):', main.searchInfo.address);
-
-    main.searchInfo.address = main.searchInfo.address;
+    // console.log('mainCtrl.js says: Submitted address (angular):', main.searchInfo.address);
     requestNeighborhoods();
 
+    //Get the geocode of the address
+    //drop a marker on the geocode
 
-    // geocoder = new google.maps.Geocoder();
-    // geocoder.geocode({ 'address': main.searchInfo.address }, function(results, status) {
-    //   if (status == google.maps.GeocoderStatus.OK) {
-    //     console.log(results[0].geometry.location);
-    //     console.log('results address', results[0].formatted_address);
-    //     if (!isNaN(results[0].formatted_address[0])) {
-    //       main.searchInfo.address = results[0].formatted_address;
-    //       // ServerApi.submit(main.searchInfo);
-    //     } else {
-    //       alert("Please insert a valid U.S. address");
-    //     }
-    //   } else {
-    //     console.log('error: ', status, ' ', results)
-    //   }
-    // });
+    var geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({ 'address': main.searchInfo.address }, function(results, status) {
+
+      if (status === google.maps.GeocoderStatus.OK) {
+        var address = results[0].formatted_address;
+        var coordinates = { latitude : results[0].geometry.location.G, longitude : results[0].geometry.location.K };
+
+        //remove
+        console.log('submitAddress():geocode says: Results: ',results);
+        console.log('submitAddress():geocode says: Address: ',address);
+        console.log('submitAddress():geocode says: Coordinates: ',coordinates);
+
+        Map.panAndFocus(coordinates);
+        Map.dropMarker(coordinates);
+
+      } else {
+        console.log('submitAddress():geocode says: Status, results: ', status, ',', results);
+      }
+    });
   };
 
   //----------------------------------------------------------------------------------
@@ -107,14 +112,11 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
        return data[key];
      });
      main.neighborhoodArray = main.orderByArray(main.neighborhoods);
-     console.log('order by array', main.neighborhoodArray);
+
+     //remove
+     // console.log('order by array', main.neighborhoodArray);
     });
   };
-
-  //----------------------------------------------------------------------------------
-  //Initialization functions
-  main.initMap();
-  main.autoCompleteInit();
 
 
   //----------------------------------------------------------------------------------
@@ -146,6 +148,14 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
     Map.panAndFocus(main.coordinates);
     Map.dropMarker(main.coordinates);
   };
+
+
+
+  //----------------------------------------------------------------------------------
+  //Initialization functions
+  main.initMap();
+  main.autoCompleteInit();
+
 
 }]);
 

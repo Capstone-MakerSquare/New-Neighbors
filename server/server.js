@@ -475,7 +475,7 @@ var getRequest = function (url) {
 	request(url, function (error, response, body) {
 
     //remove
-    console.log('Response status:', response.statusCode);
+    //console.log('Response status:', response.statusCode);
 
     if(error) { console.log('Error for url:', url); deferred.reject("Not Available"); }
     if (!error && response.statusCode == 200) { deferred.resolve(JSON.parse(body)); }
