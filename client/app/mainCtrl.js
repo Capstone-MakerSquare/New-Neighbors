@@ -1,5 +1,5 @@
-angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
-.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
+app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
+
   var main = this;
 
   main.neighborhoodsObj = {}; //this is the response from the server
@@ -174,8 +174,8 @@ angular.module('myApp',['myApp.mapServices', 'myApp.requestHoodServices'])
 
   //----------------------------------------------------------------------------------
   //Initialization functions
-  main.initMap();
-  main.autoCompleteInit();
+  // main.initMap();
+  // main.autoCompleteInit();
 }]);
 
 
