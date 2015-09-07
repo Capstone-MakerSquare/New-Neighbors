@@ -1,19 +1,22 @@
-app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
+console.log("results controller has been called");
+var results = angular.module('myApp.results', []);
 
-  var main = this;
+results.controller('resultsController', ['Map', 'ServerApi', function (Map, ServerApi){
 
-  main.neighborhoodsObj = {}; //this is the response from the server
+  var res = this;
 
-  main.searchInfo = {}; // JSON obj to send to server
-  main.searchInfo.address = '';
-  main.searchInfo.buyOrRent = 'rent';
-  main.searchInfo.bedrooms = 1;
-  main.searchInfo.bathrooms = 1;
-  main.searchInfo.maxRent = 8000;
-  main.searchInfo.commuteTime = 150;
-  main.searchInfo.commuteDistance = 70;
+  res.neighborhoodsObj = {}; //this is the response from the server
 
-  main.coordinates = {
+  res.searchInfo = {}; // JSON obj to send to server
+  res.searchInfo.address = '';
+  res.searchInfo.buyOrRent = 'rent';
+  res.searchInfo.bedrooms = 1;
+  res.searchInfo.bathrooms = 1;
+  res.searchInfo.maxRent = 8000;
+  res.searchInfo.commuteTime = 150;
+  res.searchInfo.commuteDistance = 70;
+
+  res.coordinates = {
       latitude: 37.7833,
       longitude: -122.4167
   };
@@ -25,7 +28,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   // Function to flatten the object so that the array can be sorted by a parameter
   // Input: neighborhoodsObj
   // Output: flattened array of objects
-  main.orderByArray = function(neighborhoods){
+  res.orderByArray = function(neighborhoods){
     var arr = [];
     for (var i = 0; i < neighborhoods.length; i++) {
       arr.push({
@@ -41,19 +44,19 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   };
 
   //Function to set the selected type of housing to 'rent'
-  main.setValueRent = function() {
-    main.searchInfo.buyOrRent = 'rent';
+  res.setValueRent = function() {
+    res.searchInfo.buyOrRent = 'rent';
   };
 
   //Function to set the selected type of housing to 'buy'
-  main.setValueBuy = function() {
-    main.searchInfo.buyOrRent = 'buy';
+  res.setValueBuy = function() {
+    res.searchInfo.buyOrRent = 'buy';
   };
 
 
   //----------------------------------------------------------------------------------
   //Function to set up autocomplete feature for the search field
-  main.autoCompleteInit = function () {
+  res.autoCompleteInit = function () {
     var input = document.getElementById('place-search');
     var options = { types: [] };
     autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -61,19 +64,19 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
     //listener to listen to a place change
     autocomplete.addListener('place_changed', function() {
       var place = autocomplete.getPlace();
-      console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
-      if(place.formatted_address || main.searchInfo.address.length > 0) {
-        main.searchInfo.address = place.formatted_address || main.searchInfo.address;
-        main.submitAddress();
+      console.log('resCtrl.js says: Place changed. Place:',place.formatted_address);
+      if(place.formatted_address || res.searchInfo.address.length > 0) {
+        res.searchInfo.address = place.formatted_address || res.searchInfo.address;
+        res.submitAddress();
       }
     });
   };
 
   //----------------------------------------------------------------------------------
   //Function to fetch address and validate it
-  main.submitAddress = function() {
-    // console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
-    // console.log('mainCtrl.js says: Submitted address (angular):', main.searchInfo.address);
+  res.submitAddress = function() {
+    // console.log('resCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
+    // console.log('resCtrl.js says: Submitted address (angular):', res.searchInfo.address);
     requestNeighborhoods();
 
     //Get the geocode of the address
@@ -81,7 +84,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
 
     var geocoder = new google.maps.Geocoder();
 
-    geocoder.geocode({ 'address': main.searchInfo.address }, function(results, status) {
+    geocoder.geocode({ 'address': res.searchInfo.address }, function(results, status) {
 
       if (status === google.maps.GeocoderStatus.OK) {
         var address = results[0].formatted_address;
@@ -110,24 +113,24 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   //----------------------------------------------------------------------------------
   // Function to make an API request for neighborhoods
   var requestNeighborhoods = function() {
-    ServerApi.submit(main.searchInfo)
+    ServerApi.submit(res.searchInfo)
     .then(function(data) {
-       main.neighborhoods = Object.keys(data).map(function(key) {
+       res.neighborhoods = Object.keys(data).map(function(key) {
        return data[key];
      });
-     main.neighborhoodArray = main.orderByArray(main.neighborhoods);
-     main.filterNeighborhoods();
-     console.log('order by array', main.neighborhoodArray);
+     res.neighborhoodArray = res.orderByArray(res.neighborhoods);
+     res.filterNeighborhoods();
+     console.log('order by array', res.neighborhoodArray);
     });
   };
 
   //----------------------------------------------------------------------------------
   // Function to filter neighborhoods by user's filter options 
-  main.filterNeighborhoods = function() {
-    main.filteredNeighborhoodArray = main.neighborhoodArray.filter(function(obj) {
-      return main.searchInfo.maxRent > obj.estimateLow && 
-      main.searchInfo.commuteTime > obj.commuteTime && 
-      main.searchInfo.commuteDistance > obj.commuteDistance;
+  res.filterNeighborhoods = function() {
+    res.filteredNeighborhoodArray = res.neighborhoodArray.filter(function(obj) {
+      return res.searchInfo.maxRent > obj.estimateLow && 
+      res.searchInfo.commuteTime > obj.commuteTime && 
+      res.searchInfo.commuteDistance > obj.commuteDistance;
     });
   };
 
@@ -136,7 +139,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
 
   //----------------------------------------------------------------------------------
   //Function to initialize and draw the map, centering on the the center of the U.S.
-  main.initMap = function() {
+  res.initMap = function() {
     var centerUS = {
       latitude: 38.5,
       longitude: -96
@@ -147,7 +150,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
 
   //----------------------------------------------------------------------------------
   //Function to add a marker on the map
-  main.addMarker = function (coordinates, title) {
+  res.addMarker = function (coordinates, title) {
     title = 'Test marker' || title;
     Map.dropMarker(coordinates, title);
   };
@@ -155,16 +158,16 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   //----------------------------------------------------------------------------------
   //Function to test new methods defined in mapService
   //remove
-  main.testMap = function() {
-    console.log('mainCtrl.js says: testMap called');  //make the submit button work
-    // Map.panAndFocus(main.coordinates);
-    // Map.dropMarker(main.coordinates);
+  res.testMap = function() {
+    console.log('resCtrl.js says: testMap called');  //make the submit button work
+    // Map.panAndFocus(res.coordinates);
+    // Map.dropMarker(res.coordinates);
   };
 
   //----------------------------------------------------------------------------------
   //Function to drop a circle + marker on a selected neighborhood
-  main.selectNeighborhood = function (neighborhood) {
-    console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
+  res.selectNeighborhood = function (neighborhood) {
+    console.log('resCtrl.js says: selected Neighborhood: ', neighborhood);
 
     Map.dropMarker(neighborhood.coordinates);
     Map.panAndFocus(neighborhood.coordinates, 13);
@@ -174,17 +177,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
 
   //----------------------------------------------------------------------------------
   //Initialization functions
-  // main.initMap();
-  // main.autoCompleteInit();
+  // res.initMap();
+  // res.autoCompleteInit();
 }]);
-
-
-
-
-
-
-
-
-
-
 

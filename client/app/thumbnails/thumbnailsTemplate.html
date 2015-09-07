@@ -1,0 +1,35 @@
+<div>
+  <!--start of order-by section -->
+  <div>
+    <label>Order Results By:</label>
+    <select name="selectOrder" ng-model="res.filterType">
+      <option value="estimateLow">Lowest Rent</option>
+      <option value="commuteTime">Shortest Commute</option>
+      <option value="commuteDistance">Closest Distance</option>
+    </select>
+  </div>
+  <!--end of order-by section -->
+
+
+  <div> <!---single glance card start-->
+    <h1>Thumbnail Template</h1>
+    <div ng-repeat="neighborhood in res.filteredNeighborhoodArray | orderBy:res.filterType">
+      <div ng-click="res.selectNeighborhood(neighborhood)">
+        <div>
+            {{neighborhood.name}}
+        </div>
+        <div>
+          <div>
+            <h4>Rent</h4>
+            <p>${{neighborhood.estimateLow || N/A }}-${{neighborhood.estimateHigh || N/A }}</p>
+            <small>Powered by Zilpy</small>
+          </div>
+          <div>
+            <h4>Commute</h4>
+            <p>{{neighborhood.commuteDistance}} miles | {{neighborhood.commuteTime}} min</p>
+          </div>
+        </div>
+     </div>
+    </div> 
+  </div> <!---single glance card end-->
+</div>
