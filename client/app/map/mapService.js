@@ -1,4 +1,5 @@
-var map = angular.module('myApp.mapServices',[])
+console.log("reached map service");
+mapMod // = angular.module('myApp.mapServices',[])
 .factory('Map', function () {
 
   var map;

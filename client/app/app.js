@@ -1,9 +1,13 @@
 var app = angular.module('myApp', [
+  'ui.router',
   'myApp.requestHoodServices', 
-  'myApp.mapServices', 
-  'ui.router'
+  'myApp.map', 
+  'myApp.results',
+  'myApp.searchForm',
+  'myApp.filter',
+  'myApp.thumbnails'
 ])
-
+console.log("app.js called");
 app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.
     otherwise("/");
@@ -25,14 +29,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
       controllerAs: 'main',
       views: {
         "glance-card": {
-          templateUrl: "./app/thumbnails/thumbnailsTemplate.html"
+          templateUrl: "./app/results/resultsTemplate.html"
         }
       }
     })
     .state('main.details', {
       url: "/details",
-      controller: 'MainController',
-      controllerAs: 'main',
       views: {
         "glance-card": {
           templateUrl: "./app/details/detailsTemplate.html"
