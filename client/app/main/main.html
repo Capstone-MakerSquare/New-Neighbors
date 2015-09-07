@@ -1,0 +1,163 @@
+
+ <div class="grid-block"> <!-- start map and results grid -->
+    <div ui-view="glance-card"></div>
+
+      <!-- Map Canvas -->
+      <div class="grid-block show-for-medium medium-5" id="map-canvas"></div>
+
+      <div class="grid-block show-for-medium medium-5"> 
+        <h1>This is the map template</h1>
+      </div> 
+
+      <div class="grid-block small-12 medium-7 wrap results"> <!-- start results section -->
+        <!-- <div class="results"> --> <!-- start of results-vertical-grid -->
+
+          <div class="vertical grid-block filter"> <!-- start filter section -->
+            <div class="inline-label">
+              <input type="search" ng-model="main.searchInfo.address" id="place-search" placeholder="Enter an address">
+                <!-- changed from main.address to main.searchInfo.address -->
+              <button class="button" ng-click="main.submitAddress()">Submit</button>
+          </div>
+            <div class="grid-block small-11 small-up-2 medium-12 filter-row">
+              <div class="grid-content medium-2">
+                <label>Type of Place:</label>
+              </div>
+              <!--start of rent/buy section -->
+              <div class="grid-content medium-3">
+                <ul class="button-group segmented"> <!-- class="button-group segmented" -->
+                  <li ng-click="main.setValueRent()">
+                    <input type="radio" name="rentBuy" value="rent" ng-model="main.searchInfo.buyOrRent">
+                    <label for="rentBuy">Rent</label>
+                  </li>
+                  <li ng-click="main.setValueBuy()">
+                    <input type="radio" name="rentBuy" value="buy" ng-model="main.searchInfo.buyOrRent" checked="">
+                    <label for="rentBuy">Buy</label>
+                  </li>
+                </ul>
+              </div>
+             
+              <!--end of rent/buy section -->
+              <div class="grid-content medium-1">
+                <label>Bed:</label>
+              </div>
+              <div class="grid-content medium-2">
+                <select name="bedrooms" ng-model="main.searchInfo.bedrooms">
+                  <option value="1">1 bed</option>
+                  <option value="2">2 bed</option>
+                  <option value="3">3 bed</option>
+                  <option value="4">4 bed</option>
+                  <option value="5">5 bed</option>
+                  <option value="6">6 bed</option>
+                  <option value="7">7+ bed</option>
+                </select>
+              </div>
+              <div class="grid-content medium-1">
+                <label>Bath:</label>
+              </div>
+              <div class="grid-content medium-3">
+                <select name="bathrooms" ng-model="main.searchInfo.bathrooms">
+                  <option value="1">1 bath</option>
+                  <option value="2">2 bath</option>
+                  <option value="3">3 bath</option>
+                  <option value="4">4 bath</option>
+                  <option value="5">5 bath</option>
+                  <option value="6">6 bath</option>
+                  <option value="7">7+ bath</option>
+                </select>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="grid-block small-11 medium-12 filter-row">
+              <div class="grid-content medium-2">
+                <label>Max Monthly Price:</label>
+              </div>
+              <div class="grid-content medium-9">${{main.searchInfo.maxRent}}
+                <input type="range" name="rentRange" min="0" max="8000" value="1000" step="25" ng-model="main.searchInfo.maxRent">
+              </div>
+            </div>
+            <div class="grid-block small-12 medium-12 filter-row">
+              <div class="grid-content medium-2">
+                <label>Max Time:</label>
+              </div>
+              <div class="grid-content medium-3">
+                <select name="commuteTime" ng-model="main.searchInfo.commuteTime">
+                  <option value="15">15 min</option>
+                  <option value="30">30 min</option>
+                  <option value="45">45 min</option>
+                  <option value="60">1 hr</option>
+                </select>
+              </div>
+
+              <div class="grid-content medium-2">
+                  <label>Max Distance:</label>
+              </div>
+                <div class="grid-content medium-3">
+                  <select name="commuteDistance" ng-model="main.searchInfo.commuteDistance">
+                    <option value="5">5 miles</option>
+                    <option value="10">10 miles</option>
+                    <option value="15">15 miles</option>
+                    <option value="20">20 miles</option>
+                    <option value="25">25 miles</option>
+                    <option value="30">30 miles</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid-content medium-5 align-right">
+                <button class="button" ng-click="main.filterNeighborhoods()">Filter Search Results</button>
+              </div>
+
+              <hr>
+
+              <div class="grid-content medium-5 align-right">
+                <label>Order Results By:</label>
+                <select name="selectOrder" ng-model="main.filterType">
+                  <option value="estimateLow">Lowest Rent</option>
+                  <option value="commuteTime">Shortest Commute</option>
+                  <option value="commuteDistance">Closest Distance</option>
+                </select>
+              </div>
+            </div> <!-- end filter section -->
+
+           
+            <div ui-view="map"></div>
+            <div ui-view="glance-card"></div>
+
+
+
+            <hr>
+
+            <!-- Remove -->
+            <pre>{{main.address}}</pre>
+
+            <div class="grid-block small-11 small-up-1 medium-12 medium-up-3 align-center shrink"> <!-- start glance-card-results section -->
+              <!---single glance card start-->
+
+              <div class="grid-block shrink" ng-repeat="neighborhood in main.filteredNeighborhoodArray | orderBy:main.filterType">
+                <div class="card glance-card" ng-click="main.selectNeighborhood(neighborhood)">
+                  <div class="card-divider glance-background">
+                      {{neighborhood.name}}
+                  </div>
+                  <div class="grid-block glance-content">
+                    <div class="grid-content">
+                      <h4>Rent</h4>
+                      <p class="rent">${{neighborhood.estimateLow || N/A }}-${{neighborhood.estimateHigh || N/A }}</p>
+                      <small class="zilpy">Powered by Zilpy</small>
+                    </div>
+                    <div class="grid-content">
+                      <h4>Commute</h4>
+                      <p>{{neighborhood.commuteDistance}} miles | {{neighborhood.commuteTime}} min</p>
+                    </div>
+                  </div>
+               </div>
+            </div>
+          <!---single glance card end-->
+          </div> <!-- end glance-card-results sections -->
+
+          <hr>
+
+        </div> <!-- end results section -->
+      </div> <!-- end map and results grid -->
+    </div> <!-- end search grid --> 
