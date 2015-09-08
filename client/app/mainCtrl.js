@@ -91,9 +91,9 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
         var coordinates = { latitude : results[0].geometry.location.G, longitude : results[0].geometry.location.K };
 
         //remove
-        console.log('submitAddress():geocode says: Results: ',results);
-        console.log('submitAddress():geocode says: Address: ',address);
-        console.log('submitAddress():geocode says: Coordinates: ',coordinates);
+        // console.log('submitAddress():geocode says: Results: ',results);
+        // console.log('submitAddress():geocode says: Address: ',address);
+        // console.log('submitAddress():geocode says: Coordinates: ',coordinates);
 
         Map.panAndFocus(coordinates);
         //Map.dropMarker(coordinates);
@@ -167,7 +167,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   //----------------------------------------------------------------------------------
   //Function to drop a circle + marker on a selected neighborhood
   main.selectNeighborhood = function (neighborhood) {
-    console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
+    // console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
 
     Map.dropMarker(neighborhood.coordinates);
     Map.panAndFocus(neighborhood.coordinates, 13);

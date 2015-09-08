@@ -5,6 +5,7 @@ var Q = require('q');
 var keys = require('./config/keys.js');
 var request = require('request');
 var _ = require('underscore');
+var parseString = require('xml2js').parseString;
 
 app = express();
 middleware(app,express);
@@ -13,6 +14,8 @@ middleware(app,express);
 //Global Variables
 var userDestination;
 var neighborhoods;
+var country;
+var numNeighborhoods;
 
 //Handle a POST request
 //api/getNeighbors
@@ -52,19 +55,85 @@ app.post('/api/getNeighbors', function (req, res) {
 		return getDistances(neighborhoodObj);
 	})
 
-	.then(function (neighborhoodObj) {
-		console.log('Distances fetched.');
-		// console.log(neighborhoodObj);
-		return getEstimates(neighborhoodObj, searchInfo);
-	})
+  .then(function (neighborhoodObj) {
+    console.log('Distances fetched.');
 
-	.then(function (neighborhoodObj) {
-		console.log('Rental Estimates fetched.');
-		console.log('eventNumber:', eventNumber);
-		checkAndRespond(neighborhoodObj);
-	});
+    //Fetch estimates and Demography Information only if the address is in the United States
+    if(country === 'USA') { return getEstimates(neighborhoodObj, searchInfo); }
+    else { checkAndRespond(neighborhoodObj); }
+  })
+
+  .then(function (neighborhoodObj) {
+    console.log('Rental Estimates fetched.');
+    return getDemographics(neighborhoodObj)
+  })
+
+  .then(function (neighborhoodObj) {
+    console.log('Zillow Info Fetched.');
+    console.log('eventNumber:', eventNumber);
+    checkAndRespond(neighborhoodObj);
+  });
 
 });	//end of POST request handler
+
+//-----------------------------------------------------------------------------------
+//GET auxillary information for a neighborhood from Zillow
+/*Input: neighborhood Object
+  Output: Object of neighborhoods
+*/
+var getDemographics  = function (neighborhoodObj) {
+  var deferred = Q.defer();
+  var numEvents = 0;
+  //remove
+  // console.log('Fetch Zillow Info called. numNeighborhoods:', numNeighborhoods);
+
+  for(var neighborhood in neighborhoodObj) {
+    queryZillow(neighborhood, neighborhoodObj[neighborhood].city)
+    .then(function (tuple) {
+      //tuple: [demographyObj, neighborhood]
+      var demographyObj = tuple[0];
+      var neighborhood = tuple[1];
+
+      numEvents++;
+      // console.log('Zillow data fetched for neighborhood:', neighborhood);
+      // console.log('Demography information:', demographyObj);
+      _.extend(neighborhoodObj[neighborhood], demographyObj);
+
+      if(numEvents === numNeighborhoods) {
+        deferred.resolve(neighborhoodObj);
+      }
+    });
+  }
+
+  return deferred.promise;
+}
+
+
+//-----------------------------------------------------------------------------------
+//GET demography information for a neighborhood and a city from Zillow
+/*Input: neighborhood, city
+  Output: demographyObj
+*/
+var queryZillow = function (neighborhood, city) {
+  var deferred = Q.defer();
+
+  var zwsId = keys.zwsId;
+  var zillowUrl_zwsId = 'http://www.zillow.com/webservice/GetDemographics.htm?zws-id='
+  var zillowUrl_neighborhood = '&neighborhood='
+  var zillowUrl_city = '&city=';
+
+  var zillowUrl = zillowUrl_zwsId + zwsId + zillowUrl_neighborhood + neighborhood + zillowUrl_city + city;
+
+  // console.log('ZillowUrl:', zillowUrl);
+
+  getXmlRequest(zillowUrl)
+  .then(function (responseObj) {
+    // console.log('Response Object:', responseObj);
+    deferred.resolve([responseObj, neighborhood]);
+  });
+
+  return deferred.promise;
+}
 
 
 //-----------------------------------------------------------------------------------
@@ -93,9 +162,16 @@ var findNeighborhoods = function (geoCode) {
 										 gPlacesUrl_types + types +
 										 gPlacesUrl_key + key;
 
+    //remove
+    console.log('gPlaces:', gPlacesUrl);
+
 		getRequest(gPlacesUrl)
 		.then(function (responseObj) {
 			var results = responseObj.results;
+
+      //remove
+      // console.log('Neighborhood object:', results);
+
 			_.each(results, function (result) {
 				neighborhoodObj[result.name] = neighborhoodObj[result.name] ||
 				{
@@ -138,7 +214,7 @@ var getEstimates = function (neighborhoodObj, searchInfo) {
 
 	var neighborhoodList = Object.keys(neighborhoodObj);
 	var lastNeighborhood = neighborhoodList[neighborhoodList.length - 1];
-	var numNeighborhoods = neighborhoodList.length;
+	numNeighborhoods = neighborhoodList.length;
 	var numEvents = 0;
 
   //remove
@@ -326,35 +402,6 @@ var getStreetAddresses = function (neighborhoodObj) {
 	var numNeighborhoods = neighborhoodList.length;
 	var numEvents = 0;
 
-	// for(var neighborhood in neighborhoodObj) {
-	// 	//console.log(neighborhoodObj[neighborhood]);
-	// 	var coordinates = {
-	// 		latitude : neighborhoodObj[neighborhood].latitude,
-	// 		longitude : neighborhoodObj[neighborhood].longitude
-	// 	}
-	// 	reverseGeocode(coordinates, neighborhood)
-	// 	.then(function (tuple) {
-	// 		//[streetAddress, neighborhood]
-	// 		var streetAddress = tuple[0];
-	// 		var neighborhood = tuple[1];
-	// 		numEvents++;
-
-	// 		//remove
- //      console.log('----------getStreetAddresses----------')
-	// 		console.log('Number of streetAddresses:',numEvents);
- //      console.log('Street Address:', streetAddress);
-
-	// 		neighborhoodObj[neighborhood].streetAddress = streetAddress;
-
-	// 		if(numEvents === numNeighborhoods) {
-	// 			// console.log('Resolved.');
-	// 			deferred.resolve(neighborhoodObj);
-	// 		}
-
-	// 	});
-	// }
-
-
   var requestCounter = 0;
   var wait = 5;
   var index = 0;
@@ -368,8 +415,8 @@ var getStreetAddresses = function (neighborhoodObj) {
 
     reverseGeocode(coordinates, neighborhood)
     .then(function (tuple) {
-      //[streetAddress, neighborhood]
-      var streetAddress = tuple[0];
+      //[addressObj, neighborhood]
+      var addressObj = tuple[0];
       var neighborhood = tuple[1];
       numEvents++;
 
@@ -378,7 +425,8 @@ var getStreetAddresses = function (neighborhoodObj) {
       // console.log('Number of streetAddresses:',numEvents);
       // console.log('Street Address:', streetAddress);
 
-      neighborhoodObj[neighborhood].streetAddress = streetAddress;
+      neighborhoodObj[neighborhood].streetAddress = addressObj.formatted_address;
+      if(country === 'USA') { _.extend(neighborhoodObj[neighborhood], addressObj); }
 
       if(numEvents === numNeighborhoods) {
         // console.log('Resolved.');
@@ -390,6 +438,7 @@ var getStreetAddresses = function (neighborhoodObj) {
           makeRequest(neighborhoodList[index]);
         }, wait);
       }
+
     });
   }
 
@@ -425,15 +474,40 @@ var reverseGeocode = function (coordinates, neighborhood) {
 	getRequest(geocodeUrl)
 	.then(function (streetAddress) {
 		 // console.log('***********reverse Geocode**********');
-   //   console.log('streetAddress fetched.');
+     // console.log('streetAddress fetched.');
 		 // console.log('LatLng:',coordinates.latitude, coordinates.longitude);
 		 // console.log('Street Address:',streetAddress);
 
+
+     var addressBits = streetAddress.results[0].formatted_address.split(', ');
+     // console.log('Street address pieces:', addressBits);
+
+
+     var addressObj = { formatted_address: streetAddress.results[0].formatted_address }
+
+     //Update the global variable
+     country = addressBits.pop();
+     if(country === 'USA') {
+       //standard format
+       var stateZip = addressBits.pop().split(' ');
+       var state = stateZip[0];
+       var zip = stateZip[1];
+       var city = addressBits.pop();
+
+       addressObj.country = country;
+       addressObj.state = state;
+       addressObj.city = city;
+       addressObj.zip = zip;
+     }
+
+     //remove
+     // console.log('addressObj:',addressObj);
+
      if(streetAddress.status === 'OK') {
-		   deferred.resolve([streetAddress.results[0].formatted_address, neighborhood]);
+		   deferred.resolve([addressObj, neighborhood]);
      }
      else {
-       deferred.resolve(['Not Available', neighborhood]);
+       deferred.resolve([{formatted_address : 'Not available'}, neighborhood]);
      }
 	},
   function (errorMessage) {
@@ -560,6 +634,33 @@ var getRequest = function (url) {
 	return deferred.promise;
 }
 //-----------------------------------------------------------------------------------
+
+//HTTP get request, that receives XML and converts it into JSON
+var getXmlRequest = function (url) {
+  var deferred = Q.defer()
+
+  //remove
+  // console.log('getRequest called. url:',url);
+
+  request(url, function (error, response, body) {
+
+    //remove
+    //console.log('Response status:', response.statusCode);
+
+    if(error) { console.log('Error for url:', url); deferred.reject("Not Available"); }
+    if (!error && response.statusCode == 200) {
+      parseString(body, function (err, result) {
+        // console.log(result);
+        deferred.resolve(result);
+      });
+    }
+    else { deferred.reject("Not Available"); }
+
+  });
+
+  return deferred.promise;
+}
+
 
 
 module.exports = app;
