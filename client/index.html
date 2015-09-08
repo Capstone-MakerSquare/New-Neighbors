@@ -4,38 +4,43 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movein Assistant</title>
-    <link href="assets/css/app.css" rel="stylesheet" type="text/css">
-    <!-- <link rel="stylesheet" href="./assets/css/foundation-icons.css"> -->
-    <link rel="stylesheet" href="./assets/css/styles.css">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/app.css" rel="stylesheet">
+    <link href="assets/css/index.css" rel="stylesheet">
   </head>
 
   <body ng-controller="MainController as main">
 
-    <div> <!-- start search header -->
-      <img src="../assets/images/app-icon.png" alt="logo" style="width:25; height:25px">
-      <h3>Move-in Assistant</h3>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+          <img class="logo" src="assets/images/app-icon.png" alt="logo">
+          <span class="icon-bar">Turf</span>
+        </a>
+      </div>
     </div>
+  </nav>
 
-    <!-- Refactored to improve autocomplete -->
-    <div>
-      <input type="search" ng-model="main.searchInfo.address" id="place-search" placeholder="Enter an address">
-      <!-- changed from main.address to main.searchInfo.address -->
-      <button class="button" ng-click="main.submitAddress()">Submit</button>
+  <div ui-view></div>
+  <a ui-sref="main.results">Main results</a>
+  <a ui-sref="main.details">Main details</a>
+
+  <footer class="footer">
+    <div class="container">
+      <div> <!-- start footer section -->
+        <ul>
+          <li>&copy; Move-in Assistant</li>
+          <li>Raghav Abboy,</li>
+          <li>Melinda Bernardo,</li>
+          <li>Evan Mencke,</li>
+          <li>and Kalisa Falzone</li>
+        </ul>
+      </div> <!-- end footer section -->
     </div>
-
-    <div ui-view></div>
-    <a ui-sref="main.results">Main results</a>
-    <a ui-sref="main.details">Main details</a>
-
-    <div> <!-- start footer section -->
-      <ul>
-        <li>&copy; Move-in Assistant</li>
-        <li>Raghav Abboy,</li>
-        <li>Melinda Bernardo,</li>
-        <li>Evan Mencke,</li>
-        <li>and Kalisa Falzone</li>
-      </ul>
-    </div> <!-- end footer section -->
+  </footer>
 
     <!-- Google Maps -->
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
@@ -45,7 +50,7 @@
     <!-- Source JS files -->
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
-
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="app/app.js"></script>
     <script src="app/map/mapController.js"></script>
     <script src="app/searchForm/searchFormController.js"></script>
@@ -59,6 +64,6 @@
     <script src="app/searchForm/searchFormDirective.js"></script>
     <script src="app/filter/filterDirective.js"></script>
     <script src="app/thumbnails/thumbnailsDirective.js"></script>
-
+   
   </body>
 </html>
