@@ -47,4 +47,11 @@
   }
 }
 
+body, .mainphoto {
+  height: 100%;
+  background-image: url('../images/santamonica.jpg');
+  background-size: cover;
+}
+
+
 
