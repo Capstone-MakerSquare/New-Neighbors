@@ -24,32 +24,23 @@
     </div>
   </nav>
 
+  <div ui-view></div>
+  <a ui-sref="main.results">Main results</a>
+  <a ui-sref="main.details">Main details</a>
 
-    <!-- move to landing page -->
-<!--     <div>
-      <input type="search" ng-model="main.searchInfo.address" id="place-search" placeholder="Enter an address">
-      changed from main.address to main.searchInfo.address
-      <button class="button" ng-click="main.submitAddress()">Submit</button>
+  <footer class="footer">
+    <div class="container">
+      <div> <!-- start footer section -->
+        <ul>
+          <li>&copy; Move-in Assistant</li>
+          <li>Raghav Abboy,</li>
+          <li>Melinda Bernardo,</li>
+          <li>Evan Mencke,</li>
+          <li>and Kalisa Falzone</li>
+        </ul>
+      </div> <!-- end footer section -->
     </div>
- -->
-    <div ui-view></div>
-    <a ui-sref="main.results">Main results</a>
-    <a ui-sref="main.details">Main details</a>
-
-
-    <footer class="footer">
-      <div class="container">
-        <div> <!-- start footer section -->
-          <ul>
-            <li>&copy; Move-in Assistant</li>
-            <li>Raghav Abboy,</li>
-            <li>Melinda Bernardo,</li>
-            <li>Evan Mencke,</li>
-            <li>and Kalisa Falzone</li>
-          </ul>
-        </div> <!-- end footer section -->
-      </div>
-    </footer>
+  </footer>
 
     <!-- Google Maps -->
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>

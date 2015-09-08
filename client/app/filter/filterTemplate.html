@@ -1,42 +1,42 @@
-<div>
-  <div> <!-- start of rent section -->
-    <div>
-      <label>Max Monthly Price:</label>
-    </div>
-    <div>${{res.searchInfo.maxRent}}
+<div class="filterForm">
+  <form>
+<!-- start of rent section -->
+    <div class="form-group"> 
+      <label>Max Monthly Price: ${{res.searchInfo.maxRent}}</label>
       <input type="range" name="rentRange" min="0" max="8000" value="1000" step="25" ng-model="res.searchInfo.maxRent">
-    </div>
-  </div> <!-- end of rent section -->
+    </div>  
+<!-- end of rent section -->
 
-  <div>  <!-- start of time/distance section -->
-    <div>
-      <label>Max Time:</label>
+<!-- start of time/distance section -->
+    <div class="form-group"> 
+     <div class="row">
+      <div class="col-sm-10 col-md-5">
+        <select class="form-control" name="commuteTime" ng-model="res.searchInfo.commuteTime">
+          <option value="15">15 min</option>
+          <option value="30">30 min</option>
+          <option value="45">45 min</option>
+        </select>
+      </div>
+      <div class="col-sm-10 col-md-5">
+        <select class="form-control" name="commuteDistance" ng-model="res.searchInfo.commuteDistance">
+          <option value="5">5 miles</option>
+          <option value="10">10 miles</option>
+          <option value="15">15 miles</option>
+          <option value="20">20 miles</option>
+          <option value="25">25 miles</option>
+          <option value="30">30 miles</option>
+        </select>
+      </div>  
+<!-- end of time/distance section -->
+      <div class="col-sm-10 col-md-2">
+        <button type="button" ng-click="res.filterNeighborhoods()" class="btn btn-default">Filter  </button>
+      </div>
     </div>
-    <div>
-      <select name="commuteTime" ng-model="res.searchInfo.commuteTime">
-        <option value="15">15 min</option>
-        <option value="30">30 min</option>
-        <option value="45">45 min</option>
-        <option value="60">1 hr</option>
-      </select>
     </div>
-
-    <div>
-        <label>Max Distance:</label>
-    </div>
-    <div>
-      <select name="commuteDistance" ng-model="res.searchInfo.commuteDistance">
-        <option value="5">5 miles</option>
-        <option value="10">10 miles</option>
-        <option value="15">15 miles</option>
-        <option value="20">20 miles</option>
-        <option value="25">25 miles</option>
-        <option value="30">30 miles</option>
-      </select>
-    </div>
-  </div> <!-- end of time/distance section -->
-
-  <div>
-    <button type="button" ng-click="res.filterNeighborhoods()" class="btn btn-default">Filter</button>
-  </div>
+  </form>
+  <hr>
 </div>
+
+
+
+

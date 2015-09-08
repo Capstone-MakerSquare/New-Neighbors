@@ -9,6 +9,14 @@ li {
   display: inline-block;
 }
 
+p {
+  margin-bottom: 2px;
+}
+
+small {
+  font-style: italic;
+}
+
 .navbar-header .logo {
   display:inline-block;
   width:25px; 
@@ -16,21 +24,26 @@ li {
   color:#fff;
 }
 
-select {
-  display: inline-block;
+.main-container {
+  margin:0 20px;
 }
 
-label {
-  display:inline-block;
+.main-container > div {
+  border-left:1px solid #a6a6a6;
 }
 
-.form-group label {
-  padding:5px;
+.thumbnails-container {
+  text-align: center;
 }
 
-.radio-btn {
-  margin-top:30px;
+.thumbnails-container h4 {
+  font-size: 16px;
 }
+
+.searchForm form {
+  margin-top:20px;
+}
+
 
 .footer {
   height:50px;
