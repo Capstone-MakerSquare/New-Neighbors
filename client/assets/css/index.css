@@ -1,0 +1,39 @@
+/* default styles */
+
+ ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+li {
+  display: inline-block;
+}
+
+.navbar-header .logo {
+  display:inline-block;
+  width:25px; 
+  height:25px; 
+  color:#fff;
+}
+
+select {
+  display: inline-block;
+}
+
+label {
+  display:inline-block;
+}
+
+.form-group label {
+  padding:5px;
+}
+
+.radio-btn {
+  margin-top:30px;
+}
+
+.footer {
+  height:50px;
+  background-color:#f8f8f8;
+  border-color: #e7e7e7;
+}
