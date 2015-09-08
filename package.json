@@ -33,6 +33,7 @@
   },
   "private": true,
   "dependencies": {
-    "browser-sync": "^2.8.2"
+    "browser-sync": "^2.8.2",
+    "xml2js": "^0.4.12"
   }
 }

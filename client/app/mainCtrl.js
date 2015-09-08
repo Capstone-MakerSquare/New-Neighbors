@@ -13,6 +13,8 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   main.searchInfo.commuteTime = 150;
   main.searchInfo.commuteDistance = 70;
 
+  main.filteredNeighborhoodArray = [];
+
   main.coordinates = {
       latitude: 37.7833,
       longitude: -122.4167
@@ -74,6 +76,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   main.submitAddress = function() {
     // console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
     // console.log('mainCtrl.js says: Submitted address (angular):', main.searchInfo.address);
+    main.filteredNeighborhoodArray = [];
     requestNeighborhoods();
 
     //Get the geocode of the address
@@ -88,9 +91,9 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
         var coordinates = { latitude : results[0].geometry.location.G, longitude : results[0].geometry.location.K };
 
         //remove
-        console.log('submitAddress():geocode says: Results: ',results);
-        console.log('submitAddress():geocode says: Address: ',address);
-        console.log('submitAddress():geocode says: Coordinates: ',coordinates);
+        // console.log('submitAddress():geocode says: Results: ',results);
+        // console.log('submitAddress():geocode says: Address: ',address);
+        // console.log('submitAddress():geocode says: Coordinates: ',coordinates);
 
         Map.panAndFocus(coordinates);
         //Map.dropMarker(coordinates);
@@ -102,7 +105,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
         //Map.drawCircle(coordinates, 4000);
 
       } else {
-        console.log('submitAddress():geocode says: Status, results: ', status, ',', results);
+        console.log('submitAddress(): NOT_OK geocode says: Status, results: ', status, ',', results);
       }
     });
   };
@@ -122,12 +125,12 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   };
 
   //----------------------------------------------------------------------------------
-  // Function to filter neighborhoods by user's filter options 
+  // Function to filter neighborhoods by user's filter options
   main.filterNeighborhoods = function() {
     main.filteredNeighborhoodArray = main.neighborhoodArray.filter(function(obj) {
-      return main.searchInfo.maxRent > obj.estimateLow && 
-      main.searchInfo.commuteTime > obj.commuteTime && 
-      main.searchInfo.commuteDistance > obj.commuteDistance;
+      return !(main.searchInfo.maxRent < obj.estimateLow) &&
+      !(main.searchInfo.commuteTime < obj.commuteTime) &&
+      !(main.searchInfo.commuteDistance < obj.commuteDistance);
     });
   };
 
@@ -164,7 +167,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   //----------------------------------------------------------------------------------
   //Function to drop a circle + marker on a selected neighborhood
   main.selectNeighborhood = function (neighborhood) {
-    console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
+    // console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
 
     Map.dropMarker(neighborhood.coordinates);
     Map.panAndFocus(neighborhood.coordinates, 13);

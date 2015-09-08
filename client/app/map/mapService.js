@@ -78,9 +78,9 @@ mapMod // = angular.module('myApp.mapServices',[])
     circle = new google.maps.Circle({
       strokeColor: '#DDDDDD',
       strokeOpacity: .6,
-      strokeWeight: 0,
+      strokeWeight: 0.5,
       fillColor: '#FF2603',
-      fillOpacity: 0.25,
+      fillOpacity: 0.2,
       map: map,
       center: latLng,
       radius: radius

@@ -5,6 +5,7 @@ var Q = require('q');
 var keys = require('./config/keys.js');
 var request = require('request');
 var _ = require('underscore');
+var parseString = require('xml2js').parseString;
 
 app = express();
 middleware(app,express);
@@ -13,6 +14,8 @@ middleware(app,express);
 //Global Variables
 var userDestination;
 var neighborhoods;
+var country;
+var numNeighborhoods;
 
 //Handle a POST request
 //api/getNeighbors
@@ -31,32 +34,106 @@ app.post('/api/getNeighbors', function (req, res) {
 
 	geoCode(searchInfo.address)
 	.then(function (geoCode) {
-		console.log('Data from geoCode received. EventNumber:', ++eventNumber);
+		// console.log('Data from geoCode received. EventNumber:', eventNumber);
 		// console.log('geoCode:', geoCode);
+    ++eventNumber;
 		userDestination = geoCode;
 		return findNeighborhoods(geoCode);
-	})
+	},function (errorMessage) {
+    ++eventNumber;
+    checkAndRespond({});
+  })
+
 	.then(function (neighborhoodObj) {
 		console.log('Neighborhoods fetched.');
-    if(Object.keys(neighborhoodObj).length === 0) { checkAndRespond({'YouAre': 'Insane.'}); }
+    if(Object.keys(neighborhoodObj).length === 0) { checkAndRespond({}); }
 		return getStreetAddresses(neighborhoodObj);
 	})
+
 	.then(function (neighborhoodObj) {
 		console.log('Street addresses fetched.');
 		return getDistances(neighborhoodObj);
 	})
-	.then(function (neighborhoodObj) {
-		console.log('Distances fetched.');
-		// console.log(neighborhoodObj);
-		return getEstimates(neighborhoodObj, searchInfo);
-	})
-	.then(function (neighborhoodObj) {
-		console.log('Rental Estimates fetched.');
-		// console.log(neighborhoodObj);
-		checkAndRespond(neighborhoodObj);
-	});
+
+  .then(function (neighborhoodObj) {
+    console.log('Distances fetched.');
+
+    //Fetch estimates and Demography Information only if the address is in the United States
+    if(country === 'USA') { return getEstimates(neighborhoodObj, searchInfo); }
+    else { checkAndRespond(neighborhoodObj); }
+  })
+
+  .then(function (neighborhoodObj) {
+    console.log('Rental Estimates fetched.');
+    return getDemographics(neighborhoodObj)
+  })
+
+  .then(function (neighborhoodObj) {
+    console.log('Zillow Info Fetched.');
+    console.log('eventNumber:', eventNumber);
+    checkAndRespond(neighborhoodObj);
+  });
 
 });	//end of POST request handler
+
+//-----------------------------------------------------------------------------------
+//GET auxillary information for a neighborhood from Zillow
+/*Input: neighborhood Object
+  Output: Object of neighborhoods
+*/
+var getDemographics  = function (neighborhoodObj) {
+  var deferred = Q.defer();
+  var numEvents = 0;
+  //remove
+  // console.log('Fetch Zillow Info called. numNeighborhoods:', numNeighborhoods);
+
+  for(var neighborhood in neighborhoodObj) {
+    queryZillow(neighborhood, neighborhoodObj[neighborhood].city)
+    .then(function (tuple) {
+      //tuple: [demographyObj, neighborhood]
+      var demographyObj = tuple[0];
+      var neighborhood = tuple[1];
+
+      numEvents++;
+      // console.log('Zillow data fetched for neighborhood:', neighborhood);
+      // console.log('Demography information:', demographyObj);
+      _.extend(neighborhoodObj[neighborhood], demographyObj);
+
+      if(numEvents === numNeighborhoods) {
+        deferred.resolve(neighborhoodObj);
+      }
+    });
+  }
+
+  return deferred.promise;
+}
+
+
+//-----------------------------------------------------------------------------------
+//GET demography information for a neighborhood and a city from Zillow
+/*Input: neighborhood, city
+  Output: demographyObj
+*/
+var queryZillow = function (neighborhood, city) {
+  var deferred = Q.defer();
+
+  var zwsId = keys.zwsId;
+  var zillowUrl_zwsId = 'http://www.zillow.com/webservice/GetDemographics.htm?zws-id='
+  var zillowUrl_neighborhood = '&neighborhood='
+  var zillowUrl_city = '&city=';
+
+  var zillowUrl = zillowUrl_zwsId + zwsId + zillowUrl_neighborhood + neighborhood + zillowUrl_city + city;
+
+  // console.log('ZillowUrl:', zillowUrl);
+
+  getXmlRequest(zillowUrl)
+  .then(function (responseObj) {
+    // console.log('Response Object:', responseObj);
+    deferred.resolve([responseObj, neighborhood]);
+  });
+
+  return deferred.promise;
+}
 
 
 //-----------------------------------------------------------------------------------
@@ -85,9 +162,16 @@ var findNeighborhoods = function (geoCode) {
 										 gPlacesUrl_types + types +
 										 gPlacesUrl_key + key;
 
+    //remove
+    console.log('gPlaces:', gPlacesUrl);
+
 		getRequest(gPlacesUrl)
 		.then(function (responseObj) {
 			var results = responseObj.results;
+
+      //remove
+      // console.log('Neighborhood object:', results);
+
 			_.each(results, function (result) {
 				neighborhoodObj[result.name] = neighborhoodObj[result.name] ||
 				{
@@ -103,7 +187,15 @@ var findNeighborhoods = function (geoCode) {
 
 			if(numResponses === 39) { deferred.resolve(neighborhoodObj); }
 			else { numResponses++; }
-		});
+		},
+
+    function (errorMessage) {
+      // console.log('Error/server not responding.');
+      // console.log('errorMessage:', errorMessage);
+
+      if(numResponses === 39) { deferred.resolve(neighborhoodObj); }
+      else { numResponses++; }
+    });
 
 	}//end of for loop
 
@@ -122,12 +214,12 @@ var getEstimates = function (neighborhoodObj, searchInfo) {
 
 	var neighborhoodList = Object.keys(neighborhoodObj);
 	var lastNeighborhood = neighborhoodList[neighborhoodList.length - 1];
-	var numNeighborhoods = neighborhoodList.length;
+	numNeighborhoods = neighborhoodList.length;
 	var numEvents = 0;
 
   //remove
-  console.log('Getting estimates for rent:');
-  console.log('Number of neighborhoods:', numNeighborhoods);
+  // console.log('Getting estimates for rent:');
+  // console.log('Number of neighborhoods:', numNeighborhoods);
 
 	for(var neighborhood in neighborhoodObj) {
 		//console.log(neighborhoodObj[neighborhood]);
@@ -195,21 +287,21 @@ var zilpy = function (searchInfo, neighborhood) {
   // console.log('zilpyUrl', zilpyUrl);
 
   //remove
-  // deferred.resolve(['ZTO', 'ZTO', neighborhood]);
+  deferred.resolve(['ZTO', 'ZTO', neighborhood]);
 
   // UNCOMMENT - ZILPY TEMPORARILY DISABLED
   //----------------------------------------------------------------------------
-	getRequest(zilpyUrl)
-	.then(function (zilpyData) {
-		 console.log('Neighborhood fetched:',neighborhood);
-		 // console.log('Zilpy Data:',zilpyData);
-     // console.log('************************');
-		deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
-	}, function (errorMessage) {
-    console.log('Error/server not responding.');
-    console.log('errorMessage:', errorMessage);
-    deferred.resolve(['N/A', 'N/A', neighborhood]);
-  });
+	// getRequest(zilpyUrl)
+	// .then(function (zilpyData) {
+	// 	 console.log('Neighborhood fetched:',neighborhood);
+	// 	 // console.log('Zilpy Data:',zilpyData);
+ //     // console.log('************************');
+	// 	deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
+	// }, function (errorMessage) {
+ //    console.log('Error/server not responding.');
+ //    console.log('errorMessage:', errorMessage);
+ //    deferred.resolve(['N/A', 'N/A', neighborhood]);
+ //  });
 
 	return deferred.promise;
 }
@@ -310,85 +402,49 @@ var getStreetAddresses = function (neighborhoodObj) {
 	var numNeighborhoods = neighborhoodList.length;
 	var numEvents = 0;
 
-	for(var neighborhood in neighborhoodObj) {
-		//console.log(neighborhoodObj[neighborhood]);
-		var coordinates = {
-			latitude : neighborhoodObj[neighborhood].latitude,
-			longitude : neighborhoodObj[neighborhood].longitude
-		}
-		reverseGeocode(coordinates, neighborhood)
-		.then(function (tuple) {
-			//[streetAddress, neighborhood]
-			var streetAddress = tuple[0];
-			var neighborhood = tuple[1];
-			numEvents++;
+  var requestCounter = 0;
+  var wait = 5;
+  var index = 0;
 
-			//remove
-			// console.log(neighborhood);
+  var makeRequest = function (neighborhood) {
+    index++;
+    var coordinates = {
+      latitude : neighborhoodObj[neighborhood].latitude,
+      longitude : neighborhoodObj[neighborhood].longitude
+    };
 
-			neighborhoodObj[neighborhood].streetAddress = streetAddress;
+    reverseGeocode(coordinates, neighborhood)
+    .then(function (tuple) {
+      //[addressObj, neighborhood]
+      var addressObj = tuple[0];
+      var neighborhood = tuple[1];
+      numEvents++;
 
-			if(numEvents === numNeighborhoods) {
-				// console.log('Resolved.');
-				deferred.resolve(neighborhoodObj);
-			}
+      //remove
+      // console.log('----------getStreetAddresses----------')
+      // console.log('Number of streetAddresses:',numEvents);
+      // console.log('Street Address:', streetAddress);
 
-		});
-	}
+      neighborhoodObj[neighborhood].streetAddress = addressObj.formatted_address;
+      if(country === 'USA') { _.extend(neighborhoodObj[neighborhood], addressObj); }
+
+      if(numEvents === numNeighborhoods) {
+        // console.log('Resolved.');
+        deferred.resolve(neighborhoodObj);
+      }
+
+      if(index < numNeighborhoods) {
+        setTimeout(function () {
+          makeRequest(neighborhoodList[index]);
+        }, wait);
+      }
+
+    });
+  }
+
+  makeRequest(neighborhoodList[0]);
 
 	//deferred.resolve('done');
-	return deferred.promise;
-}
-
-
-//-----------------------------------------------------------------------------------
-//GET latitude and longitude of an address, given the address
-//Geocode
-/*Prerequisites:
-	Street Address
-  Website: Google maps endpoint
-
-  Input: address
-  Output: geoCode = {
-						latitude :
-						longitude :
-						place_id :
-  				}
-*/
-
-var geoCode = function (address) {
-	var deferred = Q.defer();
-
-	var address = address;
-	var gPlacesUrl_address = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
-	var gPlacesUrl_sensor = '&sensor=false';
-
-	// console.log('server.js says: geoCode called.');
-	// console.log('address: ',address);
-	// console.log('googleAPIKey: ',keys.googleAPIKey);
-
-	var gPlacesUrl = gPlacesUrl_address + address + gPlacesUrl_sensor;
-
-	deferred.resolve(
-		getRequest(gPlacesUrl)
-		.then(function (coordinatesObj) {
-			// console.log('coordinatesObj:', coordinatesObj);
-
-			//Fetch the placeID, formatted address and the coordinates; make a minimal geoCode
-			var results = coordinatesObj.results[0];
-			var geoCode = {
-				formattedAddress : results.formatted_address,
-			  placeId : results.place_id,
-			  coordinates : {
-					latitude: results.geometry.location.lat,
-					longitude: results.geometry.location.lng
-				}
-			};
-
-			return geoCode;
-		})
-	);
-
 	return deferred.promise;
 }
 
@@ -417,15 +473,107 @@ var reverseGeocode = function (coordinates, neighborhood) {
 
 	getRequest(geocodeUrl)
 	.then(function (streetAddress) {
-		// console.log('streetAddress fetched.');
-		// console.log('LatLng:',coordinates.latitude, coordinates.longitude);
-		//console.log('Street Address:',streetAddress);
+		 // console.log('***********reverse Geocode**********');
+     // console.log('streetAddress fetched.');
+		 // console.log('LatLng:',coordinates.latitude, coordinates.longitude);
+		 // console.log('Street Address:',streetAddress);
 
-		deferred.resolve([streetAddress.results[0].formatted_address, neighborhood]);
-	});
+
+     var addressBits = streetAddress.results[0].formatted_address.split(', ');
+     // console.log('Street address pieces:', addressBits);
+
+
+     var addressObj = { formatted_address: streetAddress.results[0].formatted_address }
+
+     //Update the global variable
+     country = addressBits.pop();
+     if(country === 'USA') {
+       //standard format
+       var stateZip = addressBits.pop().split(' ');
+       var state = stateZip[0];
+       var zip = stateZip[1];
+       var city = addressBits.pop();
+
+       addressObj.country = country;
+       addressObj.state = state;
+       addressObj.city = city;
+       addressObj.zip = zip;
+     }
+
+     //remove
+     // console.log('addressObj:',addressObj);
+
+     if(streetAddress.status === 'OK') {
+		   deferred.resolve([addressObj, neighborhood]);
+     }
+     else {
+       deferred.resolve([{formatted_address : 'Not available'}, neighborhood]);
+     }
+	},
+  function (errorMessage) {
+    // console.log('Error while fetching street address:',errorMessage);
+    deferred.reject('Not Available');
+  });
 
 	return deferred.promise;
 }
+
+
+//-----------------------------------------------------------------------------------
+//GET latitude and longitude of an address, given the address
+//Geocode
+/*Prerequisites:
+  Street Address
+  Website: Google maps endpoint
+
+  Input: address
+  Output: geoCode = {
+            latitude :
+            longitude :
+            place_id :
+          }
+*/
+
+var geoCode = function (address) {
+  var deferred = Q.defer();
+
+  var address = address;
+  var gPlacesUrl_address = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
+  var gPlacesUrl_sensor = '&sensor=false';
+
+  // console.log('server.js says: geoCode called.');
+  // console.log('address: ',address);
+  // console.log('googleAPIKey: ',keys.googleAPIKey);
+
+  var gPlacesUrl = gPlacesUrl_address + address + gPlacesUrl_sensor;
+
+  getRequest(gPlacesUrl)
+  .then(function (coordinatesObj) {
+    // console.log('coordinatesObj:', coordinatesObj);
+
+    if(coordinatesObj.status === 'OK') {
+      //Fetch the placeID, formatted address and the coordinates; make a minimal geoCode
+      var results = coordinatesObj.results[0];
+      var geoCode = {
+        formattedAddress : results.formatted_address,
+        placeId : results.place_id,
+        coordinates : {
+          latitude: results.geometry.location.lat,
+          longitude: results.geometry.location.lng
+        }
+      };
+      deferred.resolve(geoCode);
+    }
+
+    else {
+      deferred.reject('Invalid Address.');
+    }
+  });
+
+  return deferred.promise;
+}
+
+
 
 
 //-----------------------------------------------------------------------------------
@@ -486,6 +634,33 @@ var getRequest = function (url) {
 	return deferred.promise;
 }
 //-----------------------------------------------------------------------------------
+
+//HTTP get request, that receives XML and converts it into JSON
+var getXmlRequest = function (url) {
+  var deferred = Q.defer()
+
+  //remove
+  // console.log('getRequest called. url:',url);
+
+  request(url, function (error, response, body) {
+
+    //remove
+    //console.log('Response status:', response.statusCode);
+
+    if(error) { console.log('Error for url:', url); deferred.reject("Not Available"); }
+    if (!error && response.statusCode == 200) {
+      parseString(body, function (err, result) {
+        // console.log(result);
+        deferred.resolve(result);
+      });
+    }
+    else { deferred.reject("Not Available"); }
+
+  });
+
+  return deferred.promise;
+}
+
 
 
 module.exports = app;
