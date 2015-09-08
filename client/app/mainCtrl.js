@@ -16,8 +16,8 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   main.filteredNeighborhoodArray = [];
 
   main.coordinates = {
-      latitude: 37.7833,
-      longitude: -122.4167
+      latitude: 38.5,
+      longitude: -98.5
   };
 
   //unscoped local variables
@@ -127,6 +127,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   //----------------------------------------------------------------------------------
   // Function to filter neighborhoods by user's filter options
   main.filterNeighborhoods = function() {
+    console.log('filterNeighborhoods')
     main.filteredNeighborhoodArray = main.neighborhoodArray.filter(function(obj) {
       return !(main.searchInfo.maxRent < obj.estimateLow) &&
       !(main.searchInfo.commuteTime < obj.commuteTime) &&
@@ -176,9 +177,9 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   }
 
   //----------------------------------------------------------------------------------
-  //Initialization functions
+  // Initialization functions
   // main.initMap();
-  // main.autoCompleteInit();
+  main.autoCompleteInit();
 }]);
 
 

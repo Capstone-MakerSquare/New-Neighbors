@@ -3,8 +3,8 @@
     <div>
       <label>Max Monthly Price:</label>
     </div>
-    <div>${{res.searchInfo.maxRent}}
-      <input type="range" name="rentRange" min="0" max="8000" value="1000" step="25" ng-model="res.searchInfo.maxRent">
+    <div>${{main.searchInfo.maxRent}}
+      <input type="range" name="rentRange" min="0" max="8000" value="1000" step="25" ng-model="main.searchInfo.maxRent">
     </div>
   </div> <!-- end of rent section -->
 
@@ -13,7 +13,7 @@
       <label>Max Time:</label>
     </div>
     <div>
-      <select name="commuteTime" ng-model="res.searchInfo.commuteTime">
+      <select name="commuteTime" ng-model="main.searchInfo.commuteTime">
         <option value="15">15 min</option>
         <option value="30">30 min</option>
         <option value="45">45 min</option>
@@ -25,7 +25,7 @@
         <label>Max Distance:</label>
     </div>
     <div>
-      <select name="commuteDistance" ng-model="res.searchInfo.commuteDistance">
+      <select name="commuteDistance" ng-model="main.searchInfo.commuteDistance">
         <option value="5">5 miles</option>
         <option value="10">10 miles</option>
         <option value="15">15 miles</option>
@@ -37,6 +37,6 @@
   </div> <!-- end of time/distance section -->
 
   <div>
-    <button ng-click="res.filterNeighborhoods()">Filter Search Results</button>
+    <button ng-click="main.filterNeighborhoods()">Filter Search Results</button>
   </div>
 </div>
