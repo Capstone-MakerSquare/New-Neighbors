@@ -141,6 +141,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   //----------------------------------------------------------------------------------
   //Function to initialize and draw the map, centering on the the center of the U.S.
   main.initMap = function() {
+    console.log("main.initMap")
     var centerUS = {
       latitude: 38.5,
       longitude: -96
@@ -173,12 +174,11 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
     Map.dropMarker(neighborhood.coordinates);
     Map.panAndFocus(neighborhood.coordinates, 13);
     Map.drawCircle(neighborhood.coordinates, 2000);
-
   }
 
   //----------------------------------------------------------------------------------
   // Initialization functions
-  // main.initMap();
+  setTimeout(main.initMap, 200);
   main.autoCompleteInit();
 }]);
 

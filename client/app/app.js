@@ -1,8 +1,7 @@
 var app = angular.module('myApp', [
   'ui.router',
-  'myApp.requestHoodServices', 
-  'myApp.map', 
-  'myApp.results',
+  'myApp.requestHoodServices',
+  'myApp.map',
   'myApp.searchForm',
   'myApp.filter',
   'myApp.thumbnails'
