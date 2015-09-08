@@ -1,54 +1,43 @@
-<div>
-  <div>
-    <input type="search" ng-model="main.searchInfo.address" id="place-search" placeholder="Enter an address">
-    <!-- changed from main.address to main.searchInfo.address -->
-    <button ng-click="main.submitAddress()">Submit</button>
-  </div>
-
-  <div>  <!--start of rent/buy section -->
-    <div>
-      <label>Type of Place:</label>
+<div class="searchForm">
+  <form>
+    <div class="form-group">
+      <input type="email" class="form-control" id="inputAddress" placeholder="Enter an Address">
     </div>
-
-    <ul>
-      <li ng-click="main.setValueRent()">
-        <input type="radio" name="rentBuy" value="rent" ng-model="main.searchInfo.buyOrRent">
-        <label for="rentBuy">Rent</label>
-      </li>
-      <li ng-click="main.setValueBuy()">
-        <input type="radio" name="rentBuy" value="buy" ng-model="main.searchInfo.buyOrRent" checked="">
-        <label for="rentBuy">Buy</label>
-      </li>
-    </ul>
-  </div> <!--end of rent/buy section -->
-
-  <div> <!--start of bed/bath section -->
-    <label>Bed:</label>
-  </div>
-  <div>
-    <select name="bedrooms" ng-model="main.searchInfo.bedrooms">
-      <option value="1">1 bed</option>
-      <option value="2">2 bed</option>
-      <option value="3">3 bed</option>
-      <option value="4">4 bed</option>
-      <option value="5">5 bed</option>
-      <option value="6">6 bed</option>
-      <option value="7">7+ bed</option>
-    </select>
-  </div>
-  <div>
-    <label>Bath:</label>
-  </div>
-  <div>
-    <select name="bathrooms" ng-model="main.searchInfo.bathrooms">
-      <option value="1">1 bath</option>
-      <option value="2">2 bath</option>
-      <option value="3">3 bath</option>
-      <option value="4">4 bath</option>
-      <option value="5">5 bath</option>
-      <option value="6">6 bath</option>
-      <option value="7">7+ bath</option>
-    </select>
-  </div>  <!--end of bed/bath section -->
+    <!-- removed ng-click="res.setValueBuy() from ng-click on div for radio buttons since ng-model can be applied to select --> 
+    <div class="form-group">
+     <div class="row">
+      <div class="col-sm-10 col-md-2">
+        <select class="form-control" name="rentBuy" ng-model="res.searchInfo.buyOrRent">
+          <option value="rent">Rent</option>
+          <option value="buy">Buy</option>  
+        </select>
+      </div>
+      <div class="col-sm-10 col-md-4">
+        <select class="form-control" name="bathrooms" ng-model="bathroomSelected">
+          <option value="1">1 bedroom</option>
+          <option value="2">2 bedrooms</option>
+          <option value="3">3 bedrooms</option>
+          <option value="4">4 bedrooms</option>
+          <option value="5">5 bedrooms</option>
+          <option value="6">6 bedrooms</option>
+          <option value="7">7+ bedrooms</option>
+        </select>
+      </div>
+      <div class="col-sm-10 col-md-4">
+        <select class="form-control" ng-model="res.searchInfo.bedrooms">
+          <option value="1" selected>1 bathrooms</option>
+          <option value="2">2 bathroom</option>
+          <option value="3">3 bathrooms</option>
+          <option value="4">4 bathrooms</option>
+          <option value="5">5 bathrooms</option>
+          <option value="6">6 bathrooms</option>
+          <option value="7">7+ bathrooms</option>
+        </select>
+      </div>
+      <div class="col-sm-10 col-md-2">
+        <button type="button" ng-click="res.submitAddress()" class="btn btn-default">Submit</button>
+      </div>
+    </div>
+  </form>
+  <hr>
 </div>
-
