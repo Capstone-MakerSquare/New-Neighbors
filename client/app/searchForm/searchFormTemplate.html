@@ -1,8 +1,8 @@
 <div>
   <div>
-    <input type="search" ng-model="res.searchInfo.address" id="place-search" placeholder="Enter an address">
-    <!-- changed from res.address to res.searchInfo.address -->
-    <button ng-click="res.submitAddress()">Submit</button>
+    <input type="search" ng-model="main.searchInfo.address" id="place-search" placeholder="Enter an address">
+    <!-- changed from main.address to main.searchInfo.address -->
+    <button ng-click="main.submitAddress()">Submit</button>
   </div>
 
   <div>  <!--start of rent/buy section -->
@@ -10,23 +10,23 @@
       <label>Type of Place:</label>
     </div>
 
-    <ul> 
-      <li ng-click="res.setValueRent()">
-        <input type="radio" name="rentBuy" value="rent" ng-model="res.searchInfo.buyOrRent">
+    <ul>
+      <li ng-click="main.setValueRent()">
+        <input type="radio" name="rentBuy" value="rent" ng-model="main.searchInfo.buyOrRent">
         <label for="rentBuy">Rent</label>
       </li>
-      <li ng-click="res.setValueBuy()">
-        <input type="radio" name="rentBuy" value="buy" ng-model="res.searchInfo.buyOrRent" checked="">
+      <li ng-click="main.setValueBuy()">
+        <input type="radio" name="rentBuy" value="buy" ng-model="main.searchInfo.buyOrRent" checked="">
         <label for="rentBuy">Buy</label>
       </li>
     </ul>
   </div> <!--end of rent/buy section -->
 
   <div> <!--start of bed/bath section -->
-    <label>Bed:</label>  
+    <label>Bed:</label>
   </div>
   <div>
-    <select name="bedrooms" ng-model="res.searchInfo.bedrooms">
+    <select name="bedrooms" ng-model="main.searchInfo.bedrooms">
       <option value="1">1 bed</option>
       <option value="2">2 bed</option>
       <option value="3">3 bed</option>
@@ -40,7 +40,7 @@
     <label>Bath:</label>
   </div>
   <div>
-    <select name="bathrooms" ng-model="res.searchInfo.bathrooms">
+    <select name="bathrooms" ng-model="main.searchInfo.bathrooms">
       <option value="1">1 bath</option>
       <option value="2">2 bath</option>
       <option value="3">3 bath</option>

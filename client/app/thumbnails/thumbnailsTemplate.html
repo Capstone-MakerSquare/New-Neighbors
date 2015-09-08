@@ -2,7 +2,7 @@
   <!--start of order-by section -->
   <div>
     <label>Order Results By:</label>
-    <select name="selectOrder" ng-model="res.filterType">
+    <select name="selectOrder" ng-model="main.filterType">
       <option value="estimateLow">Lowest Rent</option>
       <option value="commuteTime">Shortest Commute</option>
       <option value="commuteDistance">Closest Distance</option>
@@ -13,8 +13,8 @@
 
   <div> <!---single glance card start-->
     <h1>Thumbnail Template</h1>
-    <div ng-repeat="neighborhood in res.filteredNeighborhoodArray | orderBy:res.filterType">
-      <div ng-click="res.selectNeighborhood(neighborhood)">
+    <div ng-repeat="neighborhood in main.filteredNeighborhoodArray | orderBy:main.filterType">
+      <div ng-click="main.selectNeighborhood(neighborhood)">
         <div>
             {{neighborhood.name}}
         </div>
@@ -30,6 +30,6 @@
           </div>
         </div>
      </div>
-    </div> 
+    </div>
   </div> <!---single glance card end-->
 </div>
