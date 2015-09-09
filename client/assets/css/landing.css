@@ -1,9 +1,50 @@
-body, .mainphoto {
-  height: 100%;
+/*landing page css*/
+
+.landing-container {
   background-image: url('../images/santamonica.jpg');
+  height: 100%;
   background-size: cover;
+  text-align: center;
+  padding-top: 200px;
+  padding-bottom: 200px;
+  max-height: 800px;
 }
 
+.cover-heading {
+  color: #FFF;
+  text-shadow: 0 1px 3px rgba(0,0,0,1);
+}
 
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+}
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* to handle different devices */
+@media (min-width: 768px) {
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle;
+  }
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+  }
+}
+
+@media (min-width: 992px) {
+  .cover-container {
+    width: 700px;
+  }
+}
 
 
