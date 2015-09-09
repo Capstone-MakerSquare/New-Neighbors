@@ -17,10 +17,16 @@ mapMod // = angular.module('myApp.mapServices',[])
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
   var initialize = function (coordinates) {
+    coordinates = coordinates ||  {
+      latitude: 38.5,
+      longitude: -96
+    };
+
     mapOptions.center.lat = coordinates.latitude;
     mapOptions.center.lng = coordinates.longitude;
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    console.log("map initialized")
   }
 
 

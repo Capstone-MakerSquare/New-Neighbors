@@ -1,4 +1,4 @@
-app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
+app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, ServerApi, $state){
 
   var main = this;
 
@@ -74,6 +74,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   //----------------------------------------------------------------------------------
   //Function to fetch address and validate it
   main.submitAddress = function() {
+    $state.go('main.results');
     // console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
     // console.log('mainCtrl.js says: Submitted address (angular):', main.searchInfo.address);
     main.filteredNeighborhoodArray = [];
@@ -141,6 +142,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   //----------------------------------------------------------------------------------
   //Function to initialize and draw the map, centering on the the center of the U.S.
   main.initMap = function() {
+    console.log("main.initMap")
     var centerUS = {
       latitude: 38.5,
       longitude: -96
@@ -173,13 +175,12 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
     Map.dropMarker(neighborhood.coordinates);
     Map.panAndFocus(neighborhood.coordinates, 13);
     Map.drawCircle(neighborhood.coordinates, 2000);
-
   }
 
   //----------------------------------------------------------------------------------
   // Initialization functions
-  // main.initMap();
-  main.autoCompleteInit();
+  setTimeout(main.autoCompleteInit, 200);
+
 }]);
 
 

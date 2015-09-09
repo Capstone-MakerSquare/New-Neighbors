@@ -7,12 +7,13 @@
     <link rel="stylesheet" href="assets/css/styles.css">
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/index.css" rel="stylesheet">
+    <link href="assets/css/landing.css" rel="stylesheet">
     <link href="assets/css/app.css" rel="stylesheet" type="text/css">
   </head>
 
   <body ng-controller="MainController as main">
 
-  <nav class="navbar navbar-default">
+  <nav class="navbar navbar-default" id="navbar-margin">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="#">
@@ -26,6 +27,7 @@
   <div ui-view></div>
   <a ui-sref="main.results">Main results</a>
   <a ui-sref="main.details">Main details</a>
+  <a ui-sref="landing">Landing</a>
 
   <footer class="footer">
     <div class="container">
@@ -53,16 +55,19 @@
     <script src="app/app.js"></script>
     <script src="app/map/mapController.js"></script>
     <script src="app/searchForm/searchFormController.js"></script>
-    <script src="app/results/resultsController.js"></script>
     <script src="app/filter/filterController.js"></script>
     <script src="app/thumbnails/thumbnailsController.js"></script>
-    <script src="app/mainCtrl.js"></script>
     <script src="app/services.js"></script>
     <script src="app/map/mapService.js"></script>
     <script src="app/map/mapDirective.js"></script>
     <script src="app/searchForm/searchFormDirective.js"></script>
     <script src="app/filter/filterDirective.js"></script>
     <script src="app/thumbnails/thumbnailsDirective.js"></script>
+<<<<<<< HEAD
+=======
+    <script src="app/mainCtrl.js"></script>
+
+>>>>>>> 145538c58712eb25792d4d0c0b50ee334626d5a0
 
   </body>
 </html>
