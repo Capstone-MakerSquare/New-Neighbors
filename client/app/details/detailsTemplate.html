@@ -1,3 +1,80 @@
-<div>
-  <h1>This is the about template</h1>
+<div class="details-container">
+ <!-- neighborhood header -->
+  <div class="details-neighborhood-bg">
+    <h1>Tokyo</h1>
+  </div>
+   <!-- tabs -->
+  <!-- neighborhood description -->
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card-block">
+          <h5 class="card-title">Rent Estimates</h5>
+          <p class="card-text">${{neighborhood.estimateLow || N/A }} - ${{neighborhood.estimateHigh || N/A }}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card-block">
+          <h5 class="card-title">Commute Time</h5>
+          <p class="card-text">{{neighborhood.commuteDistance}} miles | {{neighborhood.commuteTime}} minutes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <!-- amenities and attractions -->
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-xs-12 col-md-12">
+        <p>Container for attractions</p>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-xs-12 col-sm-2">
+         <label class="">Amenities</label>
+      </div>
+      <div class="col-xs-12 col-sm-10">
+        <div class="row">
+            <div class="col-xs-6 col-sm-4">
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+              <span>Hospitals</span>
+            </div>
+            <div class="col-xs-6 col-sm-4">
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">            
+              <span>Grocery Stores</span>
+            </div>
+            <div class="col-xs-6 col-sm-4" >
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+              <span>Hair Salons</span>
+            </div>
+            <div class="col-xs-6 col-sm-4 checkbox" >
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+              <span>Parks</span>
+            </div>
+            <div class="col-xs-6 col-sm-4" >
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+              <span>Library</span>
+            </div>
+          <div class="col-xs-6 col-sm-4 mt-20"><a href="#">+ More</a></div>
+          <div class="col-xs-6 col-sm-4" style="display:none">
+            <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+            <span>Bank</span>
+          </div>             
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- slideshow -->
+  <div class="photo-gallery">
+    <img src="assets/images/default-photo-gallery.jpg">
+  </div>
 </div>
+
+
+
+
+
+
+
+
