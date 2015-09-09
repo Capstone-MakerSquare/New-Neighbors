@@ -12,6 +12,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, S
   main.searchInfo.maxRent = 8000;
   main.searchInfo.commuteTime = 150;
   main.searchInfo.commuteDistance = 70;
+  main.imageArray = ['assets/images/restaurant-icon.png', 'assets/images/grocery-icon.png', 'santamonica.jpg'];
 
   main.filteredNeighborhoodArray = [];
 
@@ -175,11 +176,16 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, S
     Map.dropMarker(neighborhood.coordinates);
     Map.panAndFocus(neighborhood.coordinates, 13);
     Map.drawCircle(neighborhood.coordinates, 2000);
-  }
+  };
 
   //----------------------------------------------------------------------------------
   // Initialization functions
   setTimeout(main.autoCompleteInit, 200);
+
+  main.randomImage = function(){
+    var results = 'background-image: ' + main.imageArray[Math.floor(Math.random() * main.imageArray.length)] + ';';
+    return 'background-image: url("../images/gas-icon.png");';
+  };
 
 }]);
 

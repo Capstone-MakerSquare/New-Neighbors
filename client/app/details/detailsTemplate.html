@@ -1,7 +1,8 @@
 <div class="details-container">
  <!-- neighborhood header -->
-  <div class="details-neighborhood-bg">
-    <h1>Tokyo</h1>
+  <div class="details-neighborhood-bg" ng-style="{'background-color': 'blue'}">
+    <h6>Tokyo {{main.randomImage()}}</h6>
+
   </div>
    <!-- tabs -->
   <!-- neighborhood description -->
@@ -41,7 +42,7 @@
               <span>Hospitals</span>
             </div>
             <div class="col-xs-6 col-sm-4">
-              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">            
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
               <span>Grocery Stores</span>
             </div>
             <div class="col-xs-6 col-sm-4" >
@@ -60,7 +61,7 @@
           <div class="col-xs-6 col-sm-4" style="display:none">
             <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
             <span>Bank</span>
-          </div>             
+          </div>
         </div>
       </div>
     </div>
