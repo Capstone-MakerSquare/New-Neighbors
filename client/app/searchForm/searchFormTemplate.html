@@ -1,15 +1,15 @@
 <div class="searchForm">
   <form>
     <div class="form-group">
-      <input type="email" class="form-control" id="inputAddress" placeholder="Enter an Address">
+      <input class="form-control" type="search" ng-model="main.searchInfo.address" id='place-search' placeholder="Enter an Address">
     </div>
-    <!-- removed ng-click="res.setValueBuy() from ng-click on div for radio buttons since ng-model can be applied to select --> 
+    <!-- removed ng-click="main.setValueBuy() from ng-click on div for radio buttons since ng-model can be applied to select -->
     <div class="form-group">
      <div class="row">
       <div class="col-sm-10 col-md-2">
-        <select class="form-control" name="rentBuy" ng-model="res.searchInfo.buyOrRent">
+        <select class="form-control" name="rentBuy" ng-model="main.searchInfo.buyOrRent">
           <option value="rent">Rent</option>
-          <option value="buy">Buy</option>  
+          <option value="buy">Buy</option>
         </select>
       </div>
       <div class="col-sm-10 col-md-4">
@@ -24,7 +24,7 @@
         </select>
       </div>
       <div class="col-sm-10 col-md-4">
-        <select class="form-control" ng-model="res.searchInfo.bedrooms">
+        <select class="form-control" ng-model="main.searchInfo.bedrooms">
           <option value="1" selected>1 bathrooms</option>
           <option value="2">2 bathroom</option>
           <option value="3">3 bathrooms</option>
@@ -35,7 +35,7 @@
         </select>
       </div>
       <div class="col-sm-10 col-md-2">
-        <button type="button" ng-click="res.submitAddress()" class="btn btn-default">Submit</button>
+        <button type="button" ng-click="main.submitAddress()" class="btn btn-default">Submit</button>
       </div>
     </div>
   </form>
