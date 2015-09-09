@@ -1,3 +1,78 @@
-<div>
-  <h1>This is the about template</h1>
+<div class="details-container">
+ <!-- neighborhood header -->
+  <div class="details-neighborhood-bg">
+    <h1>Tokyo</h1>
+  </div>
+   <!-- tabs -->
+  <!-- neighborhood description -->
+  <div class="row">
+    <div class="col-md-8">
+      <p>Tōkyō (東京) is the capital of Japan. At over 13 million people in the official metropolitan area alone, Tokyo is the core of the most populated urban area in the world, Tokyo Metropolis (which has a population of over 37 million people). This huge, wealthy and fascinating metropolis brings high-tech visions of the future side by side with glimpses of old Japan, and has something for everyone.
+      </p>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card-block">
+          <h4 class="card-title">Rent Estimates</h4>
+          <p class="card-text">${{neighborhood.estimateLow || N/A }} - ${{neighborhood.estimateHigh || N/A }}</p>
+        </div>
+      </div>
+        <div class="col-md-6">
+          <div class="card-block">
+            <h4 class="card-title">Commute Time</h4>
+            <p class="card-text">{{neighborhood.commuteDistance}} miles | {{neighborhood.commuteTime}} minutes</p>
+          </div>
+          <small class="text-muted">Rent data powered by Zilpy</small>
+        </div>
+      </div>
+    </div>
+    <hr>
+  </div>
+  <!-- amenities and attractions -->
+    <div class="row">
+      <div class="attractions col-md-6">
+        <ul>
+          <li>
+            <img class="icon" src="assets/images/gas-icon.png" alt="attraction icon">
+            <h4>7-Eleven</h4>
+          </li>
+          <li>
+            <img class="icon" src="assets/images/grocery-icon.png" alt="attraction icon">
+            <h4>Kroger</h4>
+          </li>
+          <li>
+            <img class="icon" src="assets/images/gas-icon.png" alt="attraction icon">
+            <h4>7-Eleven</h4>
+          </li>
+          <li>
+            <img class="icon" src="assets/images/grocery-icon.png" alt="attraction icon">
+            <h4>Kroger</h4>
+          </li>
+          <li>
+            <img class="icon" src="assets/images/gas-icon.png" alt="attraction icon">
+            <h4>7-Eleven</h4>
+          </li>
+          <li>
+            <img class="icon" src="assets/images/grocery-icon.png" alt="attraction icon">
+            <h4>Kroger</h4>
+          </li>
+        </ul>
+      </div>
+      <div class="amenities col-md-6">
+        <ul>
+          <li>
+            <img class="icon" src="assets/images/museum-icon.png" alt="attraction icon">
+            <h4>Tokyo National Museum</h4>
+          </li>
+          <li>
+            <img class="icon" src="assets/images/grocery-icon.png" alt="attraction icon">
+            <h4>Kroger</h4>
+          </li>
+        </ul>
+      </div>
+    </div>
+   <!-- slideshow -->
+  <div class="photo-gallery">
+    <img src="assets/images/default-photo-gallery.jpg">
+  </div>
 </div>
