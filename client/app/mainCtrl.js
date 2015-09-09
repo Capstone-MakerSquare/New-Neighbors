@@ -1,4 +1,4 @@
-app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
+app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, ServerApi, $state){
 
   var main = this;
 
@@ -74,6 +74,7 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
   //----------------------------------------------------------------------------------
   //Function to fetch address and validate it
   main.submitAddress = function() {
+    $state.go('main.results');
     // console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
     // console.log('mainCtrl.js says: Submitted address (angular):', main.searchInfo.address);
     main.filteredNeighborhoodArray = [];
