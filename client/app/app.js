@@ -5,13 +5,23 @@ var app = angular.module('myApp', [
   'myApp.searchForm',
   'myApp.filter',
   'myApp.thumbnails'
-])
+]);
 console.log("app.js called");
 app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.
-    otherwise("/");
+    otherwise("/landing");
 
   $stateProvider
+    .state('landing', {
+      url: "/landing",
+      controller: 'MainController',
+      controllerAs: 'main',
+      views: {
+        "": {
+          templateUrl: "./app/landing/landing.html"
+        }
+      }
+     })
     .state('main', {
       url: "/main",
       controller: 'MainController',
@@ -39,6 +49,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
           templateUrl: "./app/details/detailsTemplate.html"
         }
       }
-    })
+    });
   });
 

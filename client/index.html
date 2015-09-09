@@ -3,17 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Movein Assistant</title>
-
+    <title>Turf</title>
     <link rel="stylesheet" href="assets/css/styles.css">
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/app.css" rel="stylesheet">
     <link href="assets/css/index.css" rel="stylesheet">
+    <link href="assets/css/landing.css" rel="stylesheet">
+    <link href="assets/css/app.css" rel="stylesheet" type="text/css">
   </head>
 
   <body ng-controller="MainController as main">
 
-  <nav class="navbar navbar-default">
+  <nav class="navbar navbar-default" id="navbar-margin">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="#">
@@ -27,6 +28,7 @@
   <div ui-view></div>
   <a ui-sref="main.results">Main results</a>
   <a ui-sref="main.details">Main details</a>
+  <a ui-sref="landing">Landing</a>
 
   <footer class="footer">
     <div class="container">
@@ -63,6 +65,7 @@
     <script src="app/filter/filterDirective.js"></script>
     <script src="app/thumbnails/thumbnailsDirective.js"></script>
     <script src="app/mainCtrl.js"></script>
+
 
   </body>
 </html>

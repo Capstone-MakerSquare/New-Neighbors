@@ -1,3 +1,11 @@
+/* overriding bootstrap default styles */
+
+#navbar-margin {
+  margin-bottom:0;
+}
+
+
+
 /* default styles */
 
  ul {
@@ -19,8 +27,8 @@ small {
 
 .navbar-header .logo {
   display:inline-block;
-  width:25px; 
-  height:25px; 
+  width:25px;
+  height:25px;
   color:#fff;
 }
 
