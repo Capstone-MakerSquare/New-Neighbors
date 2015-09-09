@@ -1,6 +1,6 @@
 /*landing page css*/
 
-.landing-container {
+.landing-photo {
   background-image: url('../images/santamonica.jpg');
   height: 100%;
   background-size: cover;
@@ -46,4 +46,14 @@
     width: 700px;
   }
 }
+
+.how-to-use {
+  text-align: center;
+}
+
+.our-team {
+  text-align: center;
+}
+
+.our-team-links {}
 
