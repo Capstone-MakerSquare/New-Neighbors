@@ -5,74 +5,76 @@
   </div>
    <!-- tabs -->
   <!-- neighborhood description -->
-  <div class="row">
-    <div class="col-md-8">
-      <p>Tōkyō (東京) is the capital of Japan. At over 13 million people in the official metropolitan area alone, Tokyo is the core of the most populated urban area in the world, Tokyo Metropolis (which has a population of over 37 million people). This huge, wealthy and fascinating metropolis brings high-tech visions of the future side by side with glimpses of old Japan, and has something for everyone.
-      </p>
-    </div>
+  <div class="col-md-12">
     <div class="row">
       <div class="col-md-6">
         <div class="card-block">
-          <h4 class="card-title">Rent Estimates</h4>
+          <h5 class="card-title">Rent Estimates</h5>
           <p class="card-text">${{neighborhood.estimateLow || N/A }} - ${{neighborhood.estimateHigh || N/A }}</p>
         </div>
       </div>
-        <div class="col-md-6">
-          <div class="card-block">
-            <h4 class="card-title">Commute Time</h4>
-            <p class="card-text">{{neighborhood.commuteDistance}} miles | {{neighborhood.commuteTime}} minutes</p>
-          </div>
-          <small class="text-muted">Rent data powered by Zilpy</small>
+      <div class="col-md-6">
+        <div class="card-block">
+          <h5 class="card-title">Commute Time</h5>
+          <p class="card-text">{{neighborhood.commuteDistance}} miles | {{neighborhood.commuteTime}} minutes</p>
         </div>
       </div>
     </div>
-    <hr>
   </div>
+  <hr>
   <!-- amenities and attractions -->
+  <div class="col-md-12">
     <div class="row">
-      <div class="attractions col-md-6">
-        <ul>
-          <li>
-            <img class="icon" src="assets/images/gas-icon.png" alt="attraction icon">
-            <h4>7-Eleven</h4>
-          </li>
-          <li>
-            <img class="icon" src="assets/images/grocery-icon.png" alt="attraction icon">
-            <h4>Kroger</h4>
-          </li>
-          <li>
-            <img class="icon" src="assets/images/gas-icon.png" alt="attraction icon">
-            <h4>7-Eleven</h4>
-          </li>
-          <li>
-            <img class="icon" src="assets/images/grocery-icon.png" alt="attraction icon">
-            <h4>Kroger</h4>
-          </li>
-          <li>
-            <img class="icon" src="assets/images/gas-icon.png" alt="attraction icon">
-            <h4>7-Eleven</h4>
-          </li>
-          <li>
-            <img class="icon" src="assets/images/grocery-icon.png" alt="attraction icon">
-            <h4>Kroger</h4>
-          </li>
-        </ul>
-      </div>
-      <div class="amenities col-md-6">
-        <ul>
-          <li>
-            <img class="icon" src="assets/images/museum-icon.png" alt="attraction icon">
-            <h4>Tokyo National Museum</h4>
-          </li>
-          <li>
-            <img class="icon" src="assets/images/grocery-icon.png" alt="attraction icon">
-            <h4>Kroger</h4>
-          </li>
-        </ul>
+      <div class="col-xs-12 col-md-12">
+        <p>Container for attractions</p>
       </div>
     </div>
+    <hr>
+    <div class="row">
+      <div class="col-xs-12 col-sm-2">
+         <label class="">Amenities</label>
+      </div>
+      <div class="col-xs-12 col-sm-10">
+        <div class="row">
+            <div class="col-xs-6 col-sm-4">
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+              <span>Hospitals</span>
+            </div>
+            <div class="col-xs-6 col-sm-4">
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">            
+              <span>Grocery Stores</span>
+            </div>
+            <div class="col-xs-6 col-sm-4" >
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+              <span>Hair Salons</span>
+            </div>
+            <div class="col-xs-6 col-sm-4 checkbox" >
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+              <span>Parks</span>
+            </div>
+            <div class="col-xs-6 col-sm-4" >
+              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+              <span>Library</span>
+            </div>
+          <div class="col-xs-6 col-sm-4 mt-20"><a href="#">+ More</a></div>
+          <div class="col-xs-6 col-sm-4" style="display:none">
+            <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+            <span>Bank</span>
+          </div>             
+        </div>
+      </div>
+    </div>
+  </div>
    <!-- slideshow -->
   <div class="photo-gallery">
     <img src="assets/images/default-photo-gallery.jpg">
   </div>
 </div>
+
+
+
+
+
+
+
+
