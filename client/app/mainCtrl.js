@@ -12,7 +12,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, S
   main.searchInfo.maxRent = 8000;
   main.searchInfo.commuteTime = 150;
   main.searchInfo.commuteDistance = 70;
-  main.imageArray = ['assets/images/restaurant-icon.png', 'assets/images/grocery-icon.png', 'santamonica.jpg'];
+  main.imageArray = ['../assets/images/restaurant-icon.png', '../assets/images/grocery-icon.png', '../assets/images/santamonica.jpg'];
 
   main.filteredNeighborhoodArray = [];
 
@@ -183,8 +183,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, S
   setTimeout(main.autoCompleteInit, 200);
 
   main.randomImage = function(){
-    var results = 'background-image: ' + main.imageArray[Math.floor(Math.random() * main.imageArray.length)] + ';';
-    return 'background-image: url("../images/gas-icon.png");';
+    //var results = 'background-image: ' +  + ';';
+    return { 'background-image': 'url("' + main.imageArray[Math.floor(Math.random() * main.imageArray.length)] + '")' };
   };
 
 }]);
