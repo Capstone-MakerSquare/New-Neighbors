@@ -1,8 +1,8 @@
 <div class="thumbnails-container">
-<!-- NOTE: PLEASE UNCOMMENT NG-REPEAT DIV BELOW WHEN WORKING WITH ANGULAR; CARDS WILL NOT SHOW ON PAGE WITHOUT IT :) --> 
+<!-- NOTE: PLEASE UNCOMMENT NG-REPEAT DIV BELOW WHEN WORKING WITH ANGULAR; CARDS WILL NOT SHOW ON PAGE WITHOUT IT :) -->
     <!--start of order-by section -->
     <div class="col-md-4 col-md-offset-8">
-      <select name="selectOrder" ng-model="res.filterType">
+      <select name="selectOrder" ng-model="main.filterType">
         <option disabled>Order Results By:</option>
         <option value="estimateLow">Lowest Rent</option>
         <option value="commuteTime">Shortest Commute</option>
@@ -14,21 +14,21 @@
   <div class="card-deck-wrapper col-md-12">
   <!---single glance card start-->
     <div class="card-deck">
-      <!-- <div ng-repeat="neighborhood in res.filteredNeighborhoodArray | orderBy:res.filterType"> -->
-        <div class="card col-md-4" ng-click="res.selectNeighborhood(neighborhood)">
+      <div ng-repeat="neighborhood in main.filteredNeighborhoodArray | orderBy:main.filterType">
+        <div class="card col-md-4" ng-click="main.selectNeighborhood(neighborhood)">
           <img class="card-img-top" src="assets/images/santamonica.jpg" alt="picture of neighborhood">
           <h3 class="card-title">{{neighborhood.name}}</h3>
           <div class="card-block">
             <h4 class="card-title">Rent Averages</h4>
-            <p class="card-text">${{neighborhood.estimateLow || N/A }}-${{neighborhood.estimateHigh || N/A }}</p>
+            <p class="card-text">${{neighborhood.estimateLow || N/A }} - ${{neighborhood.estimateHigh || N/A }}</p>
           </div>
           <div class="card-block">
             <h4 class="card-title">Commute Time</h4>
-            <p class="card-text">${{neighborhood.estimateLow || N/A }}-${{neighborhood.estimateHigh || N/A }}</p>
+            <p class="card-text">{{neighborhood.commuteDistance}} miles | {{neighborhood.commuteTime}} minutes</p>
           </div>
           <small class="text-muted">Rent data powered by Zilpy</small>
         </div>
       </div>
-    <!-- </div> -->
+    </div>
     <!---single glance card end-->
   </div>

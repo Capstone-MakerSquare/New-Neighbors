@@ -178,8 +178,8 @@ app.controller('MainController', ['Map', 'ServerApi', function (Map, ServerApi){
 
   //----------------------------------------------------------------------------------
   // Initialization functions
-  setTimeout(main.initMap, 200);
-  main.autoCompleteInit();
+  setTimeout(main.autoCompleteInit, 200);
+
 }]);
 
 

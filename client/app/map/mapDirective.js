@@ -1,6 +1,6 @@
 mapMod.directive('map', ['Map', function(Map) {
 
-  var init = function() {
+  var link = function() {
     var centerUS = {
       latitude: 38.5,
       longitude: -96
@@ -12,7 +12,7 @@ mapMod.directive('map', ['Map', function(Map) {
     restrict: 'E',
     replace: true,
     templateUrl: 'app/map/mapTemplate.html',
-    init: init
+    link: link  //'link' is a keyword that invokes once the directive is done loading
   };
 }]);
 
