@@ -10,12 +10,13 @@ var parseString = require('xml2js').parseString;
 app = express();
 middleware(app,express);
 
-
 //Global Variables
 var userDestination;
 var neighborhoods;
 var country;
 var numNeighborhoods;
+
+var neighborhoodObject = {};
 
 //Handle a POST request
 //api/getNeighbors
@@ -57,7 +58,11 @@ app.post('/api/getNeighbors', function (req, res) {
 
   .then(function (neighborhoodObj) {
     console.log('Distances fetched.');
+    return getAmenities(neighborhoodObj);
+  })
 
+  .then(function (neighborhoodObj) {
+    console.log('Amenities fetched.');
     //Fetch estimates and Demography Information only if the address is in the United States
     if(country === 'USA') { return getEstimates(neighborhoodObj, searchInfo); }
     else { checkAndRespond(neighborhoodObj); }
@@ -75,6 +80,104 @@ app.post('/api/getNeighbors', function (req, res) {
   });
 
 });	//end of POST request handler
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------
+//GET amenities for all neighborhoods
+/*Input: neighborhood Object
+  Output: neighborhood Object augmented with amenities
+*/
+var getAmenities = function (neighborhoodObj) {
+  var deferred = Q.defer();
+  // console.log('Get Amenities called.');
+
+  //console.log
+  var numEvents = 0;
+  numNeighborhoods = Object.keys(neighborhoodObj).length;
+
+  for(var neighborhood in neighborhoodObj) {
+    var coordinates = {
+      latitude : neighborhoodObj[neighborhood].latitude,
+      longitude : neighborhoodObj[neighborhood].longitude
+    };
+    queryAmenities(coordinates, neighborhood)
+    .then(function (tuple) {
+      //[amenitiesObj, neighborhood]
+      var amenitiesObj = tuple[0];
+      var neighborhood = tuple[1];
+
+      numEvents++;
+      neighborhoodObj[neighborhood].amenities = amenitiesObj;
+      // console.log('Number of events:',numEvents);
+      // console.log('Number of neighborhoods:',numNeighborhoods);
+
+      if(numEvents === numNeighborhoods) { deferred.resolve(neighborhoodObj); }    //change the if condition
+    });
+  }
+
+  return deferred.promise;
+}
+
+//-----------------------------------------------------------------------------------
+//Get amenities for a given neighrbood for radii 0.5, 1.5 and 2.5 kilometers
+/*Input: neighborhood Object
+  Output: AmenitiesObject
+*/
+var queryAmenities = function (coordinates, neighborhood) {
+  var deferred = Q.defer();
+
+  var amenitiesObj = {};
+  var radius = 500;
+  var types = 'atm|bank|beauty_salon|book_store|cafe|car_rental|car_repair|car_wash|clothing_store|convenience_store|dentist|department_store|doctor|electrician|electronics_store|fire_station|florist|food|furniture_store|gas_station|general_contractor|grocery_or_supermarket|gym|hair_care|hardware_store|health|home_goods_store|hospital|insurance_agency|laundry|library|liquor_store|locksmith|meal_delivery|meal_takeaway|movie_rental|parking|pet_store|pharmacy|plumber|post_office|school|shoe_store|spa|store|subway_station|taxi_stand|train_station|veterinary_care';
+
+  var gAmenitiesUrl_location = 'https://maps.googleapis.com/maps/api/place/search/json?location=';
+  var gAmenitiesUrl_radius = '&radius=';
+  var gAmenitiesUrl_types = '&types=';
+  var gAmenitiesUrl_key = '&key=';
+
+  var gAmenitiesUrl_1 = gAmenitiesUrl_location + coordinates.latitude + ',' + coordinates.longitude + gAmenitiesUrl_radius;
+  var gAmenitiesUrl_2 = gAmenitiesUrl_types + types + gAmenitiesUrl_key + keys.googleAPIKey;
+
+  var numEvents = 0;
+
+  //function to append amenities to amenities object
+  var append = function (amenitiesArray) {
+    for(var i=0; i<amenitiesArray.length; i++) {
+      var amenity = amenitiesArray[i];
+      amenitiesObj[amenity.name] = amenitiesObj[amenity.name] || amenity;
+    }
+  }
+
+  //Fetch amenities for radii 500, 1500 and 2500
+  for(var i=0; i<3; i++) {
+    var gAmenitiesUrl = gAmenitiesUrl_1 + radius + gAmenitiesUrl_2;
+    // console.log('gAmenitiesUrl:',gAmenitiesUrl);
+    radius += 1000;
+
+    getRequest(gAmenitiesUrl)
+    .then(function (responseObj) {
+      numEvents++;
+      //remove
+      // console.log('queryAmenities says: number of amenities:', responseObj.results.length);
+      append(responseObj.results);
+
+      if(numEvents === 3) {
+        //remove
+        console.log('Total number of amenities:', Object.keys(amenitiesObj).length);
+        deferred.resolve([amenitiesObj, neighborhood]);
+      }
+    }, function (errorMessage) {
+      numEvents++;
+      if(numEvents === 3) { deferred.resolve([amenitiesObj, neighborhood]); }
+    });
+  }
+
+  return deferred.promise;
+}
 
 //-----------------------------------------------------------------------------------
 //GET auxillary information for a neighborhood from Zillow
@@ -96,8 +199,9 @@ var getDemographics  = function (neighborhoodObj) {
 
       numEvents++;
       // console.log('Zillow data fetched for neighborhood:', neighborhood);
-      // console.log('Demography information:', demographyObj);
-      _.extend(neighborhoodObj[neighborhood], demographyObj);
+      // console.log('Demography information:', demographyObj['Demographics:demographics']);
+      neighborhoodObj[neighborhood].demography = demographyObj['Demographics:demographics'].response[0];
+      // _.extend(neighborhoodObj[neighborhood], demographyObj);
 
       if(numEvents === numNeighborhoods) {
         deferred.resolve(neighborhoodObj);
@@ -163,7 +267,7 @@ var findNeighborhoods = function (geoCode) {
 										 gPlacesUrl_key + key;
 
     //remove
-    console.log('gPlaces:', gPlacesUrl);
+    // console.log('gPlaces:', gPlacesUrl);
 
 		getRequest(gPlacesUrl)
 		.then(function (responseObj) {
@@ -245,7 +349,7 @@ var getEstimates = function (neighborhoodObj, searchInfo) {
 			neighborhoodObj[neighborhood].propertyType = propertyType;
 
 			if(numEvents === numNeighborhoods) {
-				console.log('Resolved.');
+				// console.log('Resolved.');
 				deferred.resolve(neighborhoodObj);
 			}
 
@@ -287,21 +391,21 @@ var zilpy = function (searchInfo, neighborhood) {
   // console.log('zilpyUrl', zilpyUrl);
 
   //remove
-  deferred.resolve(['ZTO', 'ZTO', neighborhood]);
+  // deferred.resolve(['ZTO', 'ZTO', neighborhood]);
 
   // UNCOMMENT - ZILPY TEMPORARILY DISABLED
   //----------------------------------------------------------------------------
-	// getRequest(zilpyUrl)
-	// .then(function (zilpyData) {
-	// 	 console.log('Neighborhood fetched:',neighborhood);
-	// 	 // console.log('Zilpy Data:',zilpyData);
- //     // console.log('************************');
-	// 	deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
-	// }, function (errorMessage) {
- //    console.log('Error/server not responding.');
- //    console.log('errorMessage:', errorMessage);
- //    deferred.resolve(['N/A', 'N/A', neighborhood]);
- //  });
+	getRequest(zilpyUrl)
+	.then(function (zilpyData) {
+		 // console.log('Neighborhood fetched:',neighborhood);
+		 // console.log('Zilpy Data:',zilpyData);
+     // console.log('************************');
+		deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
+	}, function (errorMessage) {
+    console.log('Error/server not responding.');
+    console.log('errorMessage:', errorMessage);
+    deferred.resolve(['N/A', 'N/A', neighborhood]);
+  });
 
 	return deferred.promise;
 }
@@ -327,7 +431,7 @@ var getDistances = function (neighborhoodObj, transitMode) {
 
   var gDrivingUrl_origins = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=';		//lat,lng|lat,lng|lat,lng
   var gDrivingUrl_destinations = '&destinations=';
-  var gDrivingUrl_mode = '&units=imperial&mode=';
+  var gDrivingUrl_mode = '&units=metric&mode=';
   var gDrivingUrl_key = '&key=';
 
   for (var neighborhood in neighborhoodObj) {
@@ -423,7 +527,7 @@ var getStreetAddresses = function (neighborhoodObj) {
       //remove
       // console.log('----------getStreetAddresses----------')
       // console.log('Number of streetAddresses:',numEvents);
-      // console.log('Street Address:', streetAddress);
+      // console.log('addressObj:', addressObj);
 
       neighborhoodObj[neighborhood].streetAddress = addressObj.formatted_address;
       if(country === 'USA') { _.extend(neighborhoodObj[neighborhood], addressObj); }
@@ -474,37 +578,34 @@ var reverseGeocode = function (coordinates, neighborhood) {
 	getRequest(geocodeUrl)
 	.then(function (streetAddress) {
 		 // console.log('***********reverse Geocode**********');
-     // console.log('streetAddress fetched.');
+   //   console.log('streetAddress fetched.');
 		 // console.log('LatLng:',coordinates.latitude, coordinates.longitude);
 		 // console.log('Street Address:',streetAddress);
 
-
-     var addressBits = streetAddress.results[0].formatted_address.split(', ');
-     // console.log('Street address pieces:', addressBits);
-
-
-     var addressObj = { formatted_address: streetAddress.results[0].formatted_address }
-
-     //Update the global variable
-     country = addressBits.pop();
-     if(country === 'USA') {
-       //standard format
-       var stateZip = addressBits.pop().split(' ');
-       var state = stateZip[0];
-       var zip = stateZip[1];
-       var city = addressBits.pop();
-
-       addressObj.country = country;
-       addressObj.state = state;
-       addressObj.city = city;
-       addressObj.zip = zip;
-     }
-
-     //remove
-     // console.log('addressObj:',addressObj);
-
      if(streetAddress.status === 'OK') {
-		   deferred.resolve([addressObj, neighborhood]);
+       var addressBits = streetAddress.results[0].formatted_address.split(', ');
+       // console.log('Street address pieces:', addressBits);
+       var addressObj = { formatted_address: streetAddress.results[0].formatted_address }
+
+       //Update the global variable
+       country = addressBits.pop();
+       if(country === 'USA') {
+         //standard format
+         var stateZip = addressBits.pop().split(' ');
+         var state = stateZip[0];
+         var zip = stateZip[1];
+         var city = addressBits.pop();
+
+         addressObj.country = country;
+         addressObj.state = state;
+         addressObj.city = city;
+         addressObj.zip = zip;
+       }
+
+       //remove
+       // console.log('addressObj:',addressObj);
+
+  		 deferred.resolve([addressObj, neighborhood]);
      }
      else {
        deferred.resolve([{formatted_address : 'Not available'}, neighborhood]);
@@ -623,7 +724,7 @@ var getRequest = function (url) {
 	request(url, function (error, response, body) {
 
     //remove
-    //console.log('Response status:', response.statusCode);
+    // console.log('Response status:', response.statusCode);
 
     if(error) { console.log('Error for url:', url); deferred.reject("Not Available"); }
     if (!error && response.statusCode == 200) { deferred.resolve(JSON.parse(body)); }
@@ -645,7 +746,7 @@ var getXmlRequest = function (url) {
   request(url, function (error, response, body) {
 
     //remove
-    //console.log('Response status:', response.statusCode);
+    // console.log('Response status:', response.statusCode);
 
     if(error) { console.log('Error for url:', url); deferred.reject("Not Available"); }
     if (!error && response.statusCode == 200) {
