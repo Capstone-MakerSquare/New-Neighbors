@@ -20,7 +20,7 @@ details.controller('detailsController', ['$scope', function ($scope){
 
   $scope.isCollapsed = true;
   $scope.moreLess = '+ More';
-  $scope.switch = function() {
+  $scope.expandCollapse = function() {
     if ($scope.moreLess === '+ More') {
       $scope.moreLess = '- Less';
     } else if ($scope.moreLess === '- Less') {
