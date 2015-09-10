@@ -1,13 +1,18 @@
 /*landing page css*/
 
+.landing-container .form-group {
+  margin-bottom: 0;
+}
+
 .landing-photo {
   background-image: url('../images/santamonica.jpg');
   height: 100%;
   background-size: cover;
   text-align: center;
-  padding-top: 200px;
+  padding-top: 300px;
   padding-bottom: 200px;
   max-height: 800px;
+  min-height:650px;
 }
 
 .cover-heading {
@@ -21,13 +26,44 @@
   height: 100%; /* For at least Firefox */
   min-height: 100%;
 }
+
 .site-wrapper-inner {
   display: table-cell;
   vertical-align: top;
 }
+
 .cover-container {
   margin-right: auto;
   margin-left: auto;
+}
+
+.landing-container form {
+  margin-top:25px;
+}
+
+.landing-container #place-search {
+  height:16px;
+}
+
+/*.landing-container #rentBuy {
+  margin-left:18px;
+}
+*/
+.landing-container .landingSearchForm {
+  display: relative;
+}
+
+.landing-container .searchForm {
+  width: 100%;
+  position: absolute;
+  bottom:50px;
+  background-color: #fff;
+  background-color: rgba(255,255,255, 0.3);
+}
+
+.landing-container #place-search,
+.landing-container .form-group select {
+  border-radius:0;
 }
 
 /* to handle different devices */
@@ -43,17 +79,21 @@
 
 @media (min-width: 992px) {
   .cover-container {
-    width: 700px;
+/*    width: 700px;*/
+  }
+
+  .landing-container .landing-form {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .how-to-use {
+    text-align: center;
+  }
+
+  .our-team {
+    text-align: center;
   }
 }
 
-.how-to-use {
-  text-align: center;
-}
-
-.our-team {
-  text-align: center;
-}
-
-.our-team-links {}
 
