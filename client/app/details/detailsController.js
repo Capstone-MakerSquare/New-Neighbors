@@ -14,4 +14,23 @@ details.controller('detailsController', ['$scope', function ($scope){
     'assets/images/default-japan-slideshow-8.jpeg',
     'assets/images/default-japan-slideshow-9.jpeg'
   ];
+
+  //----------------------------------------------------------------------------------
+  //to expand and collapse icons section
+
+  $scope.isCollapsed = true;
+  $scope.moreLess = '+ More';
+  $scope.switch = function() {
+    if ($scope.moreLess === '+ More') {
+      $scope.moreLess = '- Less';
+    } else if ($scope.moreLess === '- Less') {
+      $scope.moreLess = '+ More';
+    }
+    $scope.isCollapsed = !$scope.isCollapsed;
+  };
+
+  //----------------------------------------------------------------------------------
+
+
+
 }]);
