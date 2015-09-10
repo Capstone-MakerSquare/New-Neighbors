@@ -53,12 +53,12 @@ small {
 }
 
 .details-container .details-neighborhood-bg {
-/*  background-image: url("../images/gas-icon.png");
-*//*  background-color: red;
-*/  background-size: cover;
+  background: webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
   width:100%;
   height:100px;
-  opacity:0.5;
 }
 
 .details-container h1 {
