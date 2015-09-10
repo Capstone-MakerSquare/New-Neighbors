@@ -120,15 +120,14 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, S
   var requestNeighborhoods = function() {
     ServerApi.submit(main.searchInfo)
     .then(function(data) {
-        main.severResponse = data;
-        main.neighborhoods = Object.keys(data).map(function(key) {
+      main.severResponse = data;
+      main.neighborhoods = Object.keys(data).map(function(key) {
         return data[key];
-     });
-
-     main.neighborhoodArray = main.orderByArray(main.neighborhoods);
-     console.log(main.neighborhoods)
-     main.filterNeighborhoods();
-     console.log('order by array', main.neighborhoodArray);
+      });
+      main.aminitiesObj = Details.getAmenitiesObj(main.neighborhoods);
+      main.neighborhoodArray = main.orderByArray(main.neighborhoods);
+      main.filterNeighborhoods();
+      console.log('order by array', main.neighborhoodArray);
     });
   };
 
