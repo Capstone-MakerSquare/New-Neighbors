@@ -1,4 +1,6 @@
 # New-Neighbors
+[![Dependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev)
+[![devDependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev/dev-status.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev#info=devDependencies)<br>
 
 An application to help you move into any new locality in the United States, by suggesting you personalized recommendations for the best neighborhoods around.
 
@@ -6,8 +8,6 @@ An application to help you move into any new locality in the United States, by s
 *******PLEASE READ WHEN FIRST INSTALLING DEPENDENCIES FOR REPO *********
 
 # Foundation for Apps Template
-
-[![devDependency Status](https://david-dm.org/zurb/foundation-apps-template/dev-status.svg)](https://david-dm.org/zurb/foundation-apps-template#info=devDependencies)
 
 This is the default template project for Foundation for Apps, powered by Gulp, Angular, and libsass. It provides you with a basic template to get started with Foundation for Apps and Angular.
 
