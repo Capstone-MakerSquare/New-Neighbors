@@ -1,7 +1,9 @@
 app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, ServerApi, $state){
 
   var main = this;
-
+  console.log(main.isCollapsed);
+  main.isCollapsed = false;
+  console.log(main.isCollapsed);
   main.neighborhoodsObj = {}; //this is the response from the server
 
   main.searchInfo = {}; // JSON obj to send to server
