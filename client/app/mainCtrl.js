@@ -1,4 +1,4 @@
-app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, ServerApi, $state){
+app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', function (Map, ServerApi, $state, Details){
 
   var main = this;
   console.log(main.isCollapsed);
@@ -18,6 +18,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, S
 
   main.filteredNeighborhoodArray = [];
   main.serverResponse = {};
+
+  main.placesObj = {};
 
   main.coordinates = {
       latitude: 38.5,
@@ -121,13 +123,14 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, S
     ServerApi.submit(main.searchInfo)
     .then(function(data) {
       main.severResponse = data;
-      main.neighborhoods = Object.keys(data).map(function(key) {
-        return data[key];
-      });
-      main.aminitiesObj = Details.getAmenitiesObj(main.neighborhoods);
-      main.neighborhoodArray = main.orderByArray(main.neighborhoods);
-      main.filterNeighborhoods();
-      console.log('order by array', main.neighborhoodArray);
+       main.neighborhoods = Object.keys(data).map(function(key) {
+         return data[key];
+       });
+       console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
+       main.placesObj = Details.getPlacesObj(main.neighborhoods);
+       main.neighborhoodArray = main.orderByArray(main.neighborhoods);
+       main.filterNeighborhoods();
+       console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
     });
   };
 

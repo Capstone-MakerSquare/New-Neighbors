@@ -11,7 +11,7 @@ var app = angular.module('myApp', [
   'myApp.thumbnails',
   'myApp.charts'
 ]);
-console.log("app.js called");
+
 app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.
     otherwise("/landing");

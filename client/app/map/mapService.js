@@ -1,4 +1,3 @@
-console.log("reached map service");
 mapMod // = angular.module('myApp.mapServices',[])
 .factory('Map', function () {
 

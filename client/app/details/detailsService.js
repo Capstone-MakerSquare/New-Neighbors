@@ -1,67 +1,78 @@
-angular.module('myApp.detailsService',[])
+console.log('detailsService called)');
+
+details
 .factory('Details', function () {
 
-  var AmenitiesDict = {
+  var placesDict = {
+    airport: [],
     atm: [],
     bank: [],
-    beauty_salon: [],
+    bar: [],
     book_store: [],
     cafe: [],
     car_rental: [],
-    car_repair: [],
-    car_wash: [],
-    clothing_store: [],
     convenience_store: [],
-    dentist: [],
     department_store: [],
-    doctor: [],
-    electrician: [],
-    electronics_store: [],
     fire_station: [],
-    florist: [],
-    food: [],
-    furniture_store: [],
     gas_station: [],
-    general_contractor: [],
     grocery_or_supermarket: [],
     gym: [],
-    hair_care: [],
-    hardware_store: [],
-    health: [],
-    home_goods_store: [],
     hospital: [],
-    insurance_agency: [],
     laundry: [],
     library: [],
-    liquor_store: [],
-    locksmith: [],
-    meal_delivery: [],
-    meal_takeaway: [],
-    movie_rental: [],
-    parking: [],
-    pet_store: [],
     pharmacy: [],
-    plumber: [],
+    police: [],
     post_office: [],
+    restaurant: [],
     school: [],
-    shoe_store: [],
     spa: [],
     store: [],
     subway_station: [],
-    taxi_stand: [],
     train_station: [],
-    veterinary_care: []
-  }
+    veterinary_care: [],
+    amusement_park: [],
+    aquarium: [],
+    art_gallery: [],
+    bowling_alley: [],
+    casino: [],
+    movie_theatre: [],
+    museum: [],
+    night_club: [],
+    park: [],
+    shopping_mall: [],
+    stadium: [],
+    university: [],
+    zoo: []
+  };
 
-  var getAmenitiesObj = function (neighborhoodArr) {
+  var getPlacesObj = function (neighborhoodArr) {
+    var results = {};
+    var temp;
     for (var i = 0; i < neighborhoodArr.length; i++) {
-
+      temp = {};
+      var places = neighborhoodArr[i].amenities_attractions;
+      for (var place in places) {
+        console.log('places[place].types', places[place].types);
+        if (places[place].types && places[place].types.length > 0) {
+          for (var j = 0; j < places[place].types.length; j++){
+            if (placesDict[places[place].types[j]] && temp[places[place].types[j]]) {
+              temp[places[place].types[j]].push(places[place]);
+            } else if (placesDict[places[place].types[j]] && !temp[places[place].types[j]]) {
+              temp[places[place].types[j]] = [places[place]];
+            }
+          }
+        }
+      }
+      results[neighborhoodArr[i].name] = temp;
     }
-  }
+    console.log('results', results);
+    //console.log('getPlacesObj results:', results, 'counter', counter, 'counter2', counter2);
+    return results;
+  };
 
 
   return {
-    AmenitiesDict: AmenitiesDict,
-    getAmenitiesObj : getAmenitiesObj
+    placesDict: placesDict,
+    getPlacesObj : getPlacesObj
   };
 });
