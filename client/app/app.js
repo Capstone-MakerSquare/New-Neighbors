@@ -1,6 +1,8 @@
 var app = angular.module('myApp', [
   'ui.router',
   'slick',
+  'ui.bootstrap',
+  'ngAnimate',
   'myApp.requestHoodServices',
   'myApp.map',
   'myApp.details',
