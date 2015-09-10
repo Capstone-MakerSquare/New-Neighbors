@@ -1,7 +1,11 @@
 var app = angular.module('myApp', [
   'ui.router',
+  'slick',
+  'ui.bootstrap',
+  'ngAnimate',
   'myApp.requestHoodServices',
   'myApp.map',
+  'myApp.details',
   'myApp.searchForm',
   'myApp.filter',
   'myApp.thumbnails'
