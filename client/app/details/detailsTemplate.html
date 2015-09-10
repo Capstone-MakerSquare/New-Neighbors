@@ -65,16 +65,15 @@
       </div>
     </div>
   </div>
-   <!-- slideshow -->
-  <div class="photo-gallery">
-    <img src="assets/images/default-photo-gallery.jpg">
-  </div>
+  <hr>
+     <!-- slideshow -->
+  <div class="col-md-12 slideshow" ng-controller="detailsController">
+    <slick dots=true infinite=false speed=300 slides-to-show=3 touch-move=false slides-to-scroll=4>
+      <div ng-repeat="pic in picturesArr">
+        <img ng-src="{{pic}}"/>
+      </div>
+    </slick>
+  </div> 
 </div>
-
-
-
-
-
-
 
 

@@ -4,8 +4,6 @@
   margin-bottom:0;
 }
 
-
-
 /* default styles */
 
  ul {
@@ -93,7 +91,6 @@ small {
   cursor: pointer;
 }
 
-
 .details-container .icon {
   display: inline-block;
   margin-right:0px;
@@ -105,11 +102,10 @@ small {
   margin-left:20px;
 }
 
-.photo-gallery {
-  overflow: hidden;
-  width:100%;
-  text-align: center;
-  max-height:300px;
+.slideshow {
+  overflow:hidden;
+  height:250px;
+
 }
 
 .thumbnails-container {
