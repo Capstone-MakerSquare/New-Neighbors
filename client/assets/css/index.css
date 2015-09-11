@@ -121,12 +121,15 @@ small {
   height:25px;
 }
 
+<<<<<<< HEAD
 .details-container .card-block img {
   display: inline-block;
   width:100px;
   height:100px;
 }
 
+=======
+>>>>>>> [Merge] Fixes merge conflict in details template
 .details-container .commute .card-block {
   text-align: right;
 }
@@ -169,6 +172,7 @@ small {
   text-align: center;
   vertical-align: middle;
   font-size: 20px;
+<<<<<<< HEAD
 }
 
 .nav-container a {
@@ -176,6 +180,12 @@ small {
 }
 
 .nav-container .nav-button {
+=======
+  color:#fff;
+}
+
+.nav-container > div > div > div {
+>>>>>>> [Merge] Fixes merge conflict in details template
   background-color: #5f327c;
   text-shadow: 0px -1px 0px rgba(30, 30, 30, 0.8);
     -webkit-box-shadow: 0px 4px 5px rgba(31, 31, 31, 0.50);
@@ -184,7 +194,11 @@ small {
   padding-top:5px;
   min-width:100px;
   width:80%;
+<<<<<<< HEAD
   max-height:60px;
+=======
+  height:40px;
+>>>>>>> [Merge] Fixes merge conflict in details template
   margin:0 auto;
 }
 

@@ -9,6 +9,7 @@
       </div>
     </slick>
   </div>
+
   <!-- neighborhood description -->
   <div class="col-md-12 rent-commute-container">
     <div class="row">
@@ -27,7 +28,9 @@
     </div>
   </div>
   
-   <div class="col-sm-12 col-md-10 col-md-offset-1 nav-container">
+  <!-- amenities and attractions -->
+  <div class="col-sm-12 col-md-10 col-md-offset-1 nav-container">
+    <hr>
     <div class="row">
       <div class="col-md-4">
         <div class="nav-button">
@@ -45,25 +48,28 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- amenities and attractions -->
-    <div class="col-md-12">
-      <hr>
-      <div class="row">
-        <div class="col-xs-12 col-sm-2">
-          <label class="">Amenities and Attractions</label>
-        </div>
-        <div class="col-xs-12 col-sm-10">
-          <div class="row" ng-repeat="place in currentNeighborhood.places">
-            <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-              <span ng-click="displayMarkers(place)">{{place[0]}}</span>
-          </div>
+
+  <!-- amenities and attractions -->
+  <div class="col-md-12">
+    <hr>
+    <div class="row">
+      <div class="col-xs-12 col-sm-2">
+        <label class="">Amenities and Attractions</label>
+      </div>
+      <div class="col-xs-12 col-sm-10">
+        <div class="row" ng-repeat="place in currentNeighborhood.places">
+          <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+            <span ng-click="displayMarkers(place)">{{place[0]}}</span>
         </div>
       </div>
-      <hr>
     </div>
-    <div ui-view="detail-section"></div>
+    <hr>
   </div>
+  <div ui-view="detail-section"></div>
 </div>
+
+
 
 
