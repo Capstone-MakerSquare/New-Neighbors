@@ -121,6 +121,12 @@ small {
   height:25px;
 }
 
+.details-container .card-block img {
+  display: inline-block;
+  width:100px;
+  height:100px;
+}
+
 .details-container .commute .card-block {
   text-align: right;
 }
