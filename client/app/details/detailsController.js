@@ -1,7 +1,6 @@
-console.log("details has been called");
 var details = angular.module('myApp.details', []);
 
-details.controller('detailsController', ['$scope', function ($scope){
+details.controller('detailsController', ['$scope', 'Details', 'Map', function ($scope, Details, Map){
 
   $scope.picturesArr = [
     'assets/images/default-japan-slideshow-1.jpeg',
@@ -14,6 +13,17 @@ details.controller('detailsController', ['$scope', function ($scope){
     'assets/images/default-japan-slideshow-8.jpeg',
     'assets/images/default-japan-slideshow-9.jpeg'
   ];
+
+  $scope.currentNeighborhood = Details.currentNeighborhood;
+
+  $scope.displayMarkers = function(place) {
+    var coordinates = {
+      latitude: place[1][0].geometry.location.lat,
+      longitude: place[1][0].geometry.location.lng
+    }
+    Map.dropMarker(coordinates, place[1].name)
+  }
+
 
   //----------------------------------------------------------------------------------
   //to expand and collapse icons section
@@ -30,6 +40,7 @@ details.controller('detailsController', ['$scope', function ($scope){
   };
 
   //----------------------------------------------------------------------------------
+
 
 
 

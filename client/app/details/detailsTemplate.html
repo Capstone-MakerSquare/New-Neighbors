@@ -1,7 +1,8 @@
-<div class="details-container">
+<div class="details-container" ng-controller="detailsController">
  <!-- neighborhood header -->
   <div class="details-neighborhood-bg" ng-style="main.randomImage()">
-    <h1>Tokyo</h1>
+    <h1>{{currentNeighborhood.name}}</h1>
+
   </div>
   <charts></charts>
    <!-- tabs -->
@@ -11,13 +12,13 @@
       <div class="col-md-6">
         <div class="card-block">
           <h5 class="card-title">Rent Estimates</h5>
-          <p class="card-text">${{neighborhood.estimateLow || N/A }} - ${{neighborhood.estimateHigh || N/A }}</p>
+          <p class="card-text">${{currentNeighborhood.estimateLow}} - ${{currentNeighborhood.estimateHigh}}</p>
         </div>
       </div>
       <div class="col-md-6">
         <div class="card-block">
           <h5 class="card-title">Commute Time</h5>
-          <p class="card-text">{{neighborhood.commuteDistance}} miles | {{neighborhood.commuteTime}} minutes</p>
+          <p class="card-text">{{currentNeighborhood.commuteDistance}} miles | {{currentNeighborhood.commuteTime}} minutes</p>
         </div>
       </div>
     </div>
@@ -26,57 +27,17 @@
   <!-- amenities and attractions -->
   <div class="col-md-12">
     <div class="row">
-      <div class="col-xs-12 col-md-12">
-        <p>Container for attractions</p>
-      </div>
-    </div>
-    <hr>
-    <div class="row">
       <div class="col-xs-12 col-sm-2">
-         <label class="">Amenities</label>
+        <label class="">Amenities and Attractions</label>
       </div>
       <div class="col-xs-12 col-sm-10">
-        <div class="row" ng-controller="detailsController">
-            <div class="col-xs-6 col-sm-4">
-              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-              <span>Hospitals</span>
-            </div>
-            <div class="col-xs-6 col-sm-4">
-              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-              <span>Grocery Stores</span>
-            </div>
-            <div class="col-xs-6 col-sm-4" >
-              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-              <span>Hair Salons</span>
-            </div>
-            <div class="col-xs-6 col-sm-4 checkbox" >
-              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-              <span>Parks</span>
-            </div>
-            <div class="col-xs-6 col-sm-4" >
-              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-              <span>Library</span>
-            </div>
-          <div class="col-xs-6 col-sm-4 mt-20"><a href="#" ng-click="expandCollapse()">{{moreLess}}</a></div>
-            <div class="col-xs-6 col-sm-4"   <div collapse="isCollapsed">>
-              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-              <span>Hidden</span>
-            </div>
-            <div class="col-xs-6 col-sm-4"   <div collapse="isCollapsed">>
-              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-              <span>Hidden</span>
-            </div>
-            <div class="col-xs-6 col-sm-4"   <div collapse="isCollapsed">>
-              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-              <span>Hidden</span>
-            </div>
-            <div class="col-xs-6 col-sm-4"   <div collapse="isCollapsed">>
-              <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-              <span>Hidden</span>
-            </div>
+        <div class="row" ng-repeat="place in currentNeighborhood.places">
+          <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+            <span ng-click="displayMarkers(place)">{{place[0]}}</span>
         </div>
       </div>
     </div>
+    <hr>
   </div>
   <hr>
      <!-- slideshow -->

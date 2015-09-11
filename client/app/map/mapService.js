@@ -1,4 +1,3 @@
-console.log("reached map service");
 mapMod // = angular.module('myApp.mapServices',[])
 .factory('Map', function () {
 
@@ -42,15 +41,28 @@ mapMod // = angular.module('myApp.mapServices',[])
 
   //----------------------------------------------------------------------------------
   //Drop a marker
-  var dropMarker = function (coordinates, title) {
+  var dropMarker = function (coordinates, title, tooltip) {
     var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
 
-    if(marker) { marker.setMap(null); }
+    // if(marker) { marker.setMap(null); }
     marker = new google.maps.Marker({
       position: latLng,
       map: map,
       title: title
     });
+    console.log(tooltip)
+
+    // if(tooltip) {
+    //   var infowindow = new google.maps.InfoWindow({
+    //     content: tooltip
+    //   });
+    //   marker.addListener('click', function() {
+    //     infowindow.open(map, marker);
+    //   });
+      // marker.addListener('click', function() {
+      //   infowindow.close(map, marker);
+      // });
+    // }
   }
 
   //----------------------------------------------------------------------------------
