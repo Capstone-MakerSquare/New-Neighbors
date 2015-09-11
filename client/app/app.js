@@ -54,6 +54,30 @@ app.config(function($stateProvider, $urlRouterProvider) {
           templateUrl: "./app/details/detailsTemplate.html"
         }
       }
+    })
+    .state('main.details.localSpots', {
+      url: "/localSpots",
+      views: {
+        "detail-section": {
+          templateUrl: "./app/localSpots/localSpotsTemplate.html"
+        }
+      }
+    })
+    .state('main.details.attractions', {
+      url: "/attractions",
+      views: {
+        "detail-section": {
+          templateUrl: "./app/attractions/attractionsTemplate.html"
+        }
+      }
+    })
+   .state('main.details.statistics', {
+      url: "/statistics",
+      views: {
+        "detail-section": {
+          templateUrl: "./app/statistics/statisticsTemplate.html"
+        }
+      }
     });
   });
 

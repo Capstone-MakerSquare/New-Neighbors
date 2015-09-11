@@ -31,6 +31,11 @@ p {
   margin-bottom: 2px;
 }
 
+a:hover, a:focus {
+  color:#fff;
+  text-decoration: none;
+}
+
 small {
   font-style: italic;
 }
@@ -158,10 +163,13 @@ small {
   text-align: center;
   vertical-align: middle;
   font-size: 20px;
+}
+
+.nav-container a {
   color:#fff;
 }
 
-.nav-container > div > div > div {
+.nav-container .nav-button {
   background-color: #5f327c;
   text-shadow: 0px -1px 0px rgba(30, 30, 30, 0.8);
     -webkit-box-shadow: 0px 4px 5px rgba(31, 31, 31, 0.50);
@@ -170,7 +178,7 @@ small {
   padding-top:5px;
   min-width:100px;
   width:80%;
-  height:40px;
+  max-height:60px;
   margin:0 auto;
 }
 
