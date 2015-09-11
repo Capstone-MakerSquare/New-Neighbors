@@ -59,6 +59,9 @@ angular.module('myApp.charts', [])
         chart: {
             type: 'pie'
         },
+        title: {
+          text:'Age Distribution'
+        },
 
         plotOptions: {
             pie: {

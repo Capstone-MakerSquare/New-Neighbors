@@ -71,11 +71,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
         }
       }
     })
-   .state('main.details.statistics', {
-      url: "/statistics",
+   .state('main.details.charts', {
+      url: "/charts",
       views: {
         "detail-section": {
-          templateUrl: "./app/statistics/statisticsTemplate.html"
+          template: '<charts></charts>'
         }
       }
     });
