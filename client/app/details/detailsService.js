@@ -1,7 +1,8 @@
-console.log('detailsService called)');
-
 details
 .factory('Details', function () {
+
+  var neighborhoodDetailsObj;
+  var currentNeighborhood;
 
   var placesDict = {
     airport: [],
@@ -12,7 +13,6 @@ details
     cafe: [],
     car_rental: [],
     convenience_store: [],
-    department_store: [],
     fire_station: [],
     gas_station: [],
     grocery_or_supermarket: [],
@@ -50,29 +50,47 @@ details
     var temp;
     for (var i = 0; i < neighborhoodArr.length; i++) {
       temp = {};
-      var places = neighborhoodArr[i].amenities_attractions;
-      for (var place in places) {
-        console.log('places[place].types', places[place].types);
-        if (places[place].types && places[place].types.length > 0) {
-          for (var j = 0; j < places[place].types.length; j++){
-            if (placesDict[places[place].types[j]] && temp[places[place].types[j]]) {
-              temp[places[place].types[j]].push(places[place]);
-            } else if (placesDict[places[place].types[j]] && !temp[places[place].types[j]]) {
-              temp[places[place].types[j]] = [places[place]];
+      var establishments = neighborhoodArr[i].amenities_attractions;
+      for (var place in establishments) {
+        if (establishments[place].types && establishments[place].types.length > 0) {
+          for (var j = 0; j < establishments[place].types.length; j++){
+            if (placesDict[establishments[place].types[j]] && temp[establishments[place].types[j]]) {
+              temp[establishments[place].types[j]].push(establishments[place]);
+            } else if (placesDict[establishments[place].types[j]] && !temp[establishments[place].types[j]]) {
+              temp[establishments[place].types[j]] = [establishments[place]];
             }
           }
         }
       }
+      if(neighborhoodArr[i].name==='Downtown') {
+        neighborhoodArr[i].name = neighborhoodArr[i].name + ' ' + neighborhoodArr[i].city;
+      }
       results[neighborhoodArr[i].name] = temp;
     }
     console.log('results', results);
-    //console.log('getPlacesObj results:', results, 'counter', counter, 'counter2', counter2);
+    neighborhoodDetailsObj = results;
     return results;
   };
+
+  // var mapCurrentNeighborhood = function(neighborhood, placesObj) {
+  //   currentNeighborhood = neighborhood;
+  //   currentNeighborhood.places = placesObj[neighborhood.name];
+  //   for (var place in currentNeighborhood.places){
+  //     if (place === "grocery_or_supermarket") {
+  //       currentNeighborhood.places[place] = ["grocery", currentNeighborhood.places[place]]
+  //     } else {
+  //       currentNeighborhood.places[place] = [place.replace("_", " "), currentNeighborhood.places[place]]
+  //     }
+  //   }
+  //   console.log(currentNeighborhood);
+  // }
 
 
   return {
     placesDict: placesDict,
+    currentNeighborhood: currentNeighborhood,
+    neighborhoodDetailsObj: neighborhoodDetailsObj,
     getPlacesObj : getPlacesObj
+    // mapCurrentNeighborhood:mapCurrentNeighborhood
   };
 });

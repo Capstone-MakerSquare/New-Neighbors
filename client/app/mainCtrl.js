@@ -1,9 +1,7 @@
 app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', function (Map, ServerApi, $state, Details){
 
   var main = this;
-  console.log(main.isCollapsed);
   main.isCollapsed = false;
-  console.log(main.isCollapsed);
   main.neighborhoodsObj = {}; //this is the response from the server
 
   main.searchInfo = {}; // JSON obj to send to server
@@ -36,6 +34,9 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
   main.orderByArray = function(neighborhoods){
     var arr = [];
     for (var i = 0; i < neighborhoods.length; i++) {
+      if(neighborhoods[i].name==='Downtown') {
+        neighborhoods[i].name = neighborhoods[i].name + ' ' + neighborhoods[i].city;
+      }
       arr.push({
           name: neighborhoods[i].name,
           commuteTime: neighborhoods[i].commuteInfo.commuteTime,
@@ -127,10 +128,12 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
          return data[key];
        });
        console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
+       console.log('requestNeighborhoods main.neighborhoods demographics', main.neighborhoods[0].demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0]);
        main.placesObj = Details.getPlacesObj(main.neighborhoods);
        main.neighborhoodArray = main.orderByArray(main.neighborhoods);
        main.filterNeighborhoods();
        console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
+       main.markNeighborhoods();
     });
   };
 
@@ -143,6 +146,14 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
       !(main.searchInfo.commuteTime < obj.commuteTime) &&
       !(main.searchInfo.commuteDistance < obj.commuteDistance);
     });
+  };
+
+  //----------------------------------------------------------------------------------
+  // Function to filter neighborhoods by user's filter options
+  main.markNeighborhoods = function() {
+    for (var i = 0; i < main.neighborhoodArray.length; i++) {
+      Map.dropMarker(main.neighborhoodArray[i].coordinates, main.neighborhoodArray[i].name, main.neighborhoodArray[i].name);
+    }
   };
 
   //----------------------------------------------------------------------------------
@@ -177,10 +188,27 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
   };
 
   //----------------------------------------------------------------------------------
+  //Function to map neighborhood data
+  main.mapCurrentNeighborhood = function (neighborhood) {
+    Details.currentNeighborhood = neighborhood;
+    Details.currentNeighborhood.places = main.placesObj[neighborhood.name];
+    for (var place in Details.currentNeighborhood.places){
+      if (place === "grocery_or_supermarket") {
+        Details.currentNeighborhood.places[place] = ["grocery", Details.currentNeighborhood.places[place]]
+      } else {
+        Details.currentNeighborhood.places[place] = [place.replace("_", " "), Details.currentNeighborhood.places[place]]
+      }
+    }
+  }
+
+  //----------------------------------------------------------------------------------
   //Function to drop a circle + marker on a selected neighborhood
   main.selectNeighborhood = function (neighborhood) {
     // console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
+    main.mapCurrentNeighborhood(neighborhood);
 
+    console.log('selectNeighborhood', Details.currentNeighborhood)
+    $state.go('main.details');
     Map.dropMarker(neighborhood.coordinates);
     Map.panAndFocus(neighborhood.coordinates, 13);
     Map.drawCircle(neighborhood.coordinates, 2000);
