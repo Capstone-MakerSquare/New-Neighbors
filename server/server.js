@@ -59,6 +59,11 @@ app.post('/api/getNeighbors', function (req, res) {
 
   .then(function (neighborhoodObj) {
     console.log('Distances fetched.');
+    return getPictures(neighborhoodObj);
+  })
+
+  .then(function (neighborhoodObj) {
+    console.log('Instagram Pictures fetched.');
     return getAmenitiesAndAttractions(neighborhoodObj);
   })
 
@@ -84,20 +89,91 @@ app.post('/api/getNeighbors', function (req, res) {
 
 
 //-----------------------------------------------------------------------------------
-//GET INSTAGRAM pictures that are location specific
+//GET INSTAGRAM pictures that are location specific for neighborhoods
 /*Input: neighborhood Object
-  Output: neighborhood Object augmented with amenities
+  Output: neighborhood Object augmented with Instagram images
 */
 var getPictures = function (neighborhoodObj) {
   var deferred = Q.defer();
   var numEvents = 0;
 
-  deferred.resolve(neighborhoodObj);
+
+  for(var neighborhood in neighborhoodObj) {
+    var coordinates = {
+      latitude : neighborhoodObj[neighborhood].latitude,
+      longitude : neighborhoodObj[neighborhood].longitude
+    };
+
+
+    //remove
+    // console.log('Calling instagram: Neighborhood:',neighborhood);
+
+    //remove
+    getInstagram(coordinates, neighborhood)
+    .then(function (tuple) {
+      //[imagesArray, neighborhood]
+      var imagesArray = tuple[0];
+      var neighborhood = tuple[1];
+
+      numEvents++;
+      neighborhoodObj[neighborhood].instagram = imagesArray;
+
+      //remove
+      console.log('Instagram Images received for neighborhood:', neighborhood);
+
+      if(numEvents === numNeighborhoods) {
+        deferred.resolve(neighborhoodObj);
+      }
+    });
+  }
+
   return deferred.promise;
 }
 
+//-----------------------------------------------------------------------------------
+//GET INSTAGRAM pictures that are location specific
+/*Input: Coordinates, neighborhood
+  Output: imagesArray with links
+*/
+var getInstagram = function (coordinates, neighborhood) {
+  var deferred = Q.defer();
 
+  var instaUrl_accessToken = 'https://api.instagram.com/v1/media/search?access_token='
+  var instaUrl_latitude = '&lat='
+  var instaUrl_longitude = '&lng='
+  var instaUrl_distance = '&distance=';
 
+  var instaUrl = instaUrl_accessToken + keys.instagramAccessToken +
+                 instaUrl_latitude + coordinates.latitude +
+                 instaUrl_longitude + coordinates.longitude +
+                 instaUrl_distance + 2000;
+
+  getRequest(instaUrl)
+  .then(function (responseObj) {
+    var results = responseObj.data;
+    var imagesArray = [];
+
+    //remove
+    // console.log('getInstagram says: Response data fetched: ',results.length);
+
+    _.each(results, function (result) {
+      // console.log(result.type);
+      imagesArray.push({
+        name: result.location.name,
+        type: result.type,
+        location: result.location,
+        link: result.link,
+        likes: result.likes,
+        images: result.images,
+        user: result.user
+      });
+    });
+
+    deferred.resolve([imagesArray, neighborhood]);
+  });
+
+  return deferred.promise;
+}
 
 //-----------------------------------------------------------------------------------
 //GET amenities for all neighborhoods
@@ -181,7 +257,8 @@ var queryAmenities = function (coordinates, neighborhood) {
 
       if(numEvents === 3) {
         //remove
-        console.log('Total number of amenities:', Object.keys(amenitiesObj).length);
+        // console.log('Total number of amenities:', Object.keys(amenitiesObj).length);
+
         deferred.resolve([amenitiesObj, neighborhood]);
       }
     }, function (errorMessage) {
