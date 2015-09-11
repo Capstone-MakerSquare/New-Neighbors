@@ -47,6 +47,7 @@ app.post('/api/getNeighbors', function (req, res) {
 
 	.then(function (neighborhoodObj) {
 		console.log('Neighborhoods fetched.');
+    numNeighborhoods = Object.keys(neighborhoodObj).length;
     if(Object.keys(neighborhoodObj).length === 0) { checkAndRespond({}); }
 		return getStreetAddresses(neighborhoodObj);
 	})
@@ -58,6 +59,11 @@ app.post('/api/getNeighbors', function (req, res) {
 
   .then(function (neighborhoodObj) {
     console.log('Distances fetched.');
+    return getPictures(neighborhoodObj);
+  })
+
+  .then(function (neighborhoodObj) {
+    console.log('Instagram Pictures fetched.');
     return getAmenitiesAndAttractions(neighborhoodObj);
   })
 
@@ -83,6 +89,93 @@ app.post('/api/getNeighbors', function (req, res) {
 
 
 //-----------------------------------------------------------------------------------
+//GET INSTAGRAM pictures that are location specific for neighborhoods
+/*Input: neighborhood Object
+  Output: neighborhood Object augmented with Instagram images
+*/
+var getPictures = function (neighborhoodObj) {
+  var deferred = Q.defer();
+  var numEvents = 0;
+
+
+  for(var neighborhood in neighborhoodObj) {
+    var coordinates = {
+      latitude : neighborhoodObj[neighborhood].latitude,
+      longitude : neighborhoodObj[neighborhood].longitude
+    };
+
+
+    //remove
+    // console.log('Calling instagram: Neighborhood:',neighborhood);
+
+    //remove
+    getInstagram(coordinates, neighborhood)
+    .then(function (tuple) {
+      //[imagesArray, neighborhood]
+      var imagesArray = tuple[0];
+      var neighborhood = tuple[1];
+
+      numEvents++;
+      neighborhoodObj[neighborhood].instagram = imagesArray;
+
+      //remove
+      console.log('Instagram Images received for neighborhood:', neighborhood);
+
+      if(numEvents === numNeighborhoods) {
+        deferred.resolve(neighborhoodObj);
+      }
+    });
+  }
+
+  return deferred.promise;
+}
+
+//-----------------------------------------------------------------------------------
+//GET INSTAGRAM pictures that are location specific
+/*Input: Coordinates, neighborhood
+  Output: imagesArray with links
+*/
+var getInstagram = function (coordinates, neighborhood) {
+  var deferred = Q.defer();
+
+  var instaUrl_accessToken = 'https://api.instagram.com/v1/media/search?access_token='
+  var instaUrl_latitude = '&lat='
+  var instaUrl_longitude = '&lng='
+  var instaUrl_distance = '&distance=';
+
+  var instaUrl = instaUrl_accessToken + keys.instagramAccessToken +
+                 instaUrl_latitude + coordinates.latitude +
+                 instaUrl_longitude + coordinates.longitude +
+                 instaUrl_distance + 2000;
+
+  getRequest(instaUrl)
+  .then(function (responseObj) {
+    var results = responseObj.data;
+    var imagesArray = [];
+
+    //remove
+    // console.log('getInstagram says: Response data fetched: ',results.length);
+
+    _.each(results, function (result) {
+      // console.log(result.type);
+      imagesArray.push({
+        name: result.location.name,
+        type: result.type,
+        location: result.location,
+        link: result.link,
+        likes: result.likes,
+        images: result.images,
+        user: result.user
+      });
+    });
+
+    deferred.resolve([imagesArray, neighborhood]);
+  });
+
+  return deferred.promise;
+}
+
+//-----------------------------------------------------------------------------------
 //GET amenities for all neighborhoods
 /*Input: neighborhood Object
   Output: neighborhood Object augmented with amenities
@@ -93,7 +186,7 @@ var getAmenitiesAndAttractions = function (neighborhoodObj) {
 
   //console.log
   var numEvents = 0;
-  numNeighborhoods = Object.keys(neighborhoodObj).length;
+
 
   for(var neighborhood in neighborhoodObj) {
     var coordinates = {
@@ -129,7 +222,7 @@ var queryAmenities = function (coordinates, neighborhood) {
 
   var amenitiesObj = {};
   var radius = 500;
-  var types = 'atm|bank|beauty_salon|book_store|cafe|car_rental|car_repair|car_wash|clothing_store|convenience_store|dentist|department_store|doctor|electrician|electronics_store|fire_station|florist|food|furniture_store|gas_station|general_contractor|grocery_or_supermarket|gym|hair_care|hardware_store|health|home_goods_store|hospital|insurance_agency|laundry|library|liquor_store|locksmith|meal_delivery|meal_takeaway|movie_rental|parking|pet_store|pharmacy|plumber|post_office|school|shoe_store|spa|store|subway_station|taxi_stand|train_station|veterinary_care|amusement_park|aquarium|art_gallery|bar|bowling_alley|casino|jewelry_store|movie_theatre|museum|night_club|park|restaurant|shopping_mall|stadium|university|zoo';
+  var types = 'airport|atm|bank|beauty_salon|book_store|cafe|car_rental|convenience_store|fire_station|food|gas_station|grocery_or_supermarket|gym|hospital|laundry|library|pharmacy|post_office|school|spa|store|subway_station|train_station|veterinary_care|amusement_park|aquarium|art_gallery|bar|bowling_alley|casino|movie_theatre|museum|night_club|park|restaurant|shopping_mall|stadium|university|zoo';
 
   var gAmenitiesUrl_location = 'https://maps.googleapis.com/maps/api/place/search/json?location=';
   var gAmenitiesUrl_radius = '&radius=';
@@ -164,7 +257,8 @@ var queryAmenities = function (coordinates, neighborhood) {
 
       if(numEvents === 3) {
         //remove
-        console.log('Total number of amenities:', Object.keys(amenitiesObj).length);
+        // console.log('Total number of amenities:', Object.keys(amenitiesObj).length);
+
         deferred.resolve([amenitiesObj, neighborhood]);
       }
     }, function (errorMessage) {
