@@ -4,8 +4,7 @@ angular.module('myApp.charts', [])
     var chartData = [];
 })
 .factory('DrawBar', function () {
-  return {
-    drawBar: function() {
+    var drawBar = function() {
       $('#percentage-chart').highcharts({
         chart: {
             type: 'column'
@@ -46,13 +45,42 @@ angular.module('myApp.charts', [])
             pointPadding: 0,
             pointPlacement: 0
         }, {
-            name: 'Turf',
-            color: 'rgba(126,86,134,.9)',
+            name: 'Neighborhood',
+            color: '#5F327C',
             data: [13, 40, 70],
             pointPadding: 0.2,
             pointPlacement: 0
         }]
       });
     }
+
+    var drawPie = function() {
+    $('#pie-chart').highcharts({
+        chart: {
+            type: 'pie'
+        },
+
+        plotOptions: {
+            pie: {
+                borderWidth: 3
+            }
+        },
+
+        series: [{
+            data: [
+                ['0-10 years old',   10],
+                ['10-20 years old',       20],
+                ['20-30 years old',       30],
+                ['30-40 years old',    15],
+                ['40-55 years old',    5],
+                ['55-70 years old',    15],
+                ['70+ years old',    5]
+            ]
+        }]
+    });
+  };
+  return {
+    drawBar: drawBar,
+    drawPie: drawPie
   };
 });

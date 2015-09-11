@@ -5,7 +5,10 @@ angular.module('myApp.charts')
     replace: true,
     templateUrl: 'app/charts/chartsTemplate.html',
     link: function() {
-      $timeout( function(){ DrawBar.drawBar() }, 0);
+      $timeout( function(){
+        DrawBar.drawBar()
+        DrawBar.drawPie()
+      }, 0);
     }
   };
 }]);
