@@ -47,6 +47,7 @@ app.post('/api/getNeighbors', function (req, res) {
 
 	.then(function (neighborhoodObj) {
 		console.log('Neighborhoods fetched.');
+    numNeighborhoods = Object.keys(neighborhoodObj).length;
     if(Object.keys(neighborhoodObj).length === 0) { checkAndRespond({}); }
 		return getStreetAddresses(neighborhoodObj);
 	})
@@ -83,6 +84,22 @@ app.post('/api/getNeighbors', function (req, res) {
 
 
 //-----------------------------------------------------------------------------------
+//GET INSTAGRAM pictures that are location specific
+/*Input: neighborhood Object
+  Output: neighborhood Object augmented with amenities
+*/
+var getPictures = function (neighborhoodObj) {
+  var deferred = Q.defer();
+  var numEvents = 0;
+
+  deferred.resolve(neighborhoodObj);
+  return deferred.promise;
+}
+
+
+
+
+//-----------------------------------------------------------------------------------
 //GET amenities for all neighborhoods
 /*Input: neighborhood Object
   Output: neighborhood Object augmented with amenities
@@ -93,7 +110,7 @@ var getAmenitiesAndAttractions = function (neighborhoodObj) {
 
   //console.log
   var numEvents = 0;
-  numNeighborhoods = Object.keys(neighborhoodObj).length;
+
 
   for(var neighborhood in neighborhoodObj) {
     var coordinates = {
