@@ -173,6 +173,7 @@ small {
   vertical-align: middle;
   font-size: 20px;
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 
 .nav-container a {
@@ -186,6 +187,15 @@ small {
 
 .nav-container > div > div > div {
 >>>>>>> [Merge] Fixes merge conflict in details template
+=======
+}
+
+.nav-container a {
+  color:#fff;
+}
+
+.nav-container .nav-button {
+>>>>>>> [Feat] Adds routing for detail-il-sections
   background-color: #5f327c;
   text-shadow: 0px -1px 0px rgba(30, 30, 30, 0.8);
     -webkit-box-shadow: 0px 4px 5px rgba(31, 31, 31, 0.50);
@@ -195,10 +205,14 @@ small {
   min-width:100px;
   width:80%;
 <<<<<<< HEAD
+<<<<<<< HEAD
   max-height:60px;
 =======
   height:40px;
 >>>>>>> [Merge] Fixes merge conflict in details template
+=======
+  max-height:60px;
+>>>>>>> [Feat] Adds routing for detail-il-sections
   margin:0 auto;
 }
 

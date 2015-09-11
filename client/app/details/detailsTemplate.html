@@ -52,24 +52,22 @@
 
 
   <!-- amenities and attractions -->
-  <div class="col-md-12">
-    <hr>
-    <div class="row">
-      <div class="col-xs-12 col-sm-2">
-        <label class="">Amenities and Attractions</label>
-      </div>
-      <div class="col-xs-12 col-sm-10">
-        <div class="row" ng-repeat="place in currentNeighborhood.places">
-          <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+    <div class="col-md-12">
+      <hr>
+      <div class="row">
+        <div class="col-xs-12 col-sm-2">
+          <label class="">Amenities and Attractions</label>
+        </div>
+        <div class="col-xs-12 col-sm-10">
+          <div class="row" ng-repeat="place in currentNeighborhood.places">
+            <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
             <span ng-click="displayMarkers(place)">{{place[0]}}</span>
+          </div>
         </div>
       </div>
+      <hr>
+      <div ui-view="detail-section"></div>
     </div>
-    <hr>
   </div>
   <div ui-view="detail-section"></div>
 </div>
-
-
-
-
