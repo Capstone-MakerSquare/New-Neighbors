@@ -17,6 +17,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, S
   main.imageArray = ['../assets/images/default-neighborhood-bg.jpg', '../assets/images/default-photo-gallery.jpg', '../assets/images/santamonica.jpg'];
 
   main.filteredNeighborhoodArray = [];
+  main.serverResponse = {};
 
   main.coordinates = {
       latitude: 38.5,
@@ -119,10 +120,13 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, S
   var requestNeighborhoods = function() {
     ServerApi.submit(main.searchInfo)
     .then(function(data) {
-       main.neighborhoods = Object.keys(data).map(function(key) {
-       return data[key];
+        main.severResponse = data;
+        main.neighborhoods = Object.keys(data).map(function(key) {
+        return data[key];
      });
+
      main.neighborhoodArray = main.orderByArray(main.neighborhoods);
+     console.log(main.neighborhoods)
      main.filterNeighborhoods();
      console.log('order by array', main.neighborhoodArray);
     });
@@ -185,7 +189,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', function (Map, S
   setTimeout(main.autoCompleteInit, 200);
 
   main.randomImage = function(){
-    return { 'background-image': 'url("' + main.imageArray[Math.floor(Math.random() * main.imageArray.length)] + '")' };
+    // removed this line so the image is no longer random: return { 'background-image': 'url("' + main.imageArray[Math.floor(Math.random() * main.imageArray.length)] + '")' };
+    return { 'background-image': 'url("' + main.imageArray[1] + '")' };
   };
 
 }]);
