@@ -8,7 +8,8 @@ var app = angular.module('myApp', [
   'myApp.details',
   'myApp.searchForm',
   'myApp.filter',
-  'myApp.thumbnails'
+  'myApp.thumbnails',
+  'myApp.charts'
 ]);
 console.log("app.js called");
 app.config(function($stateProvider, $urlRouterProvider) {
