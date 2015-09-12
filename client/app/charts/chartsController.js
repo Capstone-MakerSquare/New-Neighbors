@@ -1,10 +1,30 @@
 angular.module('myApp.charts', [])
 
 .controller('chartsCtrl', function($scope){
-    var chartData = [];
+
+    var chartData = {nationalHomesWithKids: 0.313623902816284};
+
 })
-.factory('DrawBar', function () {
-    var drawBar = function() {
+.factory('Charts', function () {
+
+  var runDrawBar = true;
+  var runDrawPie = true;
+
+  var barChartData = function(obj) {
+    console.log('demography homes with kids', obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4], '.values[0]');
+    var barChartObj = {};
+    if (obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0].neighborhood) {
+      barChartObj.homesWithKidsTurf = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0].neighborhood;
+    } else if (obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0].city) {
+      barChartObj.homesWithKidsTurf = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0].city;
+    } else {
+      runDrawBar = false;
+    }
+    console.log('barChartObj', barChartObj);
+  };
+
+  var drawBar = function() {
+    if (runDrawBar){
       $('#percentage-chart').highcharts({
         chart: {
             type: 'column'
@@ -53,37 +73,52 @@ angular.module('myApp.charts', [])
         }]
       });
     }
-
-    var drawPie = function() {
-    $('#pie-chart').highcharts({
-        chart: {
-            type: 'pie'
-        },
-        title: {
-          text:'Age Distribution'
-        },
-
-        plotOptions: {
-            pie: {
-                borderWidth: 3
-            }
-        },
-
-        series: [{
-            data: [
-                ['0-10 years old',   10],
-                ['10-20 years old',       20],
-                ['20-30 years old',       30],
-                ['30-40 years old',    15],
-                ['40-55 years old',    5],
-                ['55-70 years old',    15],
-                ['70+ years old',    5]
-            ]
-        }]
-    });
   };
+
+  var pieChartData = function(obj) {
+    var pieChartObj = {};
+    // if () {
+    //   pieChartObj= obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0].neighborhood;
+    // } else if (obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0].city) {
+    //   barChartObj.homesWithKidsTurf = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0].city;
+    // } else {
+    //   runDrawPie = false;
+    // }
+    // console.log('barChartObj', barChartObj);
+  };
+
+  var drawPie = function() {
+    if (runDrawPie) {
+      $('#pie-chart').highcharts({
+          chart: {
+              type: 'pie'
+          },
+          plotOptions: {
+              pie: {
+                  borderWidth: 3
+              }
+          },
+          series: [{
+            data: [
+              ['0-10 years old',   10],
+              ['10-20 years old',       20],
+              ['20-30 years old',       30],
+              ['30-40 years old',    15],
+              ['40-55 years old',    5],
+              ['55-70 years old',    15],
+              ['70+ years old',    5]
+            ]
+          }]
+      });
+    } else if (!runDrawPie && !runDrawBar) {
+      $('#pie-chart').html('<div>No Data Available</div>');
+    }
+  };
+
   return {
     drawBar: drawBar,
-    drawPie: drawPie
+    drawPie: drawPie,
+    barChartData: barChartData
   };
+
 });
