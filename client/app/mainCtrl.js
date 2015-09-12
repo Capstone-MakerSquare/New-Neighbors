@@ -41,8 +41,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
           name: neighborhoods[i].name,
           commuteTime: neighborhoods[i].commuteInfo.commuteTime,
           commuteDistance: neighborhoods[i].commuteInfo.commuteDistance,
-          estimateHigh: neighborhoods[i].rentEstimate.estimateHigh,
-          estimateLow: neighborhoods[i].rentEstimate.estimateLow,
+          estimateLow: neighborhoods[i].rentEstimate ? ('$' + neighborhoods[i].rentEstimate.estimateLow + ' - ') : 'Not Available',
+          estimateHigh: neighborhoods[i].rentEstimate ? ('$' + neighborhoods[i].rentEstimate.estimateHigh) : '',
           instagram: neighborhoods[i].instagram,
           coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude},
           demography: neighborhoods[i].demography
