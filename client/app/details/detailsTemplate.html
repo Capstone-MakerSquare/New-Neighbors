@@ -1,19 +1,19 @@
 <div class="details-container" ng-controller="detailsController as details">
   <!-- slideshow -->
-  <div class="slideshow" >
+  <div class="slideshow" ng-class="details.picturesArr.length === 0 ? 'instagram-default-background' : ''" >
    <!-- neighborhood header -->
     <span class="neighborhood-name">{{details.currentNeighborhood.name}}</span>
     <slick dots=false infinite=true speed=300 autoplaySpeed=3000 pauseOnHover=true swipe=true variableWidth=true slides-to-show=4 autoplay=true touch-move=true slides-to-scroll=4 arrows=true>
-      <div ng-repeat="pic in details.picturesArr">
-        <div class="picture-container">
-          <img ng-src="{{pic[0]}}"/>
-          <!-- <span class="instagram-username">{{pic[1]}}</span> -->   <!-- uncomment to display user name -->
+      <!-- <div ng-if="details.picturesArr.length === 0" class="instagram-default-background">&nbsp; -->
+        <div ng-repeat="pic in details.picturesArr">
+          <div class="picture-container">
+            <img ng-src="{{pic[0]}}"/>
+            <!-- <span class="instagram-username">{{pic[1]}}</span> -->   <!-- uncomment to display user name -->
+          </div>
         </div>
-      </div>
+      <!-- </div> -->
     </slick>
   </div>
-
-<pre>{{main.searchInfo}}</pre>
 
   <!-- neighborhood description -->
   <div class="col-md-12 rent-commute-container">

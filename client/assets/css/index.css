@@ -164,6 +164,13 @@ small {
     box-shadow:         0px 4px 5px rgba(31, 31, 31, 0.50);
 }
 
+.instagram-default-background {
+  background-image: url("../images/instagram_default.jpg");
+  background-size: cover;
+  width: 800px;
+  height: 200px;
+}
+
 .slideshow .picture-container {
   position: relative;
 }
@@ -175,6 +182,7 @@ small {
   left:10px;
   color:white;
 }
+
 
 .nav-container {
   margin-top: 10px;
