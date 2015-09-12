@@ -24,6 +24,9 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
       longitude: -98.5
   };
 
+  main.priceRange = '';      //stores the current price range for the selected neighborhood
+
+
   //unscoped local variables
   var autocomplete;
 
@@ -31,6 +34,11 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
   // Function to flatten the object so that the array can be sorted by a parameter
   // Input: neighborhoodsObj
   // Output: flattened array of objects
+  var getPriceString = function (rentEstimate) {
+    if(!rentEstimate) { return 'Not Available'; }
+    return (rentEstimate.estimateLow) ? '$' + rentEstimate.estimateLow + ' - ' + '$' + rentEstimate.estimateHigh : 'Not Available';
+  }
+
   main.orderByArray = function(neighborhoods){
     var arr = [];
     for (var i = 0; i < neighborhoods.length; i++) {
@@ -41,11 +49,12 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
           name: neighborhoods[i].name,
           commuteTime: neighborhoods[i].commuteInfo.commuteTime,
           commuteDistance: neighborhoods[i].commuteInfo.commuteDistance,
-          estimateLow: neighborhoods[i].rentEstimate ? ('$' + neighborhoods[i].rentEstimate.estimateLow + ' - ') : 'Not Available',
-          estimateHigh: neighborhoods[i].rentEstimate ? ('$' + neighborhoods[i].rentEstimate.estimateHigh) : '',
+          estimateLow: neighborhoods[i].rentEstimate ? neighborhoods[i].rentEstimate.estimateLow : 'Not Available',
+          estimateHigh: neighborhoods[i].rentEstimate ? neighborhoods[i].rentEstimate.estimateHigh : 'Not Available',
           instagram: neighborhoods[i].instagram,
           coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude},
-          demography: neighborhoods[i].demography
+          demography: neighborhoods[i].demography,
+          priceString : getPriceString(neighborhoods[i].rentEstimate)
       });
     }
     return arr;
@@ -212,8 +221,9 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
   //----------------------------------------------------------------------------------
   //Function to drop a circle + marker on a selected neighborhood
   main.selectNeighborhood = function (neighborhood) {
-    // console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
+    console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
     main.mapCurrentNeighborhood(neighborhood);
+    main.priceRange = neighborhood.priceString;
 
     //remove
     // console.log('selectNeighborhood says: main.serverResponse:',main.serverResponse);
