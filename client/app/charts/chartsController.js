@@ -6,13 +6,13 @@ angular.module('myApp.charts', [])
 
   var runDrawBar = true;
   var runDrawPie = true;
-  var barChartObj = {nationalHomesWithKids: 31.3623902816284, nationalMedianHouseholdIncome: 44512.0130806292};
+  var barChartObj = {nationalHomesWithKids: 31.3623902816284, nationalMedianHouseholdIncome: 44512.0130806292, nationalOwners: 66.268764};
 
   var barChartData = function(obj) {
     console.log('barChartData incomePath', JSON.stringify(obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[0].values[0]));
     var kidPath = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0];
     var incomePath = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[0].values[0];
-    // var ownPath = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[0].values[0]
+    var ownPath = obj.demography.pages[0].page[1].tables[0].table[0].data[0].attribute[0].values[0]
 
     //kids
     if (kidPath.neighborhood && kidPath.neighborhood[0].value[0]) {
@@ -34,7 +34,14 @@ angular.module('myApp.charts', [])
     //   runDrawBar = false;
     // }
 
-    //property owners vs. renters
+    //percentage of property owners (vs. renters)
+      if (ownPath.neighborhood && ownPath.neighborhood[0].value[0]) {
+        barChartObj.ownersTurf = 100*parseFloat(ownPath.neighborhood[0].value[0]._);
+      } else if (ownPath.city && ownPath.city.value[0]) {
+        barChartObj.ownersTurf = 100*parseFloat(ownPath.city[0].value[0]._);
+      } else {
+        runDrawBar = false;
+      }
 
 
 
@@ -82,13 +89,13 @@ angular.module('myApp.charts', [])
         series: [{
             name: 'Nation',
             color: 'rgba(165,170,217,1)',
-            data: [barChartObj.nationalHomesWithKids, barChartObj.nationalMedianHouseholdIncome, 60],
+            data: [barChartObj.nationalHomesWithKids, barChartObj.nationalOwners, 60],
             pointPadding: 0,
             pointPlacement: 0
         }, {
             name: 'Neighborhood',
             color: '#5F327C',
-            data: [barChartObj.homesWithKidsTurf, barChartObj.medianHouseholdIncomeTurf, 70],
+            data: [barChartObj.homesWithKidsTurf, barChartObj.ownersTurf, 70],
             pointPadding: 0.2,
             pointPlacement: 0
         }]
@@ -113,6 +120,9 @@ angular.module('myApp.charts', [])
       $('#pie-chart').highcharts({
           chart: {
               type: 'pie'
+          },
+          title: {
+            text: 'Ages by Decade'
           },
           plotOptions: {
               pie: {
