@@ -49,6 +49,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('main.details', {
       url: "/details",
+      controller: 'detailsController',
+      controllerAs: 'details',
       views: {
         "glance-card": {
           templateUrl: "./app/details/detailsTemplate.html"

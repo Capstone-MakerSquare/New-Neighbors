@@ -1,8 +1,8 @@
-<div class="details-container">
+<div class="details-container" ng-controller="detailsController as details">
   <!-- slideshow -->
-  <div class="slideshow" ng-controller="detailsController">
+  <div class="slideshow" >
    <!-- neighborhood header -->
-    <span>{{currentNeighborhood.name}}</span>
+    <span>{{details.currentNeighborhood.name}}</span>
     <slick dots=false infinite=false speed=300 slides-to-show=4 touch-move=false slides-to-scroll=4 arrows=false>
       <div ng-repeat="pic in picturesArr">
         <img ng-src="{{pic}}"/>
@@ -16,19 +16,18 @@
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="card-block">
           <h5 class="card-title">Rent Estimates</h5>
-          <p class="card-text">${{currentNeighborhood.estimateLow}} - ${{currentNeighborhood.estimateHigh}}</p>
+          <p class="card-text">${{details.currentNeighborhood.estimateLow}} - ${{details.currentNeighborhood.estimateHigh}}</p>
         </div>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6 commute">
         <div class="card-block">
           <h5 class="card-title">Commute</h5>
-          <p class="card-text">{{currentNeighborhood.commuteDistance}} miles | {{currentNeighborhood.commuteTime}} minutes</p>
+          <p class="card-text">{{details.currentNeighborhood.commuteDistance}} miles | {{details.currentNeighborhood.commuteTime}} minutes</p>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- amenities and attractions -->
+
   <div class="col-sm-12 col-md-10 col-md-offset-1 nav-container">
     <hr>
     <div class="row">
@@ -59,7 +58,7 @@
           <label class="">Amenities and Attractions</label>
         </div>
         <div class="col-xs-12 col-sm-10">
-          <div class="row" ng-repeat="place in currentNeighborhood.places">
+          <div class="row" ng-repeat="place in details.currentNeighborhood.places">
             <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
             <span ng-click="displayMarkers(place)">{{place[0]}}</span>
           </div>
@@ -68,5 +67,4 @@
       <hr>
       <div ui-view="detail-section"></div>
     </div>
-  <div ui-view="detail-section"></div>
 </div>

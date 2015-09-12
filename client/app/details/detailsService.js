@@ -67,7 +67,10 @@ details
       }
       results[neighborhoodArr[i].name] = temp;
     }
-    console.log('results', results);
+
+    //remove
+    // console.log('results', results);
+
     neighborhoodDetailsObj = results;
     return results;
   };

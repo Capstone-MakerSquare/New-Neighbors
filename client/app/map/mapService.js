@@ -50,7 +50,9 @@ mapMod // = angular.module('myApp.mapServices',[])
       map: map,
       title: title
     });
-    console.log(tooltip)
+
+    //remove
+    // console.log(tooltip)
 
     // if(tooltip) {
     //   var infowindow = new google.maps.InfoWindow({

@@ -1,8 +1,8 @@
 var details = angular.module('myApp.details', []);
 
-details.controller('detailsController', ['$scope', 'Details', 'Map', function ($scope, Details, Map){
-
-  $scope.picturesArr = [
+details.controller('detailsController', ['Details', 'Map', function (Details, Map){
+  var detail = this;
+  detail.picturesArr = [
     'assets/images/default-japan-slideshow-1.jpeg',
     'assets/images/default-japan-slideshow-2.jpeg',
     'assets/images/default-japan-slideshow-3.jpeg',
@@ -14,9 +14,10 @@ details.controller('detailsController', ['$scope', 'Details', 'Map', function ($
     'assets/images/default-japan-slideshow-9.jpeg'
   ];
 
-  $scope.currentNeighborhood = Details.currentNeighborhood;
+  detail.currentNeighborhood = Details.currentNeighborhood;
+  console.log('detailsController says:', Details.currentNeighborhood);
 
-  $scope.displayMarkers = function(place) {
+  detail.displayMarkers = function(place) {
     var coordinates = {
       latitude: place[1][0].geometry.location.lat,
       longitude: place[1][0].geometry.location.lng
@@ -28,15 +29,15 @@ details.controller('detailsController', ['$scope', 'Details', 'Map', function ($
   //----------------------------------------------------------------------------------
   //to expand and collapse icons section
 
-  $scope.isCollapsed = true;
-  $scope.moreLess = '+ More';
-  $scope.expandCollapse = function() {
-    if ($scope.moreLess === '+ More') {
-      $scope.moreLess = '- Less';
-    } else if ($scope.moreLess === '- Less') {
-      $scope.moreLess = '+ More';
+  detail.isCollapsed = true;
+  detail.moreLess = '+ More';
+  detail.expandCollapse = function() {
+    if (detail.moreLess === '+ More') {
+      detail.moreLess = '- Less';
+    } else if (detail.moreLess === '- Less') {
+      detail.moreLess = '+ More';
     }
-    $scope.isCollapsed = !$scope.isCollapsed;
+    detail.isCollapsed = !detail.isCollapsed;
   };
 
   //----------------------------------------------------------------------------------

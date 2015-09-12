@@ -76,14 +76,15 @@ app.post('/api/getNeighbors', function (req, res) {
 
   .then(function (neighborhoodObj) {
     console.log('Rental Estimates fetched.');
-    return getDemographics(neighborhoodObj)
+    checkAndRespond(neighborhoodObj);
+    // return getDemographics(neighborhoodObj)
   })
 
-  .then(function (neighborhoodObj) {
-    console.log('Zillow Info Fetched.');
-    console.log('eventNumber:', eventNumber);
-    checkAndRespond(neighborhoodObj);
-  });
+  // .then(function (neighborhoodObj) {
+  //   console.log('Zillow Info Fetched.');
+  //   console.log('eventNumber:', eventNumber);
+  //   checkAndRespond(neighborhoodObj);
+  // });
 
 });	//end of POST request handler
 
@@ -119,7 +120,7 @@ var getPictures = function (neighborhoodObj) {
       neighborhoodObj[neighborhood].instagram = imagesArray;
 
       //remove
-      console.log('Instagram Images received for neighborhood:', neighborhood);
+      // console.log('Instagram Images received for neighborhood:', neighborhood);
 
       if(numEvents === numNeighborhoods) {
         deferred.resolve(neighborhoodObj);
@@ -279,7 +280,7 @@ var getDemographics  = function (neighborhoodObj) {
   var deferred = Q.defer();
   var numEvents = 0;
   //remove
-  // console.log('Fetch Zillow Info called. numNeighborhoods:', numNeighborhoods);
+  console.log('Fetch Zillow Info called. numNeighborhoods:', numNeighborhoods);
 
   for(var neighborhood in neighborhoodObj) {
     queryZillow(neighborhood, neighborhoodObj[neighborhood].city)
@@ -290,9 +291,14 @@ var getDemographics  = function (neighborhoodObj) {
 
       numEvents++;
       // console.log('Zillow data fetched for neighborhood:', neighborhood);
+      // console.log('numEvents:',numEvents);
       // console.log('Demography information:', demographyObj['Demographics:demographics']);
-      neighborhoodObj[neighborhood].demography = demographyObj['Demographics:demographics'].response[0];
-      // _.extend(neighborhoodObj[neighborhood], demographyObj);
+      // console.log('DemographyObj:',demographyObj);
+
+      if(demographyObj['Demographics:demographics'].response) {
+        neighborhoodObj[neighborhood].demography = demographyObj['Demographics:demographics'].response[0];
+      }
+      else { neighborhoodObj[neighborhood].demography = {}; }
 
       if(numEvents === numNeighborhoods) {
         deferred.resolve(neighborhoodObj);
@@ -319,6 +325,7 @@ var queryZillow = function (neighborhood, city) {
 
   var zillowUrl = zillowUrl_zwsId + zwsId + zillowUrl_neighborhood + neighborhood + zillowUrl_city + city;
 
+  //remove
   console.log('ZillowUrl:', zillowUrl);
 
   getXmlRequest(zillowUrl)
@@ -482,21 +489,21 @@ var zilpy = function (searchInfo, neighborhood) {
   // console.log('zilpyUrl', zilpyUrl);
 
   //remove
-  deferred.resolve(['ZTO', 'ZTO', neighborhood]);
+  // deferred.resolve(['ZTO', 'ZTO', neighborhood]);
 
   // UNCOMMENT - ZILPY TEMPORARILY DISABLED
   //----------------------------------------------------------------------------
-	// getRequest(zilpyUrl)
-	// .then(function (zilpyData) {
-	// 	 // console.log('Neighborhood fetched:',neighborhood);
-	// 	 // console.log('Zilpy Data:',zilpyData);
- //     // console.log('************************');
-	// 	deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
-	// }, function (errorMessage) {
- //    console.log('Error/server not responding.');
- //    console.log('errorMessage:', errorMessage);
- //    deferred.resolve(['N/A', 'N/A', neighborhood]);
- //  });
+	getRequest(zilpyUrl)
+	.then(function (zilpyData) {
+		 // console.log('Neighborhood fetched:',neighborhood);
+		 // console.log('Zilpy Data:',zilpyData);
+     // console.log('************************');
+		deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
+	}, function (errorMessage) {
+    console.log('Error/server not responding.');
+    console.log('errorMessage:', errorMessage);
+    deferred.resolve(['N/A', 'N/A', neighborhood]);
+  });
 
 	return deferred.promise;
 }
