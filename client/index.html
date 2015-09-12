@@ -4,34 +4,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Turf</title>
+    <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
     <link href="assets/css/styles.css" rel="stylesheet">
-    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/index.css" rel="stylesheet">
     <link href="assets/css/landing.css" rel="stylesheet">
-    <link href="assets/css/app.css" rel="stylesheet">
+    <!-- <link href="assets/css/app.css" rel="stylesheet"> -->
     <link href="lib/slick-carousel/slick/slick.css" rel="stylesheet" >
-    <link href="lib/slick-carousel/slick/slick-theme.css" rel="stylesheet" >
+    <link href="lib/slick-carousel/slick/slick-theme.css" rel="stylesheet">
   </head>
 
-  <body ng-controller="MainController as main">
+  <body ng-controller="MainController as main" id="Turf">
 
-  <nav class="navbar navbar-default" id="navbar-margin">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">
-          <img class="logo" src="assets/images/app-icon.png" alt="logo">
-          <span class="icon-bar">Turf</span>
-          <a ui-sref="main.results">Main results</a>
-          <a ui-sref="main.details">Main details</a>
-        </a>
-      </div>
-    </div>
-  </nav>
+<!--   <div class="header">
+    <img src="assets/images/turf.png">
+  </div> -->
 
   <div ui-view></div>
 
+  <div style="margin:30px">
+    <a ui-sref="main.results">Main results</a>
+    <a ui-sref="main.details">Main details</a>
+  </div>
+
 <!-- start footer section -->
-<!--   <footer class="footer">
+  <footer class="footer">
     <div class="container">
       <div>
         <ul>
@@ -43,7 +40,7 @@
         </ul>
       </div>
     </div>
-  </footer> -->
+  </footer>
 
  <!-- end footer section -->
 

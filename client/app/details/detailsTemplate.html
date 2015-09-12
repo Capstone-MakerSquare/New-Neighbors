@@ -1,53 +1,72 @@
-<div class="details-container" ng-controller="detailsController">
- <!-- neighborhood header -->
-  <div class="details-neighborhood-bg" ng-style="main.randomImage()">
-    <h1>{{currentNeighborhood.name}}</h1>
-
-  </div>
-  <charts></charts>
-   <!-- tabs -->
-  <!-- neighborhood description -->
-  <div class="col-md-12">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card-block">
-          <h5 class="card-title">Rent Estimates</h5>
-          <p class="card-text">${{currentNeighborhood.estimateLow}} - ${{currentNeighborhood.estimateHigh}}</p>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card-block">
-          <h5 class="card-title">Commute Time</h5>
-          <p class="card-text">{{currentNeighborhood.commuteDistance}} miles | {{currentNeighborhood.commuteTime}} minutes</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <hr>
-  <!-- amenities and attractions -->
-  <div class="col-md-12">
-    <div class="row">
-      <div class="col-xs-12 col-sm-2">
-        <label class="">Amenities and Attractions</label>
-      </div>
-      <div class="col-xs-12 col-sm-10">
-        <div class="row" ng-repeat="place in currentNeighborhood.places">
-          <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-            <span ng-click="displayMarkers(place)">{{place[0]}}</span>
-        </div>
-      </div>
-    </div>
-    <hr>
-  </div>
-  <hr>
-     <!-- slideshow -->
-  <div class="col-md-12 slideshow" ng-controller="detailsController">
-    <slick dots=true infinite=false speed=300 slides-to-show=3 touch-move=false slides-to-scroll=4>
+<div class="details-container">
+  <!-- slideshow -->
+  <div class="slideshow" ng-controller="detailsController">
+   <!-- neighborhood header -->
+    <span>{{currentNeighborhood.name}}</span>
+    <slick dots=false infinite=false speed=300 slides-to-show=4 touch-move=false slides-to-scroll=4 arrows=false>
       <div ng-repeat="pic in picturesArr">
         <img ng-src="{{pic}}"/>
       </div>
     </slick>
   </div>
+
+  <!-- neighborhood description -->
+  <div class="col-md-12 rent-commute-container">
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6">
+        <div class="card-block">
+          <h5 class="card-title">Rent Estimates</h5>
+          <p class="card-text">${{currentNeighborhood.estimateLow}} - ${{currentNeighborhood.estimateHigh}}</p>
+        </div>
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 commute">
+        <div class="card-block">
+          <h5 class="card-title">Commute</h5>
+          <p class="card-text">{{currentNeighborhood.commuteDistance}} miles | {{currentNeighborhood.commuteTime}} minutes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- amenities and attractions -->
+  <div class="col-sm-12 col-md-10 col-md-offset-1 nav-container">
+    <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="nav-button">
+          <a ui-sref="main.details.localSpots">Local Spots</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="nav-button">
+          <a ui-sref="main.details.attractions">Attractions</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="nav-button">
+          <a ui-sref="main.details.charts">Statistics</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- amenities and attractions -->
+    <div class="col-md-12">
+      <hr>
+      <div class="row">
+        <div class="col-xs-12 col-sm-2">
+          <label class="">Amenities and Attractions</label>
+        </div>
+        <div class="col-xs-12 col-sm-10">
+          <div class="row" ng-repeat="place in currentNeighborhood.places">
+            <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
+            <span ng-click="displayMarkers(place)">{{place[0]}}</span>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div ui-view="detail-section"></div>
+    </div>
+  <div ui-view="detail-section"></div>
 </div>
-
-
