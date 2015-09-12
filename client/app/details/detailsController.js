@@ -36,13 +36,16 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   //----------------------------------------------------------------------------------
   // instagram map
 
-  detail.currentNeighborhood.forEach(function (obj) {
-    details.picturesArr.push({
-      username: obj.user.full_name,
-      url: obj.images.standard_resolution.url
-    });
-
+  detail.currentNeighborhood.instagram.forEach(function (obj) {
+    detail.picturesArr.push([obj.images.low_resolution.url, obj.user.full_name]);
+    // detail.picturesArr.push({
+      // username: obj.user.full_name,
+      // url: obj.images.standard_resolution.url
+    // });
   });
+
+  //remove
+  console.log('detailsController says: picturesArr:', detail.picturesArr);
 
 
   //----------------------------------------------------------------------------------

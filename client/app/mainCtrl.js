@@ -216,8 +216,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
     main.mapCurrentNeighborhood(neighborhood);
 
     //remove
-    console.log('selectNeighborhood says: main.serverResponse:',main.serverResponse);
-    console.log('selectNeighborhood', Details.currentNeighborhood);
+    // console.log('selectNeighborhood says: main.serverResponse:',main.serverResponse);
+    // console.log('selectNeighborhood', Details.currentNeighborhood);
 
     $state.go('main.details');
     Map.dropMarker(neighborhood.coordinates);
