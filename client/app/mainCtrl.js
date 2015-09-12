@@ -229,6 +229,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
     $state.go('main.details');
     Charts.barChartData(neighborhood);
+    Charts.pieChartData(neighborhood);
     Map.dropMarker(neighborhood.coordinates);
     Map.panAndFocus(neighborhood.coordinates, 13);
     Map.drawCircle(neighborhood.coordinates, 2000);
