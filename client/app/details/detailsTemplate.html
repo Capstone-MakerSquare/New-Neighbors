@@ -5,7 +5,8 @@
     <span>{{details.currentNeighborhood.name}}</span>
     <slick dots=false infinite=false speed=300 slides-to-show=4 touch-move=false slides-to-scroll=4 arrows=false>
       <div ng-repeat="pic in picturesArr">
-        <img ng-src="{{pic}}"/>
+        <img ng-src="{{pic.url}}"/>
+        <span>{{pic.username}}</span>
       </div>
     </slick>
   </div>

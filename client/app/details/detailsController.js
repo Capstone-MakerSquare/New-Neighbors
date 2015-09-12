@@ -2,17 +2,7 @@ var details = angular.module('myApp.details', []);
 
 details.controller('detailsController', ['Details', 'Map', function (Details, Map){
   var detail = this;
-  detail.picturesArr = [
-    'assets/images/default-japan-slideshow-1.jpeg',
-    'assets/images/default-japan-slideshow-2.jpeg',
-    'assets/images/default-japan-slideshow-3.jpeg',
-    'assets/images/default-japan-slideshow-4.jpeg',
-    'assets/images/default-japan-slideshow-5.jpeg',
-    'assets/images/default-japan-slideshow-6.jpeg',
-    'assets/images/default-japan-slideshow-7.jpeg',
-    'assets/images/default-japan-slideshow-8.jpeg',
-    'assets/images/default-japan-slideshow-9.jpeg'
-  ];
+  detail.picturesArr = [];
 
   detail.currentNeighborhood = Details.currentNeighborhood;
   console.log('detailsController says:', Details.currentNeighborhood);
@@ -43,6 +33,18 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   //----------------------------------------------------------------------------------
 
 
+  //----------------------------------------------------------------------------------
+  // instagram map
 
+  detail.currentNeighborhood.forEach(function (obj) {
+    details.picturesArr.push({
+      username: obj.user.full_name,
+      url: obj.images.standard_resolution.url
+    });
+
+  });
+
+
+  //----------------------------------------------------------------------------------
 
 }]);
