@@ -41,9 +41,11 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
           name: neighborhoods[i].name,
           commuteTime: neighborhoods[i].commuteInfo.commuteTime,
           commuteDistance: neighborhoods[i].commuteInfo.commuteDistance,
-          estimateHigh: neighborhoods[i].rentEstimate.estimateHigh,
-          estimateLow: neighborhoods[i].rentEstimate.estimateLow,
-          coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude}
+          estimateLow: neighborhoods[i].rentEstimate ? ('$' + neighborhoods[i].rentEstimate.estimateLow + ' - ') : 'Not Available',
+          estimateHigh: neighborhoods[i].rentEstimate ? ('$' + neighborhoods[i].rentEstimate.estimateHigh) : '',
+          instagram: neighborhoods[i].instagram,
+          coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude},
+          demography: neighborhoods[i].demography
       });
     }
     return arr;
@@ -123,16 +125,21 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
   var requestNeighborhoods = function() {
     ServerApi.submit(main.searchInfo)
     .then(function(data) {
-      main.severResponse = data;
+       main.serverResponse = data;
        main.neighborhoods = Object.keys(data).map(function(key) {
          return data[key];
        });
-       console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
-       console.log('requestNeighborhoods main.neighborhoods demographics', main.neighborhoods[0].demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0]);
+
+       //remove
+       // console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
+       // console.log('requestNeighborhoods main.neighborhoods demographics', main.neighborhoods[0].demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0]);
        main.placesObj = Details.getPlacesObj(main.neighborhoods);
        main.neighborhoodArray = main.orderByArray(main.neighborhoods);
        main.filterNeighborhoods();
-       console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
+
+       //remove
+       //console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
+
        main.markNeighborhoods();
     });
   };
@@ -192,6 +199,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
   main.mapCurrentNeighborhood = function (neighborhood) {
     Details.currentNeighborhood = neighborhood;
     Details.currentNeighborhood.places = main.placesObj[neighborhood.name];
+
     for (var place in Details.currentNeighborhood.places){
       if (place === "grocery_or_supermarket") {
         Details.currentNeighborhood.places[place] = ["grocery", Details.currentNeighborhood.places[place]]
@@ -207,7 +215,10 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
     // console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
     main.mapCurrentNeighborhood(neighborhood);
 
-    console.log('selectNeighborhood', Details.currentNeighborhood)
+    //remove
+    console.log('selectNeighborhood says: main.serverResponse:',main.serverResponse);
+    console.log('selectNeighborhood', Details.currentNeighborhood);
+
     $state.go('main.details');
     Map.dropMarker(neighborhood.coordinates);
     Map.panAndFocus(neighborhood.coordinates, 13);
