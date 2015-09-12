@@ -143,11 +143,11 @@ small {
 
 .slideshow {
   overflow:hidden;
-  height:150px;
+  height:200px;
   position:relative;
 }
 
-.slideshow span {
+.slideshow .neighborhood-name {
   position:absolute;
   top:5px;
   max-width:50%;
@@ -163,6 +163,26 @@ small {
     -moz-box-shadow:    0px 4px 5px rgba(31, 31, 31, 0.50);
     box-shadow:         0px 4px 5px rgba(31, 31, 31, 0.50);
 }
+
+.instagram-default-background {
+  background-image: url("../images/instagram_default.jpg");
+  background-size: cover;
+  width: 800px;
+  height: 200px;
+}
+
+.slideshow .picture-container {
+  position: relative;
+}
+
+.slideshow .instagram-username {
+  z-index:1;
+  position:absolute;
+  bottom:10px;
+  left:10px;
+  color:white;
+}
+
 
 .nav-container {
   margin-top: 10px;

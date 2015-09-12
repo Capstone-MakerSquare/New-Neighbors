@@ -149,6 +149,9 @@ var getInstagram = function (coordinates, neighborhood) {
                  instaUrl_longitude + coordinates.longitude +
                  instaUrl_distance + 2000;
 
+  //remove
+  console.log('instaUrl:', instaUrl);
+
   getRequest(instaUrl)
   .then(function (responseObj) {
     var results = responseObj.data;
@@ -548,7 +551,7 @@ var getDistances = function (neighborhoodObj, transitMode) {
   									gDrivingUrl_key + keys.googleAPIKey;
 
   // remove
-  // console.log('gDrivingUrl:', gDrivingUrl);
+  console.log('gDrivingUrl:', gDrivingUrl);
 
   getRequest(gDrivingUrl)
   .then(function (distancesObj) {
