@@ -10,8 +10,10 @@ angular.module('myApp.charts', [])
   var pieChartObj = {};
 
   var barChartData = function(obj) {
+    barChartObj = {nationalHomesWithKids: 31, nationalMedianHouseholdIncome: 44512, nationalOwners: 66};
     var runOwn = true;
     var runKids = true;
+    runDrawBar = true;
     //verifing data is coming from zillow
     if(obj &&
     obj.demography &&
@@ -46,7 +48,7 @@ angular.module('myApp.charts', [])
     obj.demography.pages[0].page[1].tables[0].table[0].data[0].attribute[0].values[0]) {
 
       var kidPath = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0];
-      var ownPath = obj.demography.pages[0].page[1].tables[0].table[0].data[0].attribute[0].values[0]
+      var ownPath = obj.demography.pages[0].page[1].tables[0].table[0].data[0].attribute[0].values[0];
       //var incomePath = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[0].values[0];
 
       //households with kids
@@ -75,10 +77,11 @@ angular.module('myApp.charts', [])
       if (ownPath.neighborhood && ownPath.neighborhood[0] && ownPath.neighborhood[0].value && ownPath.neighborhood[0].value[0] && ownPath.neighborhood[0].value[0]._) {
         console.log('own neighborhood');
         barChartObj.ownersTurf = Math.round(100*parseFloat(ownPath.neighborhood[0].value[0]._));
-      } else if (ownPath.city && ownPath.city.value && ownPath.city.value[0] && ownPath.city[0].value[0]._) {
+      } else if (ownPath.city && ownPath.city[0] && ownPath.city[0].value && ownPath.city[0].value[0] && ownPath.city[0].value[0]._) {
         console.log('own city');
         barChartObj.ownersTurf = Math.round(100*parseFloat(ownPath.city[0].value[0]._));
       } else {
+        console.log('ownPath', ownPath);
         runOwn = false;
       }
     }
@@ -146,6 +149,8 @@ angular.module('myApp.charts', [])
   };
 
   var pieChartData = function(obj) {
+    pieChartObj = {};
+    runDrawPie = true;
     if (obj &&
         obj.demography &&
         obj.demography.pages &&
@@ -204,7 +209,7 @@ angular.module('myApp.charts', [])
           },
           plotOptions: {
               pie: {
-                  borderWidth: 3
+                  borderWidth: 2
               }
           },
           series: [{
