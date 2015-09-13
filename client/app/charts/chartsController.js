@@ -96,6 +96,8 @@ angular.module('myApp.charts', [])
   };
 
   var drawBar = function() {
+    console.log('DrawBar init');
+
     if (runDrawBar){
       $('#percentage-chart').highcharts({
         chart: {
@@ -199,6 +201,8 @@ angular.module('myApp.charts', [])
   };
 
   var drawPie = function() {
+    console.log('DrawPie init');
+
     if (runDrawPie) {
       $('#pie-chart').highcharts({
           chart: {
