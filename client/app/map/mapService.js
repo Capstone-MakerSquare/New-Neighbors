@@ -1,5 +1,5 @@
 mapMod // = angular.module('myApp.mapServices',[])
-.factory('Map', function () {
+.factory('Map', ['Details', function (Details) {
 
   var map;
   var mapOptions = {
@@ -10,7 +10,8 @@ mapMod // = angular.module('myApp.mapServices',[])
     zoom: 4
   };
 
-  var marker;
+  // var marker;
+  var markers;
   var circle;
 
   //----------------------------------------------------------------------------------
@@ -44,8 +45,8 @@ mapMod // = angular.module('myApp.mapServices',[])
   var dropMarker = function (coordinates, title, tooltip) {
     var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
 
-    // if(marker) { marker.setMap(null); }
-    marker = new google.maps.Marker({
+    var marker;
+    return marker = new google.maps.Marker({
       position: latLng,
       map: map,
       title: title
@@ -66,6 +67,20 @@ mapMod // = angular.module('myApp.mapServices',[])
       // });
     // }
   }
+
+  //----------------------------------------------------------------------------------
+  //Clear the markers on the map
+  var clearMarkers = function (markerArr) {
+      for (var i = 0; i < markerArr; i++){
+        markerArr[i].setMap(null);
+      }
+      if (!Details.currentMarkers) {
+        return;
+      }
+      for (var j = 0; j < Details.currentMarkers.length; j++) {
+        Details.markers[j].setMap(null);
+      }
+    }
 
   //----------------------------------------------------------------------------------
   //Drop a marker with LABEL
@@ -109,10 +124,12 @@ mapMod // = angular.module('myApp.mapServices',[])
 
   return {
     initialize: initialize,
+    markers: markers,
+    clearMarkers: clearMarkers,
     panAndFocus: panAndFocus,
     dropMarker: dropMarker,
     drawCircle: drawCircle,
     dropMarkerWithLabel: dropMarkerWithLabel
   };
 
-});
+}]);

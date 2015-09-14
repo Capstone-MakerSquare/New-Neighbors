@@ -3,6 +3,7 @@ details
 
   var neighborhoodDetailsObj;
   var currentNeighborhood;
+  var currentMarkers;
 
   var placesDict = {
     airport: [],
@@ -92,6 +93,7 @@ details
   return {
     placesDict: placesDict,
     currentNeighborhood: currentNeighborhood,
+    currentMarkers: currentMarkers,
     neighborhoodDetailsObj: neighborhoodDetailsObj,
     getPlacesObj : getPlacesObj
     // mapCurrentNeighborhood:mapCurrentNeighborhood
