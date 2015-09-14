@@ -1,5 +1,5 @@
 mapMod // = angular.module('myApp.mapServices',[])
-.factory('Map', ['Details', function (Details) {
+.factory('Map', ['Details', '$state', function (Details, $state) {
 
   var map;
   var mapOptions = {
@@ -52,20 +52,23 @@ mapMod // = angular.module('myApp.mapServices',[])
       title: title
     });
 
-    //remove
-    // console.log(tooltip)
+    //----------------------------------------------------------------------------------
+  //Drop a marker with a link to be clicked
+  var dropMarkerWithLink = function (coordinates, title, link) {
+    var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
 
-    // if(tooltip) {
-    //   var infowindow = new google.maps.InfoWindow({
-    //     content: tooltip
-    //   });
-    //   marker.addListener('click', function() {
-    //     infowindow.open(map, marker);
-    //   });
-      // marker.addListener('click', function() {
-      //   infowindow.close(map, marker);
-      // });
-    // }
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+      title: title
+    });
+
+    marker.addListener('click', function() {
+      $state.go(link);
+    });
+
+      return marker;
+
   }
 
   //----------------------------------------------------------------------------------
@@ -127,6 +130,7 @@ mapMod // = angular.module('myApp.mapServices',[])
     markers: markers,
     clearMarkers: clearMarkers,
     panAndFocus: panAndFocus,
+    dropMarkerWithLink: dropMarkerWithLink,
     dropMarker: dropMarker,
     drawCircle: drawCircle,
     dropMarkerWithLabel: dropMarkerWithLabel
