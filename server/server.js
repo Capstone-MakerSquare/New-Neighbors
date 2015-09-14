@@ -76,15 +76,15 @@ app.post('/api/getNeighbors', function (req, res) {
 
   .then(function (neighborhoodObj) {
     console.log('Rental Estimates fetched.');
-    checkAndRespond(neighborhoodObj);
-    // return getDemographics(neighborhoodObj)
+    // checkAndRespond(neighborhoodObj);
+    return getDemographics(neighborhoodObj)
   })
 
-  // .then(function (neighborhoodObj) {
-  //   console.log('Zillow Info Fetched.');
-  //   console.log('eventNumber:', eventNumber);
-  //   checkAndRespond(neighborhoodObj);
-  // });
+  .then(function (neighborhoodObj) {
+    console.log('Zillow Info Fetched.');
+    console.log('eventNumber:', eventNumber);
+    checkAndRespond(neighborhoodObj);
+  });
 
 });	//end of POST request handler
 
@@ -285,6 +285,7 @@ var getDemographics  = function (neighborhoodObj) {
   //remove
   console.log('Fetch Zillow Info called. numNeighborhoods:', numNeighborhoods);
 
+//UNCOMMENT TO QUERY ZILLOW
   for(var neighborhood in neighborhoodObj) {
     queryZillow(neighborhood, neighborhoodObj[neighborhood].city)
     .then(function (tuple) {
@@ -294,14 +295,9 @@ var getDemographics  = function (neighborhoodObj) {
 
       numEvents++;
       // console.log('Zillow data fetched for neighborhood:', neighborhood);
-      // console.log('numEvents:',numEvents);
       // console.log('Demography information:', demographyObj['Demographics:demographics']);
-      // console.log('DemographyObj:',demographyObj);
-
-      if(demographyObj['Demographics:demographics'].response) {
-        neighborhoodObj[neighborhood].demography = demographyObj['Demographics:demographics'].response[0];
-      }
-      else { neighborhoodObj[neighborhood].demography = {}; }
+      neighborhoodObj[neighborhood].demography = demographyObj['Demographics:demographics'].response[0];
+      // _.extend(neighborhoodObj[neighborhood], demographyObj);
 
       if(numEvents === numNeighborhoods) {
         deferred.resolve(neighborhoodObj);
@@ -309,8 +305,11 @@ var getDemographics  = function (neighborhoodObj) {
     });
   }
 
+//COMMENT TO ACTIVATE ZILLOW
+// deferred.resolve(neighborhoodObj);
+
   return deferred.promise;
-}
+};
 
 
 //-----------------------------------------------------------------------------------

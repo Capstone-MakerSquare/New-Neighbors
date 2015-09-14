@@ -1,4 +1,4 @@
-app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', function (Map, ServerApi, $state, Details){
+app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Charts', function (Map, ServerApi, $state, Details, Charts){
 
   var main = this;
   main.isCollapsed = false;
@@ -139,9 +139,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
          return data[key];
        });
 
-       //remove
-       // console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
-       // console.log('requestNeighborhoods main.neighborhoods demographics', main.neighborhoods[0].demography.pages[0].page[2].tables[0].table[0].data[0].attribute[4].values[0]);
+       console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
        main.placesObj = Details.getPlacesObj(main.neighborhoods);
        main.neighborhoodArray = main.orderByArray(main.neighborhoods);
        main.filterNeighborhoods();
@@ -230,6 +228,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', funct
     // console.log('selectNeighborhood', Details.currentNeighborhood);
 
     $state.go('main.details');
+    Charts.barChartData(neighborhood);
+    Charts.pieChartData(neighborhood);
     Map.dropMarker(neighborhood.coordinates);
     Map.panAndFocus(neighborhood.coordinates, 13);
     Map.drawCircle(neighborhood.coordinates, 2000);
