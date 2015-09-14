@@ -31,7 +31,7 @@ p {
   margin-bottom: 2px;
 }
 
-a:hover, a:focus {
+a, a:hover, a:focus {
   color:#fff;
   text-decoration: none;
 }
@@ -147,14 +147,14 @@ small {
   position:relative;
 }
 
-.slideshow .neighborhood-name {
+
+.slideshow .profile-buttons {
+  display: block;
   position:absolute;
-  top:5px;
   max-width:50%;
   height:40px;
   padding:5px 15px 0 15px;
   background-color: #5f327c;
-  display: block;
   z-index:1;
   font-size: 25px;
   color:#fff;
@@ -162,6 +162,15 @@ small {
     -webkit-box-shadow: 0px 4px 5px rgba(31, 31, 31, 0.50);
     -moz-box-shadow:    0px 4px 5px rgba(31, 31, 31, 0.50);
     box-shadow:         0px 4px 5px rgba(31, 31, 31, 0.50);
+}
+
+.slideshow .back-button {
+  right:5px;
+  top:5px;
+}
+
+.slideshow .neighborhood-name {
+  top:5px;
 }
 
 .instagram-default-background {
