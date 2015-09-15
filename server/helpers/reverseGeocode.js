@@ -9,11 +9,11 @@ var keys = require('./../config/keys.js');
   Input: coordinates = {
             latitude :
             longitude :
-          }, neighborhood
-  Output: [addressObj, neighborhood]
+          }
+  Output: addressObj
 */
 
-module.exports = function (coordinates, neighborhood) {
+module.exports = function (coordinates) {
   var deferred = Q.defer();
 
   var geocodeUrl_latlng = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
@@ -53,16 +53,20 @@ module.exports = function (coordinates, neighborhood) {
        //remove
        // console.log('addressObj:',addressObj);
 
-       deferred.resolve([addressObj, neighborhood]);
+       deferred.resolve(addressObj);
+       // return addressObj;
+
      }
      else {
-       deferred.resolve([{formatted_address : 'Not available'}, neighborhood]);
+       deferred.resolve({formatted_address : 'Not available'});
+       // return {formatted_address : 'Not available'};
+
      }
-  },
-  function (errorMessage) {
-    // console.log('Error while fetching street address:',errorMessage);
-    deferred.reject('Not Available');
   });
+  // function (errorMessage) {
+  //   // console.log('Error while fetching street address:',errorMessage);
+  //   deferred.reject('Not Available');
+  // });
 
   return deferred.promise;
 }

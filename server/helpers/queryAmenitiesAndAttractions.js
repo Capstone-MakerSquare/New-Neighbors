@@ -7,7 +7,7 @@ var keys = require('./../config/keys.js');
 /*Input: neighborhood Object
   Output: AmenitiesObject
 */
-module.exports = function (coordinates, neighborhood) {
+module.exports = function (coordinates) {
   var deferred = Q.defer();
 
   var amenitiesObj = {};
@@ -49,11 +49,11 @@ module.exports = function (coordinates, neighborhood) {
         //remove
         // console.log('Total number of amenities:', Object.keys(amenitiesObj).length);
 
-        deferred.resolve([amenitiesObj, neighborhood]);
+        deferred.resolve(amenitiesObj);
       }
     }, function (errorMessage) {
       numEvents++;
-      if(numEvents === 3) { deferred.resolve([amenitiesObj, neighborhood]); }
+      if(numEvents === 3) { deferred.resolve(amenitiesObj); }
     });
   }
 

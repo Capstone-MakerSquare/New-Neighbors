@@ -6,10 +6,10 @@ var _ = require('underscore');
 
 //-----------------------------------------------------------------------------------
 //GET INSTAGRAM pictures that are location specific
-/*Input: Coordinates, neighborhood
+/*Input: Coordinates
   Output: imagesArray with links
 */
-module.exports = function (coordinates, neighborhood) {
+module.exports = function (coordinates) {
   var deferred = Q.defer();
 
   var instaUrl_accessToken = 'https://api.instagram.com/v1/media/search?access_token='
@@ -45,7 +45,7 @@ module.exports = function (coordinates, neighborhood) {
       });
     });
 
-    deferred.resolve([imagesArray, neighborhood]);
+    deferred.resolve(imagesArray);
   });
 
   return deferred.promise;

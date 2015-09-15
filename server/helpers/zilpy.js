@@ -15,7 +15,7 @@ var keys = require('./../config/keys.js');
   Output: zilpyData object
 */
 
-module.exports = function (searchInfo, neighborhood) {
+module.exports = function (searchInfo) {
   var deferred = Q.defer();
 
   /* Possible values for ptype:
@@ -31,20 +31,19 @@ module.exports = function (searchInfo, neighborhood) {
   var zilpyUrl = zilpyUrl_address + searchInfo.address + zilpyUrl_bedrooms + searchInfo.bedrooms + zilpyUrl_bathrooms + searchInfo.bathrooms;
 
   //remove
-  // deferred.resolve(['ZTO', 'ZTO', neighborhood]);
+  // deferred.resolve(['ZTO', 'ZTO']);
 
   // UNCOMMENT - ZILPY TEMPORARILY DISABLED
   //----------------------------------------------------------------------------
   getRequest(zilpyUrl)
   .then(function (zilpyData) {
-     // console.log('Neighborhood fetched:',neighborhood);
      // console.log('Zilpy Data:',zilpyData);
      // console.log('************************');
-    deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
+    deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType]);
   }, function (errorMessage) {
     console.log('Error/server not responding.');
     console.log('errorMessage:', errorMessage);
-    deferred.resolve(['N/A', 'N/A', neighborhood]);
+    deferred.resolve(['N/A', 'N/A']);
   });
 
   return deferred.promise;

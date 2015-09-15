@@ -26,16 +26,18 @@ middleware(app,express);
 var userDestination;
 var neighborhoods;
 var country;
-var numNeighborhoods;
+var searchInfo;
 
 var neighborhoodObject = {};
+var neighborhoods;
+var numNeighborhoods;
 
 //Handle a POST request
 //api/getNeighbors
 app.post('/api/getNeighbors', function (req, res) {
 	console.log('server.js says: POST request received! Data:', req.body);
 
-	var searchInfo = req.body;
+	searchInfo = req.body;
 	var glanceCards = [];
 	var eventNumber = 0;
 
@@ -46,17 +48,136 @@ app.post('/api/getNeighbors', function (req, res) {
 	}
 
 	geoCode(searchInfo.address)
-	.then(function (geoCode) {
-		// console.log('Data from geoCode received. EventNumber:', eventNumber);
-		// console.log('geoCode:', geoCode);
-    ++eventNumber;
-		userDestination = geoCode;
-		return findNeighborhoods(geoCode);
-	},function (errorMessage) {
-    ++eventNumber;
-    checkAndRespond({});
+	.then(
+    function (geoCode) {
+      eventNumber++;
+  		userDestination = geoCode;
+  		return findNeighborhoods(geoCode);
+	  },
+    function (errorMessage) {
+      ++eventNumber;
+      checkAndRespond({});
+    })
+
+  .then(function (neighborhoodObj) {
+    neighborhoodObject = neighborhoodObj;
+    neighborhoods = Object.keys(neighborhoodObj);
+    numNeighborhoods = neighborhoods.length;
+    // console.log('neighborhoodObj created:', neighborhoodObj);
+    // console.log('neighborhoods:',neighborhoods);
+    var testNeighborhood = neighborhoods[0];
+
+    Q.all([
+        getStreetAddress(testNeighborhood)
+        .then(function (testNeighborhood) {
+          if(neighborhoodObject[testNeighborhood].country === 'USA') {
+            return Q.all([
+              getRentEstimate(testNeighborhood),
+              getDemography(testNeighborhood)
+            ]);
+          }
+          else return 'Other Country';
+        })
+        ,
+        getAmenitiesAndAttractions(testNeighborhood),
+        getPictures(testNeighborhood)
+      ])
+    .then(function (resultArray) {
+      console.log('resultArray:', resultArray);
+      checkAndRespond(neighborhoodObject);
+    });
+
+    // ASQ(testNeighborhood)
+    // .all(
+    //     function(done, neighborhood) {
+    //       getStreetAddress(neighborhood)
+    //       .then(function (streetAddress) {
+    //         done(streetAddress);
+    //       });
+    //     }
+    //   )
+    // .val(function(done,msg) {
+    //   console.log('msg:',msg);
+    // });
+
+
+
+
+
   })
 
+
+//-----------------------------------------------------------------------------------
+  var getStreetAddress = function (neighborhood) {
+    var deferred = Q.defer();
+    var coordinates = {
+      latitude : neighborhoodObject[neighborhood].latitude,
+      longitude : neighborhoodObject[neighborhood].longitude
+    };
+    reverseGeocode(coordinates)
+    .then(function (addressObj) {
+      neighborhoodObject[neighborhood].streetAddress = addressObj.formatted_address;
+      if(addressObj.country === 'USA') { _.extend(neighborhoodObject[neighborhood], addressObj); }
+      // deferred.resolve(neighborhood + ':Street address fetched.');
+      deferred.resolve(neighborhood);
+    });
+    return deferred.promise;
+  }
+//-----------------------------------------------------------------------------------
+  var getAmenitiesAndAttractions = function (neighborhood) {
+    var deferred = Q.defer();
+    var coordinates = {
+      latitude : neighborhoodObject[neighborhood].latitude,
+      longitude : neighborhoodObject[neighborhood].longitude
+    };
+    queryAmenitiesAndAttractions(coordinates)
+    .then(function (amenitiesObj) {
+      neighborhoodObject[neighborhood].amenities_attractions = amenitiesObj;
+      deferred.resolve(neighborhood + ':Amenities fetched.');
+    });
+    return deferred.promise;
+  }
+//-----------------------------------------------------------------------------------
+  var getPictures = function (neighborhood) {
+    var deferred = Q.defer();
+    var coordinates = {
+      latitude : neighborhoodObject[neighborhood].latitude,
+      longitude : neighborhoodObject[neighborhood].longitude
+    };
+    getInstagram(coordinates)
+    .then(function (imagesArray) {
+      neighborhoodObject[neighborhood].instagram = imagesArray;
+      deferred.resolve(neighborhood + ':Instagram pictures fetched.');
+    });
+    return deferred.promise;
+  }
+//-----------------------------------------------------------------------------------
+  var getRentEstimate = function (neighborhood) {
+    var deferred = Q.defer();
+    var zilpySearchInfo = {
+      address : neighborhoodObject[neighborhood].streetAddress,
+      bedrooms : searchInfo.bedrooms,
+      bathrooms : searchInfo.bathrooms
+    }
+    zilpy(zilpySearchInfo)
+    .then(function (tuple) {
+      //estimate, property_type
+      neighborhoodObject[neighborhood].rentEstimate = tuple[0];
+      neighborhoodObject[neighborhood].propertyType = tuple[1];
+      deferred.resolve(neighborhood + ':Rent Estimate fetched.');
+    });
+    return deferred.promise;
+  }
+//-----------------------------------------------------------------------------------
+  var getDemography = function (neighborhood) {
+    var deferred = Q.defer();
+    zillow(neighborhood, neighborhoodObject[neighborhood].city)
+    .then(function (demographyObj) {
+      neighborhoodObject[neighborhood].demographics = demographyObj;
+      deferred.resolve(neighborhood + ':Demography info fetched.');
+    });
+    return deferred.promise;
+  }
 
 
 	// .then(function (neighborhoodObj) {
@@ -149,36 +270,36 @@ var getPictures = function (neighborhoodObj) {
 /*Input: neighborhood Object
   Output: neighborhood Object augmented with amenities
 */
-var getAmenitiesAndAttractions = function (neighborhoodObj) {
-  var deferred = Q.defer();
-  // console.log('Get Amenities called.');
+// var getAmenitiesAndAttractions = function (neighborhoodObj) {
+//   var deferred = Q.defer();
+//   // console.log('Get Amenities called.');
 
-  //console.log
-  var numEvents = 0;
+//   //console.log
+//   var numEvents = 0;
 
 
-  for(var neighborhood in neighborhoodObj) {
-    var coordinates = {
-      latitude : neighborhoodObj[neighborhood].latitude,
-      longitude : neighborhoodObj[neighborhood].longitude
-    };
-    queryAmenitiesAndAttractions(coordinates, neighborhood)
-    .then(function (tuple) {
-      //[amenitiesObj, neighborhood]
-      var amenitiesObj = tuple[0];
-      var neighborhood = tuple[1];
+//   for(var neighborhood in neighborhoodObj) {
+//     var coordinates = {
+//       latitude : neighborhoodObj[neighborhood].latitude,
+//       longitude : neighborhoodObj[neighborhood].longitude
+//     };
+//     queryAmenitiesAndAttractions(coordinates, neighborhood)
+//     .then(function (tuple) {
+//       //[amenitiesObj, neighborhood]
+//       var amenitiesObj = tuple[0];
+//       var neighborhood = tuple[1];
 
-      numEvents++;
-      neighborhoodObj[neighborhood].amenities_attractions = amenitiesObj;
-      // console.log('Number of events:',numEvents);
-      // console.log('Number of neighborhoods:',numNeighborhoods);
+//       numEvents++;
+//       neighborhoodObj[neighborhood].amenities_attractions = amenitiesObj;
+//       // console.log('Number of events:',numEvents);
+//       // console.log('Number of neighborhoods:',numNeighborhoods);
 
-      if(numEvents === numNeighborhoods) { deferred.resolve(neighborhoodObj); }    //change the if condition
-    });
-  }
+//       if(numEvents === numNeighborhoods) { deferred.resolve(neighborhoodObj); }    //change the if condition
+//     });
+//   }
 
-  return deferred.promise;
-}
+//   return deferred.promise;
+// }
 
 
 

@@ -23,7 +23,7 @@ module.exports = function (neighborhood, city) {
   getXmlRequest(zillowUrl)
   .then(function (responseObj) {
     // console.log('Response Object:', responseObj);
-    deferred.resolve([responseObj, neighborhood]);
+    deferred.resolve(responseObj['Demographics:demographics'].response[0]);
   });
 
   return deferred.promise;
