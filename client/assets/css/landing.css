@@ -56,9 +56,13 @@
 .landing-container .searchForm {
   width: 100%;
   position: absolute;
-  bottom:100px;
+  bottom: 54px;
   background-color: #fff;
   background-color: rgba(255,255,255, 0.3);
+}
+
+.landing-container .how-it-works {
+  background-color: #5F327C;
 }
 
 .landing-container #place-search,

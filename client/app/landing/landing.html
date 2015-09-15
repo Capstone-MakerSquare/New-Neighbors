@@ -3,12 +3,16 @@
 
 <div class="landing-container">
 
+  <script>
+console.log(screen.height);
+  </script>
+
   <div class="landing-photo">
     <div class="site-wrapper">
       <div class="site-wrapper-inner">
         <div class="cover-container">
           <h1 class="cover-heading">Find Your Next Neighborhood</h1>
-          <button type="button">How It Works</button>
+          <button class="how-it-works" type="button">How It Works</button>
           <div class="landingSearchForm">
             <div class="searchForm col-sm-12 col-md-12">
               <div class="col-sm-12 col-md-offset-3 col-md-8">
@@ -24,7 +28,7 @@
                       </select>
                     </div>
                     <div class="col-sm-4 col-md-2 landing-form">
-                      <select class="form-control" name="bathrooms" ng-model="bathroomSelected">
+                      <select class="form-control" name="bedrooms" ng-model="main.searchInfo.bathrooms">
                         <option value="1">1 bedroom</option>
                         <option value="2">2 bedrooms</option>
                         <option value="3">3 bedrooms</option>
@@ -36,7 +40,7 @@
                     </div>
                     <div class="col-sm-4 col-md-2 landing-form">
                       <select class="form-control" ng-model="main.searchInfo.bedrooms">
-                        <option value="1" selected>1 bathrooms</option>
+                        <option value="1" selected>1 bathroom</option>
                         <option value="2">2 bathroom</option>
                         <option value="3">3 bathrooms</option>
                         <option value="4">4 bathrooms</option>
@@ -91,55 +95,6 @@
             </div>
           </div>
         </div>
-    </div>
-  </div>
-
-  <div class="our-team">
-    <div class="container-fluid">
-      <h1>Our Team</h1>
-      <div class="our-team-links">
-        <div class="col-md-6">
-          <ul>
-            <li>
-              <span>Evan Mencke</span>
-              <a class="icon-link" href="https://www.linkedin.com/in/metaevan">
-                <i class="fi-social-linkedin"></i>
-              </a>
-              <a class="icon-link" href="https://github.com/MetaEvan">
-                <i class="fi-social-github"></i>
-              </a>
-            </li>
-            <li>
-              <span>Raghav Abboy</span>
-              <a class="icon-link" href="https://www.linkedin.com/in/raghavabboy">
-                <i class="fi-social-linkedin"></i>
-              </a>
-              <a class="icon-link" href="https://github.com/RaghavAbboy">
-                <i class="fi-social-github"></i>
-              </a>
-            </li>
-          </div>
-          <div class="col-md-6">
-            <li>
-              <span>Melinda Bernardo</span>
-              <a class="icon-link" href="https://www.linkedin.com/in/melindasarnicki">
-                <i class="fi-social-linkedin"></i>
-              </a>
-              <a class="icon-link" href="https://github.com/msarnicki">
-                <i class="fi-social-github"></i>
-              </a>
-            </li>
-            <li>
-              <span>Kalisa Falzone</span>
-              <a class="icon-link" href="https://www.linkedin.com/in/kalisafalzone">
-                <i class="fi-social-linkedin"></i>
-              </a>
-              <a class="icon-link" href="https://github.com/KalisaFalzone">
-                <i class="fi-social-github"></i>
-              </a>
-            </li>
-        </div>
-      </div>
     </div>
   </div>
 </div>
