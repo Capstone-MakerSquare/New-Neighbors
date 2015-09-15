@@ -41,13 +41,13 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   // Output: flattened array of objects
   var getPriceString = function (neighborhood) {
     var obj = {}
-    if(main.buyOrRent === 'rent') {
+    if(main.searchInfo.buyOrRent === 'rent') {
       obj.title = 'Rent Estimate';
       if(!neighborhood.rentEstimate) { obj.price = 'Not Available'; }
       obj.price = (neighborhood.rentEstimate.estimateLow) ? '$' + neighborhood.rentEstimate.estimateLow.toLocaleString() + ' - ' + '$' + neighborhood.rentEstimate.estimateHigh.toLocaleString() : 'Not Available';
     } else {
       if(main.buyPrice[neighborhood.name].price !== 'rent selected') { obj.price = 'Not Available'; }
-      obj = {title: main.buyPrice[neighborhood.name].housetype, price: '$' + main.buyPrice[neighborhood.name].price.toLocaleString()};
+      obj = {title: main.buyPrice[neighborhood.name].housetype, price: main.buyPrice[neighborhood.name].price.toLocaleString()};
     }
     return obj;
   }
@@ -78,14 +78,14 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.getBuyPrice  = function(arr) {
     var priceData;
     var dataInfo;
-    var temp;
+    var temp = {};
             //item.demography.pages[0].page[0].tables[0].table[0].data[0].attribute[3].values[0]
         ////.city[0].value[0]._
     arr.forEach( function(item) {
       priceData = {};
       dataInfo = [,];
-      temp = {};
-      if (main.buyOrRent === 'rent') {
+      temp = {housetype: 'House Purchase Estimate', price: 'Data Not Available'};
+      if (main.searchInfo.buyOrRent === 'rent') {
         temp.housetype = 'rent selected';
         temp.price = 'rent selected';
       } else if (item.demography &&
@@ -118,13 +118,21 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
           temp.housetype = 'Median Single Family Home Value';
           dataInfo[0] = 1;
         }
-        if (priceData[dataInfo[0]].values[0].neighborhood) {
-          dataInfo[1] = 'neighborhood';
+        if (priceData[dataInfo[0]] && priceData[dataInfo[0]].values && priceData[dataInfo[0]].values[0]) {
+          if (priceData[dataInfo[0]].values[0].neighborhood) {
+            dataInfo[1] = 'neighborhood';
+          }
         }
-        temp.price = priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._;
-      } else {
-          temp.housetype = 'House Price';
-          temp.price = 'Data not Available';
+        if (priceData[dataInfo[0]] &&
+          priceData[dataInfo[0]].values &&
+          priceData[dataInfo[0]].values[0] &&
+          priceData[dataInfo[0]].values[0][dataInfo[1]] &&
+          priceData[dataInfo[0]].values[0][dataInfo[1]][0] &&
+          priceData[dataInfo[0]].values[0][dataInfo[1]][0].value &&
+          priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0] &&
+          priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._) {
+            temp.price = '$' + priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._;
+        }
       }
       main.buyPrice[item.name] = temp;
     });
