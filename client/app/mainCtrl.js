@@ -10,12 +10,13 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.searchInfo.bedrooms = 1;
   main.searchInfo.bathrooms = 1;
   main.searchInfo.maxRent = 8000;
-  main.searchInfo.commuteTime = 150;
-  main.searchInfo.commuteDistance = 70;
+  main.searchInfo.commuteTime = 45;
+  main.searchInfo.commuteDistance = 30;
   main.imageArray = ['../assets/images/default-neighborhood-bg.jpg', '../assets/images/default-photo-gallery.jpg', '../assets/images/santamonica.jpg'];
 
   main.filteredNeighborhoodArray = [];
   main.serverResponse = {};
+  main.filterType = 'estimateLow';
 
   main.placesObj = {};
 

@@ -238,7 +238,7 @@ small {
 .footer {
   position:fixed;
   bottom:0;
-  height:50px;
+  height: 25px;
   width: 100%;
   background-color:#f8f8f8;
   border-color: #e7e7e7;
