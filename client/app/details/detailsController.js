@@ -2,20 +2,23 @@ var details = angular.module('myApp.details', []);
 
 details.controller('detailsController', ['Details', 'Map', function (Details, Map){
   var detail = this;
-  detail.picturesArr = [];
+  // detail.picturesArr = [];
   detail.markers = [];
 
   detail.currentNeighborhood = Details.currentNeighborhood;
   console.log('detailsController says:', Details.currentNeighborhood);
 
   detail.displayMarkers = function(place) {
+    var icon;
+
+
     Map.clearMarkers(Details.currentMarkers);
     for (var i = 0; i < place[1].length; i++) {
       var coordinates = {
         latitude: place[1][i].geometry.location.lat,
         longitude: place[1][i].geometry.location.lng
       }
-      detail.markers.push(Map.dropMarker(coordinates, place[1][i].name))
+      detail.markers.push(Map.dropMarker(coordinates, place[1][i].name, place[1][i].name, icon))
     }
     for (var j = 0; j < detail.markers.length; j++){
       Details.currentMarkers.push(detail.markers[j])
@@ -43,17 +46,18 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
 
   //----------------------------------------------------------------------------------
   // instagram map
+  detail.populatePictures = function(){
+    var pictures = [];
+    detail.currentNeighborhood.instagram.forEach(function (obj) {
+      pictures.push([obj.images.low_resolution.url, obj.user.full_name]);
+    });
+    return pictures;
+  };
 
-  detail.currentNeighborhood.instagram.forEach(function (obj) {
-    detail.picturesArr.push([obj.images.low_resolution.url, obj.user.full_name]);
-    // detail.picturesArr.push({
-      // username: obj.user.full_name,
-      // url: obj.images.standard_resolution.url
-    // });
-  });
+  // detail.picturesArr = detail.populatePictures()
 
   //remove
-  console.log('detailsController says: picturesArr:', detail.picturesArr);
+  // console.log('detailsController says: picturesArr:', detail.picturesArr);
 
 
   //----------------------------------------------------------------------------------

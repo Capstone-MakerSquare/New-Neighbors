@@ -3,7 +3,7 @@ details
 
   var neighborhoodDetailsObj;
   var currentNeighborhood;
-  var currentMarkers;
+  var currentMarkers = [];
 
   var placesDict = {
     airport: [],

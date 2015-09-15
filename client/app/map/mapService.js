@@ -42,33 +42,16 @@ mapMod // = angular.module('myApp.mapServices',[])
 
   //----------------------------------------------------------------------------------
   //Drop a marker
-  var dropMarker = function (coordinates, title, tooltip) {
+  var dropMarker = function (coordinates, title, tooltip, icon) {
     var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
 
     var marker;
     return marker = new google.maps.Marker({
       position: latLng,
       map: map,
-      title: title
+      title: title,
+      icon: icon
     });
-
-    //----------------------------------------------------------------------------------
-  //Drop a marker with a link to be clicked
-  var dropMarkerWithLink = function (coordinates, title, link) {
-    var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
-
-    var marker = new google.maps.Marker({
-      position: latLng,
-      map: map,
-      title: title
-    });
-
-    marker.addListener('click', function() {
-      $state.go(link);
-    });
-
-      return marker;
-
   }
 
   //----------------------------------------------------------------------------------
@@ -81,7 +64,7 @@ mapMod // = angular.module('myApp.mapServices',[])
         return;
       }
       for (var j = 0; j < Details.currentMarkers.length; j++) {
-        Details.markers[j].setMap(null);
+        Details.currentMarkers[j].setMap(null);
       }
     }
 
@@ -112,7 +95,7 @@ mapMod // = angular.module('myApp.mapServices',[])
     // console.log('radius:', radius);
     // console.log('latLng:', latLng);
 
-    // if(circle) { circle.setMap(null); }
+    if(circle) { circle.setMap(null); }
     circle = new google.maps.Circle({
       strokeColor: '#DDDDDD',
       strokeOpacity: .6,
@@ -127,10 +110,10 @@ mapMod // = angular.module('myApp.mapServices',[])
 
   return {
     initialize: initialize,
+    map: map,
     markers: markers,
     clearMarkers: clearMarkers,
     panAndFocus: panAndFocus,
-    dropMarkerWithLink: dropMarkerWithLink,
     dropMarker: dropMarker,
     drawCircle: drawCircle,
     dropMarkerWithLabel: dropMarkerWithLabel
