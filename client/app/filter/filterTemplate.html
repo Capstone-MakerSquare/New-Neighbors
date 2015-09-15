@@ -6,9 +6,11 @@
 
     <div class="col-md-6">
       <!--start of order-by section -->
-      <div class="col-md-8 col-md-offset-4">
+      <div class="col-md-5 orderBy">
         <label>Order Results By:</label>
-        <select name="selectOrder" ng-model="main.filterType">
+      </div>
+      <div class="col-md-7">
+        <select class="form-control" name="selectOrder" ng-model="main.filterType">
           <option value="estimateLow">Lowest Rent</option>
           <option value="commuteTime">Shortest Commute</option>
           <option value="commuteDistance">Closest Distance</option>
