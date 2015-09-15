@@ -66,10 +66,15 @@ small {
   width:100%;
 }
 
-.details-container {
+.details-container, .results-container {
   height:650px;
   overflow:scroll;
   border:2px solid #5f327c;
+}
+
+.results-container {
+  padding:0 10px 10px 10px;
+  margin-top:10px;
 }
 
 .details-container .details-neighborhood-bg {
@@ -192,7 +197,6 @@ small {
   color:white;
 }
 
-
 .nav-container {
   margin-top: 10px;
   text-align: center;
@@ -207,7 +211,6 @@ small {
 .nav-container .nav-button {
   color:#5f327;
 }
-
 
 .nav-container .nav-button {
   background-color: #5f327c;
