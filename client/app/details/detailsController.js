@@ -9,16 +9,16 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   console.log('detailsController says:', Details.currentNeighborhood);
 
   detail.displayMarkers = function(place) {
-    var icon;
-
+    var icon = Map.getIcon();
+    console.log('place1', place)
 
     Map.clearMarkers(Details.currentMarkers);
-    for (var i = 0; i < place[1].length; i++) {
+    for (var i = 0; i < place.length; i++) {
       var coordinates = {
-        latitude: place[1][i].geometry.location.lat,
-        longitude: place[1][i].geometry.location.lng
+        latitude: place[i].geometry.location.lat,
+        longitude: place[i].geometry.location.lng
       }
-      detail.markers.push(Map.dropMarker(coordinates, place[1][i].name, place[1][i].name, icon))
+      detail.markers.push(Map.dropMarker(coordinates, place[i].name, place[i].name, icon))
     }
     for (var j = 0; j < detail.markers.length; j++){
       Details.currentMarkers.push(detail.markers[j])

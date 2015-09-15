@@ -20,7 +20,9 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.filterType = 'estimateLow';
   main.currentNeighborhood;
 
-  main.placesObj = {};
+  main.serviceObj = {};
+  main.attractionObj = {};
+
 
   main.coordinates = {
       latitude: 38.5,
@@ -143,10 +145,10 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
        });
 
        console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
-       main.placesObj = Details.getPlacesObj(main.neighborhoods);
+       main.attractionObj = Details.createPlacesObj(main.neighborhoods, Details.attractionDict);
+       main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
        main.neighborhoodArray = main.orderByArray(main.neighborhoods);
        main.filterNeighborhoods();
-
        //remove
        //console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
 
@@ -180,8 +182,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       url: "assets/images/hood-icon.png",
       size: new google.maps.Size(50, 50),
       origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(25, 25)
+      anchor: new google.maps.Point(20, 20),
+      scaledSize: new google.maps.Size(40, 40)
     };
 
     var marker = Map.dropMarker(coordinates, title, title, icon);
@@ -229,7 +231,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //Function to map neighborhood data
   main.mapCurrentNeighborhood = function (neighborhood) {
     Details.currentNeighborhood = neighborhood;
-    Details.currentNeighborhood.places = main.placesObj[neighborhood.name];
+    Details.currentNeighborhood.services = main.serviceObj[neighborhood.name];
+    Details.currentNeighborhood.attractions = main.attractionObj[neighborhood.name];
 
     for (var place in Details.currentNeighborhood.places){
       if (place === "grocery_or_supermarket") {

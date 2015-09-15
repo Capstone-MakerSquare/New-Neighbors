@@ -5,7 +5,7 @@ details
   var currentNeighborhood;
   var currentMarkers = [];
 
-  var placesDict = {
+  var serviceDict = {
     airport: [],
     atm: [],
     bank: [],
@@ -26,11 +26,13 @@ details
     post_office: [],
     restaurant: [],
     school: [],
-    spa: [],
     store: [],
     subway_station: [],
     train_station: [],
-    veterinary_care: [],
+    veterinary_care: []
+  };
+
+  var attractionDict = {
     amusement_park: [],
     aquarium: [],
     art_gallery: [],
@@ -42,23 +44,29 @@ details
     park: [],
     shopping_mall: [],
     stadium: [],
+    spa: [],
     university: [],
     zoo: []
   };
 
-  var getPlacesObj = function (neighborhoodArr) {
+  var createPlacesObj = function (neighborhoodArr, dictionary) {
     var results = {};
     var temp;
+    neighborhoodArr = neighborhoodArr || [];
+
     for (var i = 0; i < neighborhoodArr.length; i++) {
       temp = {};
       var establishments = neighborhoodArr[i].amenities_attractions;
+
       for (var place in establishments) {
-        if (establishments[place].types && establishments[place].types.length > 0) {
+        if (establishments[place].types && Array.isArray(establishments[place].types)) {
           for (var j = 0; j < establishments[place].types.length; j++){
-            if (placesDict[establishments[place].types[j]] && temp[establishments[place].types[j]]) {
+
+            if (dictionary[establishments[place].types[j]] && temp[establishments[place].types[j]]) {
               temp[establishments[place].types[j]].push(establishments[place]);
-            } else if (placesDict[establishments[place].types[j]] && !temp[establishments[place].types[j]]) {
+            } else if (dictionary[establishments[place].types[j]] && !temp[establishments[place].types[j]]) {
               temp[establishments[place].types[j]] = [establishments[place]];
+              temp[establishments[place].types[j]][0].type = establishments[place].types[j]
             }
           }
         }
@@ -68,11 +76,11 @@ details
       }
       results[neighborhoodArr[i].name] = temp;
     }
+    neighborhoodDetailsObj = results;
 
     //remove
-    // console.log('results', results);
+    console.log('neighborhoodDetailsObj' , dictionary, results);
 
-    neighborhoodDetailsObj = results;
     return results;
   };
 
@@ -91,11 +99,12 @@ details
 
 
   return {
-    placesDict: placesDict,
+    serviceDict: serviceDict,
+    attractionDict: attractionDict,
     currentNeighborhood: currentNeighborhood,
     currentMarkers: currentMarkers,
     neighborhoodDetailsObj: neighborhoodDetailsObj,
-    getPlacesObj : getPlacesObj
+    createPlacesObj : createPlacesObj
     // mapCurrentNeighborhood:mapCurrentNeighborhood
   };
 });

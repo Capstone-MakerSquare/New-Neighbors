@@ -13,6 +13,7 @@ mapMod // = angular.module('myApp.mapServices',[])
   // var marker;
   var markers;
   var circle;
+  var iconCounter = 0;
 
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
@@ -44,13 +45,15 @@ mapMod // = angular.module('myApp.mapServices',[])
   //Drop a marker
   var dropMarker = function (coordinates, title, tooltip, icon) {
     var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
-
+    console.log(latLng)
     var marker;
     return marker = new google.maps.Marker({
       position: latLng,
       map: map,
       title: title,
-      icon: icon
+      animation: google.maps.Animation.DROP,
+      icon: icon,
+
     });
   }
 
@@ -87,6 +90,20 @@ mapMod // = angular.module('myApp.mapServices',[])
   }
 
   //----------------------------------------------------------------------------------
+  //Get sequenced map icons
+  var getIcon = function () {
+    var dictionary = [
+      "assets/images/MapMarkers/Map-Maker-Icon-Blue.png",
+      "assets/images/MapMarkers/Map-Maker-Icon-Green.png",
+      "assets/images/MapMarkers/Map-Maker-Icon-Pink.png"
+    ];
+
+    if (iconCounter >= dictionary.length) { iconCounter = 0; }
+    return dictionary[iconCounter++];
+  }
+
+
+  //----------------------------------------------------------------------------------
   //Draw a circle with a given radius
   var drawCircle = function (coordinates, radius, color) {
     var radius = radius || 4000;
@@ -110,7 +127,7 @@ mapMod // = angular.module('myApp.mapServices',[])
 
   return {
     initialize: initialize,
-    map: map,
+    getIcon: getIcon,
     markers: markers,
     clearMarkers: clearMarkers,
     panAndFocus: panAndFocus,

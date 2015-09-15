@@ -1,21 +1,12 @@
-
-<!-- amenities and attractions -->
+<!-- Local Services -->
 <div class="col-md-12 attractions-container">
-  <hr>
   <div class="row">
-    <div class="col-xs-12 col-sm-2 col-md-12">
-       <h3>Local Spots</h3>
-    </div>
     <div class="col-md-12">
-      <hr>
       <div class="row">
-        <div class="col-xs-12 col-sm-2">
-          <label class="">Amenities and Attractions</label>
-        </div>
         <div class="col-xs-12 col-sm-10">
-          <div class="row" ng-repeat="place in details.currentNeighborhood.places">
-            <img class="icon" src="assets/images/gas-icon.png" alt="amenity icon">
-            <span ng-click="details.displayMarkers(place)">{{place[0]}}</span>
+          <div class="row" ng-repeat="place in details.currentNeighborhood.services">
+            <img class="icon" src="assets/images/restaurant-icon.png" alt="service icon">
+            <span ng-click="details.displayMarkers(place)">{{place[0].type}}</span>
           </div>
         </div>
       </div>

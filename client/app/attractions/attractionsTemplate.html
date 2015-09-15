@@ -1,0 +1,16 @@
+<!-- Attractions -->
+<div class="col-md-12 attractions-container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-xs-12 col-sm-10">
+        attractions content here:
+          <div class="row" ng-repeat="place in details.currentNeighborhood.attractions">
+            <img class="icon" src="assets/images/museum-icon.png" alt="attraction icon">
+            <span ng-click="details.displayMarkers(place)">{{place[0].type}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
