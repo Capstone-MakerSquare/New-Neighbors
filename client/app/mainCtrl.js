@@ -1,6 +1,7 @@
 app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Charts', function (Map, ServerApi, $state, Details, Charts){
 
   var main = this;
+  main.picturesArr = [];
   main.isCollapsed = false;
   main.neighborhoodsObj = {}; //this is the response from the server
 
@@ -17,8 +18,11 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.filteredNeighborhoodArray = [];
   main.serverResponse = {};
   main.filterType = 'estimateLow';
+  main.currentNeighborhood;
 
-  main.placesObj = {};
+  main.serviceObj = {};
+  main.attractionObj = {};
+
 
   main.coordinates = {
       latitude: 38.5,
@@ -141,10 +145,10 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
        });
 
        console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
-       main.placesObj = Details.getPlacesObj(main.neighborhoods);
+       main.attractionObj = Details.createPlacesObj(main.neighborhoods, Details.attractionDict);
+       main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
        main.neighborhoodArray = main.orderByArray(main.neighborhoods);
        main.filterNeighborhoods();
-
        //remove
        //console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
 
@@ -167,9 +171,30 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   // Function to filter neighborhoods by user's filter options
   main.markNeighborhoods = function() {
     for (var i = 0; i < main.neighborhoodArray.length; i++) {
-      Map.dropMarker(main.neighborhoodArray[i].coordinates, main.neighborhoodArray[i].name, main.neighborhoodArray[i].name);
+      main.dropNeighborhoodMarker(main.neighborhoodArray[i].coordinates, main.neighborhoodArray[i].name, main.neighborhoodArray[i]);
     }
   };
+
+  //----------------------------------------------------------------------------------
+  //Drop a marker with a link to be clicked
+  main.dropNeighborhoodMarker = function (coordinates, title, neighborhoodObj) {
+    var icon = {
+      url: "assets/images/hood-icon.png",
+      size: new google.maps.Size(50, 50),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(20, 20),
+      scaledSize: new google.maps.Size(40, 40)
+    };
+
+    var marker = Map.dropMarker(coordinates, title, title, icon);
+
+
+    marker.addListener('click', function() {
+      main.selectNeighborhood(neighborhoodObj)
+      console.log(neighborhoodObj)
+    });
+    return marker;
+  }
 
   //----------------------------------------------------------------------------------
   // Helper functions - GOOGLE MAPS
@@ -206,7 +231,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //Function to map neighborhood data
   main.mapCurrentNeighborhood = function (neighborhood) {
     Details.currentNeighborhood = neighborhood;
-    Details.currentNeighborhood.places = main.placesObj[neighborhood.name];
+    Details.currentNeighborhood.services = main.serviceObj[neighborhood.name];
+    Details.currentNeighborhood.attractions = main.attractionObj[neighborhood.name];
 
     for (var place in Details.currentNeighborhood.places){
       if (place === "grocery_or_supermarket") {
@@ -221,20 +247,42 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //Function to drop a circle + marker on a selected neighborhood
   main.selectNeighborhood = function (neighborhood) {
     console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
+    main.populatePictures(neighborhood);
     main.mapCurrentNeighborhood(neighborhood);
     main.priceRange = neighborhood.priceString;
+    main.currentNeighborhood = neighborhood;
+
+    console.log('select neigh bor hood current',  main.currentNeighborhood)
 
     //remove
     // console.log('selectNeighborhood says: main.serverResponse:',main.serverResponse);
     // console.log('selectNeighborhood', Details.currentNeighborhood);
 
-    $state.go('main.details');
-    Charts.barChartData(neighborhood);
-    Charts.pieChartData(neighborhood);
-    Map.dropMarker(neighborhood.coordinates);
-    Map.panAndFocus(neighborhood.coordinates, 13);
-    Map.drawCircle(neighborhood.coordinates, 2000);
+    $state.go('main.results');
+    setTimeout(function() {
+
+
+      $state.go('main.details');
+
+      Charts.barChartData(neighborhood);
+      Charts.pieChartData(neighborhood);
+      Map.panAndFocus(neighborhood.coordinates, 13);
+      Map.drawCircle(neighborhood.coordinates, 2000);
+    }, 200)
   };
+
+  //----------------------------------------------------------------------------------
+  // instagram map
+  main.populatePictures = function(hood){
+    main.picturesArr = [];
+    hood.instagram.forEach(function (obj) {
+      main.picturesArr.push([obj.images.low_resolution.url, obj.user.full_name]);
+    });
+    console.log('detailsController says: picturesArr:', main.picturesArr);
+  }
+
+  //remove
+
 
   //----------------------------------------------------------------------------------
   // Initialization functions

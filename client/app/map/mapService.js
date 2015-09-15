@@ -1,5 +1,5 @@
 mapMod // = angular.module('myApp.mapServices',[])
-.factory('Map', function () {
+.factory('Map', ['Details', '$state', function (Details, $state) {
 
   var map;
   var mapOptions = {
@@ -10,8 +10,10 @@ mapMod // = angular.module('myApp.mapServices',[])
     zoom: 4
   };
 
-  var marker;
+  // var marker;
+  var markers;
   var circle;
+  var iconCounter = 0;
 
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
@@ -41,31 +43,33 @@ mapMod // = angular.module('myApp.mapServices',[])
 
   //----------------------------------------------------------------------------------
   //Drop a marker
-  var dropMarker = function (coordinates, title, tooltip) {
+  var dropMarker = function (coordinates, title, tooltip, icon) {
     var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
-
-    // if(marker) { marker.setMap(null); }
-    marker = new google.maps.Marker({
+    console.log(latLng)
+    var marker;
+    return marker = new google.maps.Marker({
       position: latLng,
       map: map,
-      title: title
+      title: title,
+      animation: google.maps.Animation.DROP,
+      icon: icon,
+
     });
-
-    //remove
-    // console.log(tooltip)
-
-    // if(tooltip) {
-    //   var infowindow = new google.maps.InfoWindow({
-    //     content: tooltip
-    //   });
-    //   marker.addListener('click', function() {
-    //     infowindow.open(map, marker);
-    //   });
-      // marker.addListener('click', function() {
-      //   infowindow.close(map, marker);
-      // });
-    // }
   }
+
+  //----------------------------------------------------------------------------------
+  //Clear the markers on the map
+  var clearMarkers = function (markerArr) {
+      for (var i = 0; i < markerArr; i++){
+        markerArr[i].setMap(null);
+      }
+      if (!Details.currentMarkers) {
+        return;
+      }
+      for (var j = 0; j < Details.currentMarkers.length; j++) {
+        Details.currentMarkers[j].setMap(null);
+      }
+    }
 
   //----------------------------------------------------------------------------------
   //Drop a marker with LABEL
@@ -86,6 +90,20 @@ mapMod // = angular.module('myApp.mapServices',[])
   }
 
   //----------------------------------------------------------------------------------
+  //Get sequenced map icons
+  var getIcon = function () {
+    var dictionary = [
+      "assets/images/MapMarkers/Map-Maker-Icon-Blue.png",
+      "assets/images/MapMarkers/Map-Maker-Icon-Green.png",
+      "assets/images/MapMarkers/Map-Maker-Icon-Pink.png"
+    ];
+
+    if (iconCounter >= dictionary.length) { iconCounter = 0; }
+    return dictionary[iconCounter++];
+  }
+
+
+  //----------------------------------------------------------------------------------
   //Draw a circle with a given radius
   var drawCircle = function (coordinates, radius, color) {
     var radius = radius || 4000;
@@ -94,7 +112,7 @@ mapMod // = angular.module('myApp.mapServices',[])
     // console.log('radius:', radius);
     // console.log('latLng:', latLng);
 
-    // if(circle) { circle.setMap(null); }
+    if(circle) { circle.setMap(null); }
     circle = new google.maps.Circle({
       strokeColor: '#DDDDDD',
       strokeOpacity: .6,
@@ -109,10 +127,13 @@ mapMod // = angular.module('myApp.mapServices',[])
 
   return {
     initialize: initialize,
+    getIcon: getIcon,
+    markers: markers,
+    clearMarkers: clearMarkers,
     panAndFocus: panAndFocus,
     dropMarker: dropMarker,
     drawCircle: drawCircle,
     dropMarkerWithLabel: dropMarkerWithLabel
   };
 
-});
+}]);
