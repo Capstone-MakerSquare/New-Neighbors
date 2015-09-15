@@ -239,6 +239,14 @@ small {
   margin-top:5px;
 }
 
+.filterForm .filter-options-btn {
+  margin-bottom:15px;
+}
+
+.filterForm .filter-btn {
+  margin-top:22px;
+}
+
 .footer {
   position:fixed;
   bottom:0;
