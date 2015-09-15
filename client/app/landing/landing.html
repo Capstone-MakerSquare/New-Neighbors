@@ -12,15 +12,15 @@ console.log(screen.height);
       <div class="site-wrapper-inner">
         <div class="cover-container">
           <h1 class="cover-heading">Find Your Next Neighborhood</h1>
-          <button class="how-it-works" type="button">How It Works</button>
+          <button class="landing-btn" type="button">How It Works</button>
           <div class="landingSearchForm">
-            <div class="searchForm col-sm-12 col-md-12">
-              <div class="col-sm-12 col-md-offset-3 col-md-8">
-                <form>
-                  <div class="form-group col-sm-6 col-md-4 landing-form">
+            <div class="searchForm col-sm-12 col-md-10">
+              <!-- <div class="col-sm-12 col-md-12"> -->
+                <form class="landingSearchForm">
+                  <div class="form-group col-md-offset-2">  
+                  <div class="col-sm-6 col-md-4 landing-form">
                     <input class="form-control" type="search" ng-model="main.searchInfo.address" id='place-search' placeholder="Enter an Address">
                   </div>
-                  <div class="form-group">
                     <div class="col-sm-4 col-md-1 landing-form">
                       <select class="form-control" id="rentBuy" name="rentBuy" ng-model="main.searchInfo.buyOrRent">
                         <option value="rent">Rent</option>
@@ -49,12 +49,12 @@ console.log(screen.height);
                         <option value="7">7+ bathrooms</option>
                       </select>
                     </div>
-                    <div class="col-sm-2 col-md-1 landing-form" style="margin-left:10px">
-                      <button type="button" ng-click="main.submitAddress()" class="btn btn-default">Submit</button>
+                    <div class="col-sm-2 col-md-1 landing-form">
+                      <button type="button" class="landing-btn landing-submit" ng-class="{'disabled': main.searchInfo.address.length < 5,'btn-disabled': main.searchInfo.address.length < 5}">Submit</button>
                     </div>
                   </div>
                 </form>
-              </div>
+              <!-- </div> -->
             </div>
           </div>
         </div>

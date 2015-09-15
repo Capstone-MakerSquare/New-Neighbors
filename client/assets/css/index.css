@@ -44,11 +44,11 @@ small {
   color:#5f327c;
 }
 
-.header {
+.header img {
   position:absolute;
   top:0;
-  width:200px;
-  height:50px;
+  left:0;
+  z-index:99;
 }
 
 .main-container {
@@ -233,6 +233,18 @@ small {
 
 .searchForm form {
   margin-top:20px;
+}
+
+.filterForm .orderBy label {
+  margin-top:5px;
+}
+
+.filterForm .filter-options-btn {
+  margin-bottom:15px;
+}
+
+.filterForm .filter-btn {
+  margin-top:22px;
 }
 
 .footer {

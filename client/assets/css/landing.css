@@ -61,8 +61,16 @@
   background-color: rgba(255,255,255, 0.3);
 }
 
-.landing-container .how-it-works {
+.landing-container .landing-btn {
   background-color: #5F327C;
+}
+
+.landing-container .landing-submit {
+  height:33px;
+}
+
+.landing-container .btn-disabled {
+  background-color: #686868;
 }
 
 .landing-container #place-search,
@@ -89,6 +97,10 @@
   .landing-container .landing-form {
     padding-left: 0;
     padding-right: 0;
+  }
+
+  .landing-container .landing-form button {
+    margin-left:10px;
   }
 
   .how-to-use {
