@@ -6,6 +6,7 @@ var keys = require('./config/keys.js');
 var request = require('request');
 var _ = require('underscore');
 var parseString = require('xml2js').parseString;
+var ASQ = require('asynquence');
 
 //Helpers
 var getRequest = require('./helpers/getRequest.js');
@@ -14,6 +15,9 @@ var geoCode = require('./helpers/geoCode.js');
 var reverseGeocode = require('./helpers/reverseGeocode.js');
 var getDistances = require('./helpers/getDistances.js');
 var getInstagram = require('./helpers/getInstagram.js');
+var queryAmenitiesAndAttractions = require('./helpers/queryAmenitiesAndAttractions.js');
+var zilpy = require('./helpers/zilpy.js');
+var zillow = require('./helpers/zillow.js');
 
 app = express();
 middleware(app,express);
@@ -53,46 +57,49 @@ app.post('/api/getNeighbors', function (req, res) {
     checkAndRespond({});
   })
 
-	.then(function (neighborhoodObj) {
-		console.log('Neighborhoods fetched.');
-    numNeighborhoods = Object.keys(neighborhoodObj).length;
-    if(Object.keys(neighborhoodObj).length === 0) { checkAndRespond({}); }
-		return getStreetAddresses(neighborhoodObj);
-	})
 
-	.then(function (neighborhoodObj) {
-		console.log('Street addresses fetched.');
-		return getDistances(neighborhoodObj, 'driving', userDestination);
-	})
 
-  .then(function (neighborhoodObj) {
-    console.log('Distances fetched.');
-    return getPictures(neighborhoodObj);
-  })
+	// .then(function (neighborhoodObj) {
+	// 	console.log('Neighborhoods fetched.');
+ //    numNeighborhoods = Object.keys(neighborhoodObj).length;
+ //    if(Object.keys(neighborhoodObj).length === 0) { checkAndRespond({}); }
+	// 	return getStreetAddresses(neighborhoodObj);
+	// })
 
-  .then(function (neighborhoodObj) {
-    console.log('Instagram Pictures fetched.');
-    return getAmenitiesAndAttractions(neighborhoodObj);
-  })
+	// .then(function (neighborhoodObj) {
+	// 	console.log('Street addresses fetched.');
+	// 	return getDistances(neighborhoodObj, 'driving', userDestination);
+	// })
 
-  .then(function (neighborhoodObj) {
-    console.log('Amenities fetched.');
-    //Fetch estimates and Demography Information only if the address is in the United States
-    if(country === 'USA') { return getEstimates(neighborhoodObj, searchInfo); }
-    else { checkAndRespond(neighborhoodObj); }
-  })
+ //  .then(function (neighborhoodObj) {
+ //    console.log('Distances fetched.');
+ //    return getPictures(neighborhoodObj);
+ //  })
 
-  .then(function (neighborhoodObj) {
-    console.log('Rental Estimates fetched.');
-    checkAndRespond(neighborhoodObj);
-    // return getDemographics(neighborhoodObj)
-  })
+ //  .then(function (neighborhoodObj) {
+ //    console.log('Instagram Pictures fetched.');
+ //    return getAmenitiesAndAttractions(neighborhoodObj);
+ //  })
 
-  // .then(function (neighborhoodObj) {
-  //   console.log('Zillow Info Fetched.');
-  //   console.log('eventNumber:', eventNumber);
-  //   checkAndRespond(neighborhoodObj);
-  // });
+ //  .then(function (neighborhoodObj) {
+ //    console.log('Amenities fetched.');
+ //    //Fetch estimates and Demography Information only if the address is in the United States
+ //    country = neighborhoodObj[Object.keys(neighborhoodObj)[0]].country;
+ //    if(country === 'USA') { return getEstimates(neighborhoodObj, searchInfo); }
+ //    else { checkAndRespond(neighborhoodObj); }
+ //  })
+
+ //  .then(function (neighborhoodObj) {
+ //    console.log('Rental Estimates fetched.');
+ //    // checkAndRespond(neighborhoodObj);
+ //    return getDemographics(neighborhoodObj)
+ //  })
+
+ //  .then(function (neighborhoodObj) {
+ //    console.log('Zillow Info Fetched.');
+ //    console.log('eventNumber:', eventNumber);
+ //    checkAndRespond(neighborhoodObj);
+ //  });
 
 });	//end of POST request handler
 
@@ -112,12 +119,9 @@ var getPictures = function (neighborhoodObj) {
       latitude : neighborhoodObj[neighborhood].latitude,
       longitude : neighborhoodObj[neighborhood].longitude
     };
-
-
     //remove
     // console.log('Calling instagram: Neighborhood:',neighborhood);
 
-    //remove
     getInstagram(coordinates, neighborhood)
     .then(function (tuple) {
       //[imagesArray, neighborhood]
@@ -128,8 +132,8 @@ var getPictures = function (neighborhoodObj) {
       neighborhoodObj[neighborhood].instagram = imagesArray;
 
       //remove
-      console.log('Instagram Images received for neighborhood:', neighborhood);
-      console.log('numEvents:', numEvents);
+      // console.log('Instagram Images received for neighborhood:', neighborhood);
+      // console.log('numEvents:', numEvents);
 
       if(numEvents === numNeighborhoods) {
         deferred.resolve(neighborhoodObj);
@@ -139,54 +143,6 @@ var getPictures = function (neighborhoodObj) {
 
   return deferred.promise;
 }
-
-//-----------------------------------------------------------------------------------
-//GET INSTAGRAM pictures that are location specific
-/*Input: Coordinates, neighborhood
-  Output: imagesArray with links
-*/
-// var getInstagram = function (coordinates, neighborhood) {
-//   var deferred = Q.defer();
-
-//   var instaUrl_accessToken = 'https://api.instagram.com/v1/media/search?access_token='
-//   var instaUrl_latitude = '&lat='
-//   var instaUrl_longitude = '&lng='
-//   var instaUrl_distance = '&distance=';
-
-//   var instaUrl = instaUrl_accessToken + keys.instagramAccessToken +
-//                  instaUrl_latitude + coordinates.latitude +
-//                  instaUrl_longitude + coordinates.longitude +
-//                  instaUrl_distance + 2000;
-
-//   //remove
-//   console.log('instaUrl:', instaUrl);
-
-//   getRequest(instaUrl)
-//   .then(function (responseObj) {
-//     var results = responseObj.data;
-//     var imagesArray = [];
-
-//     //remove
-//     // console.log('getInstagram says: Response data fetched: ',results.length);
-
-//     _.each(results, function (result) {
-//       // console.log(result.type);
-//       imagesArray.push({
-//         name: result.location.name,
-//         type: result.type,
-//         location: result.location,
-//         link: result.link,
-//         likes: result.likes,
-//         images: result.images,
-//         user: result.user
-//       });
-//     });
-
-//     deferred.resolve([imagesArray, neighborhood]);
-//   });
-
-//   return deferred.promise;
-// }
 
 //-----------------------------------------------------------------------------------
 //GET amenities for all neighborhoods
@@ -206,7 +162,7 @@ var getAmenitiesAndAttractions = function (neighborhoodObj) {
       latitude : neighborhoodObj[neighborhood].latitude,
       longitude : neighborhoodObj[neighborhood].longitude
     };
-    queryAmenities(coordinates, neighborhood)
+    queryAmenitiesAndAttractions(coordinates, neighborhood)
     .then(function (tuple) {
       //[amenitiesObj, neighborhood]
       var amenitiesObj = tuple[0];
@@ -225,63 +181,6 @@ var getAmenitiesAndAttractions = function (neighborhoodObj) {
 }
 
 
-//-----------------------------------------------------------------------------------
-//Get amenities for a given neighrbood for radii 0.5, 1.5 and 2.5 kilometers
-/*Input: neighborhood Object
-  Output: AmenitiesObject
-*/
-var queryAmenities = function (coordinates, neighborhood) {
-  var deferred = Q.defer();
-
-  var amenitiesObj = {};
-  var radius = 500;
-  var types = 'airport|atm|bank|beauty_salon|book_store|cafe|car_rental|convenience_store|fire_station|food|gas_station|grocery_or_supermarket|gym|hospital|laundry|library|pharmacy|post_office|school|spa|store|subway_station|train_station|veterinary_care|amusement_park|aquarium|art_gallery|bar|bowling_alley|casino|movie_theatre|museum|night_club|park|restaurant|shopping_mall|stadium|university|zoo';
-
-  var gAmenitiesUrl_location = 'https://maps.googleapis.com/maps/api/place/search/json?location=';
-  var gAmenitiesUrl_radius = '&radius=';
-  var gAmenitiesUrl_types = '&types=';
-  var gAmenitiesUrl_key = '&key=';
-
-  var gAmenitiesUrl_1 = gAmenitiesUrl_location + coordinates.latitude + ',' + coordinates.longitude + gAmenitiesUrl_radius;
-  var gAmenitiesUrl_2 = gAmenitiesUrl_types + types + gAmenitiesUrl_key + keys.googleAPIKey;
-
-  var numEvents = 0;
-
-  //function to append amenities to amenities object
-  var append = function (amenitiesArray) {
-    for(var i=0; i<amenitiesArray.length; i++) {
-      var amenity = amenitiesArray[i];
-      amenitiesObj[amenity.name] = amenitiesObj[amenity.name] || amenity;
-    }
-  }
-
-  //Fetch amenities for radii 500, 1500 and 2500
-  for(var i=0; i<3; i++) {
-    var gAmenitiesUrl = gAmenitiesUrl_1 + radius + gAmenitiesUrl_2;
-    // console.log('gAmenitiesUrl:',gAmenitiesUrl);
-    radius += 1000;
-
-    getRequest(gAmenitiesUrl)
-    .then(function (responseObj) {
-      numEvents++;
-      //remove
-      // console.log('queryAmenities says: number of amenities:', responseObj.results.length);
-      append(responseObj.results);
-
-      if(numEvents === 3) {
-        //remove
-        // console.log('Total number of amenities:', Object.keys(amenitiesObj).length);
-
-        deferred.resolve([amenitiesObj, neighborhood]);
-      }
-    }, function (errorMessage) {
-      numEvents++;
-      if(numEvents === 3) { deferred.resolve([amenitiesObj, neighborhood]); }
-    });
-  }
-
-  return deferred.promise;
-}
 
 //-----------------------------------------------------------------------------------
 //GET auxillary information for a neighborhood from Zillow
@@ -292,11 +191,11 @@ var getDemographics  = function (neighborhoodObj) {
   var deferred = Q.defer();
   var numEvents = 0;
   //remove
-  console.log('Fetch Zillow Info called. numNeighborhoods:', numNeighborhoods);
+  // console.log('Fetch Zillow Info called. numNeighborhoods:', numNeighborhoods);
 
 //UNCOMMENT TO QUERY ZILLOW
   for(var neighborhood in neighborhoodObj) {
-    queryZillow(neighborhood, neighborhoodObj[neighborhood].city)
+    zillow(neighborhood, neighborhoodObj[neighborhood].city)
     .then(function (tuple) {
       //tuple: [demographyObj, neighborhood]
       var demographyObj = tuple[0];
@@ -319,34 +218,6 @@ var getDemographics  = function (neighborhoodObj) {
 
   return deferred.promise;
 };
-
-
-//-----------------------------------------------------------------------------------
-//GET demography information for a neighborhood and a city from Zillow
-/*Input: neighborhood, city
-  Output: demographyObj
-*/
-var queryZillow = function (neighborhood, city) {
-  var deferred = Q.defer();
-
-  var zwsId = keys.zwsId;
-  var zillowUrl_zwsId = 'http://www.zillow.com/webservice/GetDemographics.htm?zws-id='
-  var zillowUrl_neighborhood = '&neighborhood='
-  var zillowUrl_city = '&city=';
-
-  var zillowUrl = zillowUrl_zwsId + zwsId + zillowUrl_neighborhood + neighborhood + zillowUrl_city + city;
-
-  //remove
-  console.log('ZillowUrl:', zillowUrl);
-
-  getXmlRequest(zillowUrl)
-  .then(function (responseObj) {
-    // console.log('Response Object:', responseObj);
-    deferred.resolve([responseObj, neighborhood]);
-  });
-
-  return deferred.promise;
-}
 
 
 //-----------------------------------------------------------------------------------
@@ -423,19 +294,13 @@ var findNeighborhoods = function (geoCode) {
 */
 
 var getEstimates = function (neighborhoodObj, searchInfo) {
-	var deferred = Q.defer();
+  var deferred = Q.defer();
 
 	var neighborhoodList = Object.keys(neighborhoodObj);
 	var lastNeighborhood = neighborhoodList[neighborhoodList.length - 1];
-	numNeighborhoods = neighborhoodList.length;
 	var numEvents = 0;
 
-  //remove
-  // console.log('Getting estimates for rent:');
-  // console.log('Number of neighborhoods:', numNeighborhoods);
-
 	for(var neighborhood in neighborhoodObj) {
-		//console.log(neighborhoodObj[neighborhood]);
 		var zilpySearchInfo = {
 			address : neighborhoodObj[neighborhood].streetAddress,
 			bedrooms : searchInfo.bedrooms,
@@ -458,64 +323,10 @@ var getEstimates = function (neighborhoodObj, searchInfo) {
 			neighborhoodObj[neighborhood].propertyType = propertyType;
 
 			if(numEvents === numNeighborhoods) {
-				// console.log('Resolved.');
 				deferred.resolve(neighborhoodObj);
 			}
-
 		});
 	}
-
-	return deferred.promise;
-}
-
-
-//-----------------------------------------------------------------------------------
-//GET Rent estimate High/Low
-/*Prerequisites:
-	Street Address, Bedrooms, Bathrooms
-  Website: zilpy.com
-
-  Input: searchInfo = {
-					address:
-					bedrooms:
-					bathrooms:
-  			}
-  Output: zilpyData object
-*/
-
-var zilpy = function (searchInfo, neighborhood) {
-	var deferred = Q.defer();
-
-	/* Possible values for ptype:
-			single_family_house
-			apartment_condo
-			town_house
-	*/
-
-	var zilpyUrl_address = 'http://api-stage.zilpy.com/property/-/rent/newreport?addr='
-	var zilpyUrl_bedrooms = '&ptype=apartment_condo&bdr='							//default to apartment_condos
-	var zilpyUrl_bathrooms = '&ba=';
-
-	var zilpyUrl = zilpyUrl_address + searchInfo.address + zilpyUrl_bedrooms + searchInfo.bedrooms + zilpyUrl_bathrooms + searchInfo.bathrooms;
-  // console.log('zilpyUrl', zilpyUrl);
-
-  //remove
-  // deferred.resolve(['ZTO', 'ZTO', neighborhood]);
-
-  // UNCOMMENT - ZILPY TEMPORARILY DISABLED
-  //----------------------------------------------------------------------------
-	getRequest(zilpyUrl)
-	.then(function (zilpyData) {
-		 // console.log('Neighborhood fetched:',neighborhood);
-		 // console.log('Zilpy Data:',zilpyData);
-     // console.log('************************');
-		deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType, neighborhood]);
-	}, function (errorMessage) {
-    console.log('Error/server not responding.');
-    console.log('errorMessage:', errorMessage);
-    deferred.resolve(['N/A', 'N/A', neighborhood]);
-  });
-
 	return deferred.promise;
 }
 
@@ -561,7 +372,6 @@ var getStreetAddresses = function (neighborhoodObj) {
       if(addressObj.country === 'USA') { _.extend(neighborhoodObj[neighborhood], addressObj); }
 
       if(numEvents === numNeighborhoods) {
-        // console.log('Resolved.');
         deferred.resolve(neighborhoodObj);
       }
 

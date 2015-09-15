@@ -1,6 +1,8 @@
 var Q = require('q');
 var getRequest = require('./getRequest.js');
 var keys = require('./../config/keys.js');
+var _ = require('underscore');
+
 
 //-----------------------------------------------------------------------------------
 //GET INSTAGRAM pictures that are location specific
@@ -29,10 +31,9 @@ module.exports = function (coordinates, neighborhood) {
     var imagesArray = [];
 
     //remove
-    console.log('getInstagram says: Response data fetched: ',results.length);
+    // console.log('getInstagram says: Response data fetched: ',results.length);
 
     _.each(results, function (result) {
-      // console.log(result.type);
       imagesArray.push({
         name: result.location.name,
         type: result.type,
