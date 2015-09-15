@@ -30,7 +30,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   };
 
   main.priceRange = '';      //stores the current price range for the selected neighborhood
-
+  main.buyPrice = {};
 
   //unscoped local variables
   var autocomplete;
@@ -39,9 +39,17 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   // Function to flatten the object so that the array can be sorted by a parameter
   // Input: neighborhoodsObj
   // Output: flattened array of objects
-  var getPriceString = function (rentEstimate) {
-    if(!rentEstimate) { return 'Not Available'; }
-    return (rentEstimate.estimateLow) ? '$' + rentEstimate.estimateLow + ' - ' + '$' + rentEstimate.estimateHigh : 'Not Available';
+  var getPriceString = function (neighborhood) {
+    var obj = {}
+    if(main.buyOrRent === 'rent') {
+      obj.title = 'Rent Estimate';
+      if(!neighborhood.rentEstimate) { obj.price = 'Not Available'; }
+      obj.price = (neighborhood.rentEstimate.estimateLow) ? '$' + neighborhood.rentEstimate.estimateLow.toLocaleString() + ' - ' + '$' + neighborhood.rentEstimate.estimateHigh.toLocaleString() : 'Not Available';
+    } else {
+      if(main.buyPrice[neighborhood.name].price !== 'rent selected') { obj.price = 'Not Available'; }
+      obj = {title: main.buyPrice[neighborhood.name].housetype, price: '$' + main.buyPrice[neighborhood.name].price.toLocaleString()};
+    }
+    return obj;
   }
 
   main.orderByArray = function(neighborhoods){
@@ -59,10 +67,67 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
           instagram: neighborhoods[i].instagram,
           coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude},
           demography: neighborhoods[i].demography,
-          priceString : getPriceString(neighborhoods[i].rentEstimate)
+          priceString : getPriceString(neighborhoods[i]),
+          buyPrice: main.buyPrice[neighborhoods[i].name]
       });
     }
     return arr;
+  };
+
+//Function to get the purchase prices for homes
+  main.getBuyPrice  = function(arr) {
+    var priceData;
+    var dataInfo;
+    var temp;
+            //item.demography.pages[0].page[0].tables[0].table[0].data[0].attribute[3].values[0]
+        ////.city[0].value[0]._
+    arr.forEach( function(item) {
+      priceData = {};
+      dataInfo = [,];
+      temp = {};
+      if (main.buyOrRent === 'rent') {
+        temp.housetype = 'rent selected';
+        temp.price = 'rent selected';
+      } else if (item.demography &&
+        item.demography.pages &&
+        item.demography.pages[0] &&
+        item.demography.pages[0].page &&
+        item.demography.pages[0].page[0] &&
+        item.demography.pages[0].page[0].tables &&
+        item.demography.pages[0].page[0].tables[0] &&
+        item.demography.pages[0].page[0].tables[0].table &&
+        item.demography.pages[0].page[0].tables[0].table[0] &&
+        item.demography.pages[0].page[0].tables[0].table[0].data &&
+        item.demography.pages[0].page[0].tables[0].table[0].data[0] &&
+        item.demography.pages[0].page[0].tables[0].table[0].data[0].attribute) {
+
+        priceData = item.demography.pages[0].page[0].tables[0].table[0].data[0].attribute;
+
+        dataInfo[1] = 'city';
+
+        if (main.searchInfo.bedrooms === '2') {
+          temp.housetype = 'Median 2-Bedroom Home Value';
+          dataInfo[0] = 3
+        } else if (main.searchInfo.bedrooms === '3') {
+          temp.housetype = 'Median 3-Bedroom Home Value';
+          dataInfo[0] = 4;
+        } else if (main.searchInfo.bedrooms === '4') {
+          temp.housetype = 'Median 4-Bedroom Home Value';
+          dataInfo[0] = 5;
+        } else if (main.searchInfo.buyOrRent === 'buy') {
+          temp.housetype = 'Median Single Family Home Value';
+          dataInfo[0] = 1;
+        }
+        if (priceData[dataInfo[0]].values[0].neighborhood) {
+          dataInfo[1] = 'neighborhood';
+        }
+        temp.price = priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._;
+      } else {
+          temp.housetype = 'House Price';
+          temp.price = 'Data not Available';
+      }
+      main.buyPrice[item.name] = temp;
+    });
   };
 
   //Function to set the selected type of housing to 'rent'
@@ -139,20 +204,21 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   var requestNeighborhoods = function() {
     ServerApi.submit(main.searchInfo)
     .then(function(data) {
-       main.serverResponse = data;
-       main.neighborhoods = Object.keys(data).map(function(key) {
-         return data[key];
-       });
+      main.serverResponse = data;
+      main.neighborhoods = Object.keys(data).map(function(key) {
+        return data[key];
+      });
 
-       console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
-       main.attractionObj = Details.createPlacesObj(main.neighborhoods, Details.attractionDict);
-       main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
-       main.neighborhoodArray = main.orderByArray(main.neighborhoods);
-       main.filterNeighborhoods();
+      console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
+      main.attractionObj = Details.createPlacesObj(main.neighborhoods, Details.attractionDict);
+      main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
+      main.getBuyPrice(main.neighborhoods);
+      main.neighborhoodArray = main.orderByArray(main.neighborhoods);
+      main.filterNeighborhoods();
        //remove
-       //console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
+       console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
 
-       main.markNeighborhoods();
+      main.markNeighborhoods();
     });
   };
 
