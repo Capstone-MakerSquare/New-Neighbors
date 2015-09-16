@@ -43,10 +43,16 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     var obj = {}
     if(main.searchInfo.buyOrRent === 'rent') {
       obj.title = 'Rent Estimate';
-      if(!neighborhood.rentEstimate) { obj.price = 'Not Available'; }
+      if(!neighborhood.rentEstimate) {
+        obj.price = 'Not Available';
+        return obj;
+      }
       obj.price = (neighborhood.rentEstimate.estimateLow) ? '$' + neighborhood.rentEstimate.estimateLow.toLocaleString() + ' - ' + '$' + neighborhood.rentEstimate.estimateHigh.toLocaleString() : 'Not Available';
     } else {
-      if(main.buyPrice[neighborhood.name].price !== 'rent selected') { obj.price = 'Not Available'; }
+      if(main.buyPrice[neighborhood.name].price !== 'rent selected') {
+        obj.price = 'Not Available';
+        return obj;
+      }
       obj = {title: main.buyPrice[neighborhood.name].housetype, price: main.buyPrice[neighborhood.name].price.toLocaleString()};
     }
     return obj;
