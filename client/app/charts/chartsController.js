@@ -122,7 +122,7 @@ angular.module('myApp.charts', [])
     if (runOwn || runKids || runSingles) {
       runDrawBar = true;
     }
-    console.log('barChartObj', barChartObj);
+    // console.log('barChartObj', barChartObj);
 
     if (runKids) {
       barChartArr[0][0] = barChartObj.nationalHomesWithKids;
@@ -242,8 +242,8 @@ angular.module('myApp.charts', [])
     } else {
       runDrawPie = false;
     }
-    console.log('runDrawPie', runDrawPie);
-    console.log('pieChartObj', JSON.stringify(pieChartObj));
+    // console.log('runDrawPie', runDrawPie);
+    // console.log('pieChartObj', JSON.stringify(pieChartObj));
   };
 
   var drawPie = function() {

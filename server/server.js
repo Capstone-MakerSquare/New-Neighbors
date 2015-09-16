@@ -50,7 +50,7 @@ app.post('/api/getNeighbors', function (req, res) {
 	geoCode(searchInfo.address)
 	.then(
     function (geoCode) {
-      // eventNumber++;
+      // console.log('Geocode received:', geoCode);
   		userDestination = geoCode;
   		return findNeighborhoods(geoCode);
 	  },
@@ -73,6 +73,7 @@ app.post('/api/getNeighbors', function (req, res) {
     //Async sequence 1
     getDistances(neighborhoodObject, 'driving', userDestination)
     .then(function (commuteObj) {
+      console.log('Distances fetched.');
       _.each(commuteObj, function (commuteInfo, neighborhood) {
         neighborhoodObject[neighborhood].commuteInfo = commuteInfo;
       });
@@ -104,7 +105,6 @@ app.post('/api/getNeighbors', function (req, res) {
       });
     } //end of for loop
 
-
   });
 
 //-----------------------------------------------------------------------------------
@@ -118,7 +118,7 @@ app.post('/api/getNeighbors', function (req, res) {
     .then(function (addressObj) {
       neighborhoodObject[neighborhood].streetAddress = addressObj.formatted_address;
       if(addressObj.country === 'USA') { _.extend(neighborhoodObject[neighborhood], addressObj); }
-      // deferred.resolve(neighborhood + ':Street address fetched.');
+      // console.log(neighborhood + ':Street address fetched.');
       deferred.resolve(neighborhood);
     });
     return deferred.promise;
