@@ -4,7 +4,7 @@ angular.module('myApp.charts', [])
 })
 .factory('Charts', function () {
 
-  var runDrawBar = true;
+  var runDrawBar = false;
   var runDrawPie = true;
   var barChartObj = {};
   var pieChartObj = {};
@@ -16,7 +16,7 @@ angular.module('myApp.charts', [])
     var runOwn = true;
     var runKids = true;
     var runSingles = true;
-    runDrawBar = true;
+    runDrawBar = false;
     //verifing data is coming from zillow
     if(obj &&
     obj.demography &&
@@ -100,6 +100,8 @@ angular.module('myApp.charts', [])
         var menPath = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[1].values[0];
         var womenPath = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[2].values[0];
 
+        console.log(menPath, womenPath);
+
         if (menPath.neighborhood && menPath.neighborhood[0] && menPath.neighborhood[0].value && menPath.neighborhood[0].value[0] && menPath.neighborhood[0].value[0]._ &&
         womenPath.neighborhood && womenPath.neighborhood[0] && womenPath.neighborhood[0].value && womenPath.neighborhood[0].value[0] && womenPath.neighborhood[0].value[0]._) {
           console.log('singles neighborhood');
@@ -117,8 +119,8 @@ angular.module('myApp.charts', [])
 
     }
 
-    if (!runOwn && !runKids && !runSingles) {
-      runDrawBar = false;
+    if (runOwn || runKids || runSingles) {
+      runDrawBar = true;
     }
     console.log('barChartObj', barChartObj);
 
