@@ -43,18 +43,39 @@ mapMod // = angular.module('myApp.mapServices',[])
 
   //----------------------------------------------------------------------------------
   //Drop a marker
-  var dropMarker = function (coordinates, title, tooltip, icon) {
+  var dropMarker = function (coordinates, title, placeObj, icon) {
+
     var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
-    console.log(latLng)
-    var marker;
-    return marker = new google.maps.Marker({
+    // console.log(latLng)
+    var marker = new google.maps.Marker({
       position: latLng,
       map: map,
       title: title,
       animation: google.maps.Animation.DROP,
       icon: icon,
-
     });
+
+    function isInfoWindowOpen(infoWindow){
+      var map = infoWindow.getMap();
+      return (map !== null && typeof map !== "undefined");
+    }
+
+    var ratingHTML = '';
+    if(placeObj.rating) {
+      ratingHTML = 'Rating:' + placeObj.rating;
+    }
+
+    var infowindow = new google.maps.InfoWindow();
+    infowindow.setContent('<b>'+ placeObj.name + '</b><br>' + ratingHTML);
+    google.maps.event.addListener(marker, 'click', function() {
+      //remove
+      console.log('Place Clicked:', placeObj);
+      if(isInfoWindowOpen(infowindow)) { infowindow.close(); return; }
+      infowindow.open(map, marker);
+    });
+
+
+    return marker;
   }
 
   //----------------------------------------------------------------------------------
