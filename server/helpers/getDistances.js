@@ -47,7 +47,7 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
   getRequest(gDrivingUrl)
   .then(function (distancesObj) {
     var distances = distancesObj.rows;
-
+    var commuteObj = {};
     //remove
     // console.log('Number of rows:',distances.length);
 
@@ -63,7 +63,7 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
       // console.log('Distance:',distance);
       // console.log('Time:',time);
 
-      neighborhoodObj[neighborhood].commuteInfo = {
+      commuteObj[neighborhood] = {
         commuteDistance : distance,
         commuteTime : time
       };
@@ -71,7 +71,7 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
       index++;
     }
 
-    deferred.resolve(neighborhoodObj);
+    deferred.resolve(commuteObj);
   });
 
   return deferred.promise;
