@@ -11,7 +11,7 @@
   text-align: center;
   padding-top: 300px;
   padding-bottom: 200px;
-  max-height: 600px;
+  max-height: 580px;
 }
 
 .cover-heading {
@@ -52,8 +52,7 @@
   background-color: #fff;
   background-color: rgba(255,255,255, 0.3);
   border-bottom:1px solid #5F327C; 
-  padding-bottom:10px; 
-  padding-top:10px; 
+  padding-bottom:5px; 
 }
 
 .landing-container .landing-btn {
