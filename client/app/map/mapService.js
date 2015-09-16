@@ -27,7 +27,7 @@ mapMod // = angular.module('myApp.mapServices',[])
     mapOptions.center.lng = coordinates.longitude;
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-    console.log("map initialized")
+    // console.log("map initialized")
   }
 
 
@@ -55,6 +55,7 @@ mapMod // = angular.module('myApp.mapServices',[])
       icon: icon,
     });
 
+    //helper function
     function isInfoWindowOpen(infoWindow){
       var map = infoWindow.getMap();
       return (map !== null && typeof map !== "undefined");
@@ -70,6 +71,12 @@ mapMod // = angular.module('myApp.mapServices',[])
     google.maps.event.addListener(marker, 'click', function() {
       //remove
       console.log('Place Clicked:', placeObj);
+
+      var photoUrl = '';
+      if(placeObj.photos && placeObj.photos.length) {
+        var photoReference = placeObj.photos[0].photo_reference;
+        console.log('Photo Reference:',photoReference);
+      }
       if(isInfoWindowOpen(infowindow)) { infowindow.close(); return; }
       infowindow.open(map, marker);
     });

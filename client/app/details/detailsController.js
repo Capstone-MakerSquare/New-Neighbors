@@ -11,7 +11,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
 
   detail.displayMarkers = function(place) {
     var icon = Map.getIcon();
-    console.log('place1', place)
+    // console.log('place1', place)
 
     Map.clearMarkers(Details.currentMarkers);
     for (var i = 0; i < place.length; i++) {
@@ -24,7 +24,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
     for (var j = 0; j < detail.markers.length; j++){
       Details.currentMarkers.push(detail.markers[j])
     }
-    console.log("detail.displayMarkers", place)
+    // console.log("detail.displayMarkers", place)
   }
 
 

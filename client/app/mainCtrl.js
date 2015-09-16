@@ -185,7 +185,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     //listener to listen to a place change
     autocomplete.addListener('place_changed', function() {
       var place = autocomplete.getPlace();
-      console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
+      // console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
       if(place.formatted_address || main.searchInfo.address.length > 0) {
         main.searchInfo.address = place.formatted_address || main.searchInfo.address;
         main.submitAddress();
@@ -243,14 +243,14 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
         return data[key];
       });
 
-      console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
+      // console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
       main.attractionObj = Details.createPlacesObj(main.neighborhoods, Details.attractionDict);
       main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
       main.getBuyPrice(main.neighborhoods);
       main.neighborhoodArray = main.orderByArray(main.neighborhoods);
       main.filterNeighborhoods();
        //remove
-       console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
+       // console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
 
       main.markNeighborhoods();
     });
@@ -259,7 +259,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //----------------------------------------------------------------------------------
   // Function to filter neighborhoods by user's filter options
   main.filterNeighborhoods = function() {
-    console.log('filterNeighborhoods')
+    // console.log('filterNeighborhoods')
     main.filteredNeighborhoodArray = main.neighborhoodArray.filter(function(obj) {
       return !(main.searchInfo.maxRent < obj.estimateLow) &&
       !(main.searchInfo.commuteTime < obj.commuteTime) &&
@@ -346,13 +346,13 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //----------------------------------------------------------------------------------
   //Function to drop a circle + marker on a selected neighborhood
   main.selectNeighborhood = function (neighborhood) {
-    console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
+    // console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
     main.populatePictures(neighborhood);
     main.mapCurrentNeighborhood(neighborhood);
     main.priceRange = neighborhood.priceString;
     main.currentNeighborhood = neighborhood;
 
-    console.log('select neigh bor hood current',  main.currentNeighborhood)
+    // console.log('select neigh bor hood current',  main.currentNeighborhood)
 
     //remove
     // console.log('selectNeighborhood says: main.serverResponse:',main.serverResponse);
@@ -378,7 +378,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     hood.instagram.forEach(function (obj) {
       main.picturesArr.push([obj.images.low_resolution.url, obj.user.full_name]);
     });
-    console.log('detailsController says: picturesArr:', main.picturesArr);
+    // console.log('detailsController says: picturesArr:', main.picturesArr);
   }
 
   //remove

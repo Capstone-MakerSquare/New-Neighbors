@@ -23,7 +23,8 @@ module.exports = function (neighborhood, city) {
   getXmlRequest(zillowUrl)
   .then(function (responseObj) {
     // console.log('Response Object:', responseObj);
-    deferred.resolve(responseObj['Demographics:demographics'].response[0]);
+    if(responseObj['Demographics:demographics'].response) { deferred.resolve(responseObj['Demographics:demographics'].response[0]); }
+    else { deferred.resolve({ message: 'Call Limits Exceeded for the day :/'}); }
   });
 
   return deferred.promise;
