@@ -11,13 +11,12 @@
   text-align: center;
   padding-top: 300px;
   padding-bottom: 200px;
-  max-height: 800px;
-  min-height:650px;
+  max-height: 600px;
 }
 
 .cover-heading {
   color: #FFF;
-  text-shadow: 0 1px 3px rgba(0,0,0,1);
+  text-shadow: 0 2px 6px rgba(0,0,0,1);
 }
 
 .site-wrapper {
@@ -38,44 +37,81 @@
 }
 
 .landing-container form {
+  display: block;
   margin-top:25px;
 }
 
 .landing-container #place-search {
   height:16px;
-}
-
-/*.landing-container #rentBuy {
-  margin-left:18px;
-}
-*/
-.landing-container .landingSearchForm {
-  display: relative;
+  font-size: 14xpx;
 }
 
 .landing-container .searchForm {
+  display: block;
   width: 100%;
-  position: absolute;
-  bottom: 54px;
   background-color: #fff;
   background-color: rgba(255,255,255, 0.3);
+  border-bottom:1px solid #5F327C; 
+  padding-bottom:10px; 
+  padding-top:10px; 
 }
 
 .landing-container .landing-btn {
   background-color: #5F327C;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .landing-container .landing-submit {
   height:33px;
-}
-
-.landing-container .btn-disabled {
-  background-color: #686868;
+  padding-top: 10px;
 }
 
 .landing-container #place-search,
 .landing-container .form-group select {
   border-radius:0;
+}
+
+.feature-section {
+  margin:100px 50px 50px 30px;
+}
+
+.feature-section h1 {
+  text-align: center;
+  margin:50px 10px;
+}
+
+.featurette {
+  height:350px;
+  padding:50px 50px 25px 50px;
+/*  background-size: cover;
+  background-repeat: no-repeat;*/
+}
+
+/* placeholder classes for screenshots */
+
+.featurette1 {
+/*  background-image: url('../../assets/images/DefaultLanding/default1.jpg');*/
+}
+
+.featurette2 {
+  /*background-image: url('../../assets/images/DefaultLanding/default2.jpg');*/
+}
+
+.featurette3 {
+  /*background-image: url('../../assets/images/DefaultLanding/default3.jpg');*/
+}
+
+
+.featurette-divider {
+/*  margin: 50px 0; */
+}
+
+/* Thin out the marketing headings */
+.featurette-heading {
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -1px;
 }
 
 /* to handle different devices */
@@ -90,9 +126,6 @@
 }
 
 @media (min-width: 992px) {
-  .cover-container {
-/*    width: 700px;*/
-  }
 
   .landing-container .landing-form {
     padding-left: 0;
