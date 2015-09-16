@@ -1,0 +1,9 @@
+<!-- Local Services -->
+<div class="col-md-12 service-container">
+  <ul ng-repeat="service in details.currentNeighborhood.services">
+    <li ng-click="details.displayMarkers(service); details.serviceSelectCategory($index)" ng-class="{activeServiceCategory: $index === details.selectedServiceCategory}">
+      <!-- <img class="icon" src="{{service[0].icon}}" alt="service category icon"> -->
+      <span>{{service[0].type}}</span>
+    </li>
+  </ul>
+</div>

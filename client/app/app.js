@@ -57,11 +57,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
         }
       }
     })
-    .state('main.details.localSpots', {
-      url: "/localSpots",
+    .state('main.details.services', {
+      url: "/services",
       views: {
         "detail-section": {
-          templateUrl: "./app/localSpots/localSpotsTemplate.html"
+          templateUrl: "./app/services/servicesTemplate.html"
         }
       }
     })

@@ -95,7 +95,9 @@ mapMod // = angular.module('myApp.mapServices',[])
     var dictionary = [
       "assets/images/MapMarkers/Map-Maker-Icon-Blue.png",
       "assets/images/MapMarkers/Map-Maker-Icon-Green.png",
-      "assets/images/MapMarkers/Map-Maker-Icon-Pink.png"
+      "assets/images/MapMarkers/Map-Maker-Icon-Pink.png",
+      "assets/images/MapMarkers/Map-Maker-Icon-Purple.png",
+      "assets/images/MapMarkers/Map-Maker-Icon-Red.png"
     ];
 
     if (iconCounter >= dictionary.length) { iconCounter = 0; }
@@ -115,9 +117,9 @@ mapMod // = angular.module('myApp.mapServices',[])
     if(circle) { circle.setMap(null); }
     circle = new google.maps.Circle({
       strokeColor: '#DDDDDD',
-      strokeOpacity: .6,
+      strokeOpacity: .4,
       strokeWeight: 0.5,
-      fillColor: '#FF2603',
+      fillColor: '#5f327',
       fillOpacity: 0.2,
       map: map,
       center: latLng,
