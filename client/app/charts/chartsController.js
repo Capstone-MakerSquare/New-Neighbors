@@ -6,13 +6,16 @@ angular.module('myApp.charts', [])
 
   var runDrawBar = true;
   var runDrawPie = true;
-  var barChartObj = {nationalHomesWithKids: 31, nationalMedianHouseholdIncome: 44512, nationalOwners: 66};
+  var barChartObj = {};
   var pieChartObj = {};
+  var barChartArr = [[],[]];
 
   var barChartData = function(obj) {
-    barChartObj = {nationalHomesWithKids: 31, nationalMedianHouseholdIncome: 44512, nationalOwners: 66};
+    barChartObj = {nationalHomesWithKids: 31, nationalMedianHouseholdIncome: 44512, nationalOwners: 66, nationalSingles: 14};
+    barChartArr = [[],[]];
     var runOwn = true;
     var runKids = true;
+    var runSingles = true;
     runDrawBar = true;
     //verifing data is coming from zillow
     if(obj &&
@@ -84,19 +87,60 @@ angular.module('myApp.charts', [])
         console.log('ownPath', ownPath);
         runOwn = false;
       }
+
+      // verifying data for singles
+      if (obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[1] &&
+      obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[1].values &&
+      obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[1].values[0] &&
+
+      obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[2] &&
+      obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[2].values &&
+      obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[2].values[0]) {
+
+        var menPath = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[1].values[0];
+        var womenPath = obj.demography.pages[0].page[2].tables[0].table[0].data[0].attribute[2].values[0];
+
+        if (menPath.neighborhood && menPath.neighborhood[0] && menPath.neighborhood[0].value && menPath.neighborhood[0].value[0] && menPath.neighborhood[0].value[0]._ &&
+        womenPath.neighborhood && womenPath.neighborhood[0] && womenPath.neighborhood[0].value && womenPath.neighborhood[0].value[0] && womenPath.neighborhood[0].value[0]._) {
+          console.log('singles neighborhood');
+          barChartObj.singlesTurf = Math.round(100*(parseFloat(menPath.neighborhood[0].value[0]._) + parseFloat(womenPath.neighborhood[0].value[0]._))/2);
+        } else if (menPath.city && menPath.city[0] && menPath.city[0].value && menPath.city[0].value[0] && menPath.city[0].value[0]._ &&
+        womenPath.city && womenPath.city[0] && womenPath.city[0].value && womenPath.city[0].value[0] && womenPath.city[0].value[0]._) {
+          console.log('singles city');
+          barChartObj.singlesTurf = Math.round(100*(parseFloat(menPath.city[0].value[0]._) + parseFloat(womenPath.city[0].value[0]._))/2);
+        } else {
+          console.log('menPath', menPath);
+          runSingles = false;
+        }
+
+      }
+
     }
 
-    if (!runOwn || !runKids) {
+    if (!runOwn && !runKids && !runSingles) {
       runDrawBar = false;
     }
-    console.log('runKids', runKids);
-    console.log('runOwn', runOwn);
-    console.log('runDrawBar', runDrawBar);
     console.log('barChartObj', barChartObj);
+
+    if (runKids) {
+      barChartArr[0][0] = barChartObj.nationalHomesWithKids;
+      barChartArr[1][0] = barChartObj.homesWithKidsTurf;
+    }
+
+    if (runOwn) {
+      barChartArr[0][1] = barChartObj.nationalOwners;
+      barChartArr[1][1] = barChartObj.ownersTurf;
+    }
+
+    if (runSingles) {
+      barChartArr[0][2] = barChartObj.nationalSingles;
+      barChartArr[1][2] = barChartObj.singlesTurf;
+    }
+
   };
 
   var drawBar = function() {
-    console.log('DrawBar init');
+    console.log('DrawBar init, runDrawBar:', runDrawBar);
 
     if (runDrawBar){
       $('#percentage-chart').highcharts({
@@ -108,8 +152,8 @@ angular.module('myApp.charts', [])
         },
         xAxis: {
             categories: [
-                'Percentage of Households with Kids',
-                'Percentage of Property Owners (vs. Renters)',
+                'Households with Kids',
+                'Property Owners (vs. Renters)',
                 'Singles'
             ]
         },
@@ -136,13 +180,13 @@ angular.module('myApp.charts', [])
         series: [{
             name: 'Nation',
             color: 'rgba(165,170,217,1)',
-            data: [barChartObj.nationalHomesWithKids, barChartObj.nationalOwners, 60],
+            data: barChartArr[0],
             pointPadding: 0,
             pointPlacement: 0
         }, {
             name: 'Neighborhood',
             color: '#5F327C',
-            data: [barChartObj.homesWithKidsTurf, barChartObj.ownersTurf, 70],
+            data: barChartArr[1],
             pointPadding: 0.2,
             pointPlacement: 0
         }]
