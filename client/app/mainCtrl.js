@@ -61,7 +61,11 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
   main.orderPrice = function(obj) {
     if(main.searchInfo.buyOrRent === 'rent') {
-      return obj.rentEstimate.estimateLow;
+      if (obj.rentEstimate) {
+        return obj.rentEstimate.estimateLow;
+      } else {
+      return "Price Not Available"
+      }
     } else {
       return main.buyPrice[obj.name].priceNum;
     }
