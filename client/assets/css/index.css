@@ -152,7 +152,6 @@ small {
   position:relative;
 }
 
-
 .slideshow .profile-buttons {
   display: block;
   position:absolute;
@@ -197,6 +196,13 @@ small {
   color:white;
 }
 
+.attractions-container .activeCategory {
+  color:red;
+}
+
+.attractions-container .activeServiceCategory {
+  color:red;
+}
 .nav-container {
   margin-top: 10px;
   text-align: center;

@@ -2,8 +2,9 @@ var details = angular.module('myApp.details', []);
 
 details.controller('detailsController', ['Details', 'Map', function (Details, Map){
   var detail = this;
-  // detail.picturesArr = [];
   detail.markers = [];
+  detail.selectedAttractionCategory = 0;
+  detail.selectedServiceCategory = 0;
 
   detail.currentNeighborhood = Details.currentNeighborhood;
   console.log('detailsController says:', Details.currentNeighborhood);
@@ -59,6 +60,20 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   //remove
   // console.log('detailsController says: picturesArr:', detail.picturesArr);
 
+
+  //----------------------------------------------------------------------------------
+
+  //----------------------------------------------------------------------------------
+  //
+
+   detail.selectCategory = function(index, category) {
+    if (category === "attractionCategory") {
+      detail.selectedAttractionCategory = index; 
+    } else {
+      detail.selectedServiceCategory = index;
+    }
+    console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
+  };  
 
   //----------------------------------------------------------------------------------
 
