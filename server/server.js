@@ -90,15 +90,16 @@ app.post('/api/getNeighbors', function (req, res) {
                 getDemography(neighborhood)
               ]);
             }
-            else return 'Other Country';
+            else { return 'Other Country'; }
           })
           ,
           getAmenitiesAndAttractions(neighborhood),
           getPictures(neighborhood)
         ])
-      .then(function() {
+      .then(function (resultArray) {
         numNeighborhoodsCompleted++;
         console.log('numNeighborhoodsCompleted:',numNeighborhoodsCompleted);
+        console.log(resultArray);
         if(numNeighborhoodsCompleted === numNeighborhoods) { checkAndRespond(neighborhoodObject, false); }
       });
     } //end of for loop

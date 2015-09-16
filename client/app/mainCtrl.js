@@ -107,7 +107,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
       if (status === google.maps.GeocoderStatus.OK) {
         var address = results[0].formatted_address;
-        var coordinates = { latitude : results[0].geometry.location.G, longitude : results[0].geometry.location.K };
+        var coordinates = { latitude : results[0].geometry.location.H, longitude : results[0].geometry.location.L };
 
         //remove
         // console.log('submitAddress():geocode says: Results: ',results);
