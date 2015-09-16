@@ -19,7 +19,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
         latitude: place[i].geometry.location.lat,
         longitude: place[i].geometry.location.lng
       }
-      detail.markers.push(Map.dropMarker(coordinates, place[i].name, place[i].name, icon))
+      detail.markers.push(Map.dropMarker(coordinates, place[i].name, place[i], icon))
     }
     for (var j = 0; j < detail.markers.length; j++){
       Details.currentMarkers.push(detail.markers[j])
@@ -68,12 +68,12 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
 
    detail.selectCategory = function(index, category) {
     if (category === "attractionCategory") {
-      detail.selectedAttractionCategory = index; 
+      detail.selectedAttractionCategory = index;
     } else {
       detail.selectedServiceCategory = index;
     }
     console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
-  };  
+  };
 
   //----------------------------------------------------------------------------------
 
