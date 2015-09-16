@@ -79,7 +79,7 @@ details
     neighborhoodDetailsObj = results;
 
     //remove
-    console.log('neighborhoodDetailsObj' , dictionary, results);
+    // console.log('neighborhoodDetailsObj' , dictionary, results);
 
     return results;
   };

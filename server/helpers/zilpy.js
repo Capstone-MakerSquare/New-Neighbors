@@ -32,6 +32,7 @@ module.exports = function (searchInfo) {
 
   //remove
   // deferred.resolve(['ZTO', 'ZTO']);
+  console.log('zilpyUrl:', zilpyUrl);
 
   // UNCOMMENT - ZILPY TEMPORARILY DISABLED
   //----------------------------------------------------------------------------
