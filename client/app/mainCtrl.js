@@ -39,24 +39,33 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   // Function to flatten the object so that the array can be sorted by a parameter
   // Input: neighborhoodsObj
   // Output: flattened array of objects
-  var getPriceString = function (neighborhood) {
+  main.getPriceString = function (neighborhood) {
     var obj = {}
     if(main.searchInfo.buyOrRent === 'rent') {
-      obj.title = 'Rent Estimate';
       if(!neighborhood.rentEstimate) {
-        obj.price = 'Not Available';
+        obj.title = 'Rent Estimate Not Available';
         return obj;
       }
+      obj.title = 'Rent Estimate';
       obj.price = (neighborhood.rentEstimate.estimateLow) ? '$' + neighborhood.rentEstimate.estimateLow.toLocaleString() + ' - ' + '$' + neighborhood.rentEstimate.estimateHigh.toLocaleString() : 'Not Available';
     } else {
-      if(main.buyPrice[neighborhood.name].price !== 'rent selected') {
-        obj.price = 'Not Available';
-        return obj;
-      }
-      obj = {title: main.buyPrice[neighborhood.name].housetype, price: main.buyPrice[neighborhood.name].price.toLocaleString()};
-    }
+        if(!main.buyPrice[neighborhood.name].priceStr) {
+          obj.title = 'Home Price Not Available';
+          return obj;
+        }
+        obj.title = main.buyPrice[neighborhood.name].housetype;
+        obj.price = main.buyPrice[neighborhood.name].priceStr;
+      };
     return obj;
-  }
+   }
+
+  main.orderPrice = function(obj) {
+    if(main.searchInfo.buyOrRent === 'rent') {
+      return obj.rentEstimate.estimateLow;
+    } else {
+      return main.buyPrice[obj.name].priceNum;
+    }
+  };
 
   main.orderByArray = function(neighborhoods){
     var arr = [];
@@ -72,9 +81,9 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
           estimateHigh: neighborhoods[i].rentEstimate ? neighborhoods[i].rentEstimate.estimateHigh : 'Not Available',
           instagram: neighborhoods[i].instagram,
           coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude},
-          demography: neighborhoods[i].demography,
-          priceString : getPriceString(neighborhoods[i]),
-          buyPrice: main.buyPrice[neighborhoods[i].name]
+          demography: neighborhoods[i].demographics,
+          priceString : main.getPriceString(neighborhoods[i]),
+          orderPrice: main.orderPrice(neighborhoods[i])
       });
     }
     return arr;
@@ -85,29 +94,35 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     var priceData;
     var dataInfo;
     var temp = {};
+      temp.priceNum;
+      temp.priceStr;
             //item.demography.pages[0].page[0].tables[0].table[0].data[0].attribute[3].values[0]
         ////.city[0].value[0]._
     arr.forEach( function(item) {
       priceData = {};
       dataInfo = [,];
-      temp = {housetype: 'House Purchase Estimate', price: 'Data Not Available'};
+      temp = {
+        housetype: 'House Purchase Estimate',
+        priceStr: 'Data Not Available',
+        priceNum: 100000000
+        };
       if (main.searchInfo.buyOrRent === 'rent') {
         temp.housetype = 'rent selected';
-        temp.price = 'rent selected';
-      } else if (item.demography &&
-        item.demography.pages &&
-        item.demography.pages[0] &&
-        item.demography.pages[0].page &&
-        item.demography.pages[0].page[0] &&
-        item.demography.pages[0].page[0].tables &&
-        item.demography.pages[0].page[0].tables[0] &&
-        item.demography.pages[0].page[0].tables[0].table &&
-        item.demography.pages[0].page[0].tables[0].table[0] &&
-        item.demography.pages[0].page[0].tables[0].table[0].data &&
-        item.demography.pages[0].page[0].tables[0].table[0].data[0] &&
-        item.demography.pages[0].page[0].tables[0].table[0].data[0].attribute) {
+        temp.priceStr = 'rent selected';
+      } else if (item.demographics &&
+        item.demographics.pages &&
+        item.demographics.pages[0] &&
+        item.demographics.pages[0].page &&
+        item.demographics.pages[0].page[0] &&
+        item.demographics.pages[0].page[0].tables &&
+        item.demographics.pages[0].page[0].tables[0] &&
+        item.demographics.pages[0].page[0].tables[0].table &&
+        item.demographics.pages[0].page[0].tables[0].table[0] &&
+        item.demographics.pages[0].page[0].tables[0].table[0].data &&
+        item.demographics.pages[0].page[0].tables[0].table[0].data[0] &&
+        item.demographics.pages[0].page[0].tables[0].table[0].data[0].attribute) {
 
-        priceData = item.demography.pages[0].page[0].tables[0].table[0].data[0].attribute;
+        priceData = item.demographics.pages[0].page[0].tables[0].table[0].data[0].attribute;
 
         dataInfo[1] = 'city';
 
@@ -137,7 +152,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
           priceData[dataInfo[0]].values[0][dataInfo[1]][0].value &&
           priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0] &&
           priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._) {
-            temp.price = '$' + priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._;
+            temp.priceNum = parseInt(priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._);
+            temp.priceStr = '$' + temp.priceNum.toLocaleString();
         }
       }
       main.buyPrice[item.name] = temp;
