@@ -49,24 +49,34 @@ details
     zoo: []
   };
 
+
+  //----------------------------------------------------------------------------------
+  //Creates objects that can be displayed in the amenities and attractions sections.
+  //The dictionary argument determines which catagory it applies to
+
   var createPlacesObj = function (neighborhoodArr, dictionary) {
     var results = {};
-    var temp;
+    var categories;
     neighborhoodArr = neighborhoodArr || [];
+    var thisType = '';
+    var thisHoodObj;
 
     for (var i = 0; i < neighborhoodArr.length; i++) {
-      temp = {};
-      var establishments = neighborhoodArr[i].amenities_attractions;
+      thisHoodObj = {};
+      categories = neighborhoodArr[i].amenities_attractions;
 
-      for (var place in establishments) {
-        if (establishments[place].types && Array.isArray(establishments[place].types)) {
-          for (var j = 0; j < establishments[place].types.length; j++){
+      for (var place in categories) {
+        if (categories[place].types && Array.isArray(categories[place].types)) {
+          for (var j = 0; j < categories[place].types.length; j++){
 
-            if (dictionary[establishments[place].types[j]] && temp[establishments[place].types[j]]) {
-              temp[establishments[place].types[j]].push(establishments[place]);
-            } else if (dictionary[establishments[place].types[j]] && !temp[establishments[place].types[j]]) {
-              temp[establishments[place].types[j]] = [establishments[place]];
-              temp[establishments[place].types[j]][0].type = establishments[place].types[j]
+            thisType = categories[place].types[j];
+            if (dictionary[thisType]) {
+
+              if (!thisHoodObj[thisType]) {
+                thisHoodObj[thisType] = []
+              }
+              thisHoodObj[thisType].push(categories[place]);
+              thisHoodObj[thisType][0].type = thisType
             }
           }
         }
@@ -74,7 +84,7 @@ details
       if(neighborhoodArr[i].name==='Downtown') {
         neighborhoodArr[i].name = neighborhoodArr[i].name + ' ' + neighborhoodArr[i].city;
       }
-      results[neighborhoodArr[i].name] = temp;
+      results[neighborhoodArr[i].name] = thisHoodObj;
     }
     neighborhoodDetailsObj = results;
 
@@ -84,18 +94,6 @@ details
     return results;
   };
 
-  // var mapCurrentNeighborhood = function(neighborhood, placesObj) {
-  //   currentNeighborhood = neighborhood;
-  //   currentNeighborhood.places = placesObj[neighborhood.name];
-  //   for (var place in currentNeighborhood.places){
-  //     if (place === "grocery_or_supermarket") {
-  //       currentNeighborhood.places[place] = ["grocery", currentNeighborhood.places[place]]
-  //     } else {
-  //       currentNeighborhood.places[place] = [place.replace("_", " "), currentNeighborhood.places[place]]
-  //     }
-  //   }
-  //   console.log(currentNeighborhood);
-  // }
 
 
   return {

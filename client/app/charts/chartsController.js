@@ -10,6 +10,10 @@ angular.module('myApp.charts', [])
   var pieChartObj = {};
   var barChartArr = [[],[]];
 
+  //----------------------------------------------------------------------------------
+  // Compiles, validates, and maps data for a bar graph from the Zillow Demography data
+  // Includes data for % of homes with children, % of owners (vs renters) and % of single people in each neighborhood
+
   var barChartData = function(obj) {
     barChartObj = {nationalHomesWithKids: 31, nationalMedianHouseholdIncome: 44512, nationalOwners: 66, nationalSingles: 14};
     barChartArr = [[],[]];
@@ -141,6 +145,9 @@ angular.module('myApp.charts', [])
 
   };
 
+  //----------------------------------------------------------------------------------
+  // Draws the bar chart , only drawing columns when data is available for that subject.
+
   var drawBar = function() {
     console.log('DrawBar init, runDrawBar:', runDrawBar);
 
@@ -196,6 +203,10 @@ angular.module('myApp.charts', [])
     }
   };
 
+
+  //----------------------------------------------------------------------------------
+  // Compiles, validates, and maps data for a pie chart of age distributions in each neighborhood from the Zillow Demography data
+
   var pieChartData = function(obj) {
     pieChartObj = {};
     runDrawPie = true;
@@ -245,6 +256,10 @@ angular.module('myApp.charts', [])
     // console.log('runDrawPie', runDrawPie);
     // console.log('pieChartObj', JSON.stringify(pieChartObj));
   };
+
+  //----------------------------------------------------------------------------------
+  // Draws the Pie chart for age distribution in a given neighborhood
+
 
   var drawPie = function() {
     console.log('DrawPie init');
