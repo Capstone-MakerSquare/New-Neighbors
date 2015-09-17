@@ -56,26 +56,26 @@ details
 
   var createPlacesObj = function (neighborhoodArr, dictionary) {
     var results = {};
-    var catagories;
+    var categories;
     neighborhoodArr = neighborhoodArr || [];
     var thisType = '';
     var thisHoodObj;
 
     for (var i = 0; i < neighborhoodArr.length; i++) {
       thisHoodObj = {};
-      catagories = neighborhoodArr[i].amenities_attractions;
+      categories = neighborhoodArr[i].amenities_attractions;
 
-      for (var place in catagories) {
-        if (catagories[place].types && Array.isArray(catagories[place].types)) {
-          for (var j = 0; j < catagories[place].types.length; j++){
+      for (var place in categories) {
+        if (categories[place].types && Array.isArray(categories[place].types)) {
+          for (var j = 0; j < categories[place].types.length; j++){
 
-            thisType = catagories[place].types[j];
+            thisType = categories[place].types[j];
             if (dictionary[thisType]) {
 
               if (!thisHoodObj[thisType]) {
                 thisHoodObj[thisType] = []
               }
-              thisHoodObj[thisType].push(catagories[place]);
+              thisHoodObj[thisType].push(categories[place]);
               thisHoodObj[thisType][0].type = thisType
             }
           }
