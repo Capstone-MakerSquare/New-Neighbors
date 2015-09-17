@@ -348,12 +348,15 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     Details.currentNeighborhood.services = main.serviceObj[neighborhood.name];
     Details.currentNeighborhood.attractions = main.attractionObj[neighborhood.name];
 
-    for (var place in Details.currentNeighborhood.places){
+    for (var place in Details.currentNeighborhood.services){
       if (place === "grocery_or_supermarket") {
-        Details.currentNeighborhood.places[place] = ["grocery", Details.currentNeighborhood.places[place]]
+        Details.currentNeighborhood.services[place][0].displayName = "grocery";
       } else {
-        Details.currentNeighborhood.places[place] = [place.replace("_", " "), Details.currentNeighborhood.places[place]]
+        Details.currentNeighborhood.services[place][0].displayName = place.replace("_", " ");
       }
+    }
+    for (var place in Details.currentNeighborhood.attractions){
+      Details.currentNeighborhood.attractions[place][0].displayName = place.replace("_", " ");
     }
   }
 
