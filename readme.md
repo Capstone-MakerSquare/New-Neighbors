@@ -1,6 +1,6 @@
 # Turf
 
-### A web application to help you move into any new locality in the United States, by showing you information about nearby neighborhoods and allowing you to compare them.
+### A web application to help you move into any new area, by showing you information about nearby neighborhoods and allowing you to compare them.
 
 ##User information
 
@@ -25,8 +25,6 @@ Expand the filter section by clicking on the Filter Options button to do this.
 
 ## Developer Information
 
-### Getting Started
-
 ###Requirements
 
 ####Software
@@ -49,7 +47,6 @@ bower install
 - [Instagram API](https://instagram.com/developer/) is used to display photos from the area in the details view
 - [Zillow API](http://www.zillow.com/howto/api/APIOverview.htm) is used for home purchase prices and Statistical data for the bar and pie charts
 
-
 #### API keys
 
 Create a file located at server/config/keys.js with your API key information:
@@ -61,6 +58,14 @@ module.exports = {
   googleAPIKey : 'your google API key',
 };
 ```
+#####Instagram
+Go [here](https://instagram.com/developer/authentication/) to sign up for an access token.
+
+#####Zillow
+Go [here](http://www.zillow.com/howto/api/APIOverview.htm) to sign up for an API key.
+
+#####Google
+Go [here](https://console.developers.google.com) to request an API key.
 
 Once you have a google API key make sure you enable the following APIs:
 BigQuery API
