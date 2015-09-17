@@ -7,13 +7,13 @@
       <div class="site-wrapper-inner">
         <div class="cover-container">
           <h1 class="cover-heading">Find Your Next Neighborhood</h1>
-          <button class="landing-btn" type="button">How It Works</button>
+          <button class="landing-btn" type="button" ng-click="main.goToAnchor('howItWorks')">How It Works</button>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="searchForm col-sm-12 col-md-12">
+  <div class="searchForm col-sm-12 col-md-12" id="howItWorks">
     <form class="landingSearchForm col-md-8 col-md-offset-2">
       <div class="col-sm-4 col-md-6 landing-form">
         <input class="form-control" type="search" ng-model="main.searchInfo.address" id='place-search' placeholder="Enter an Address">
@@ -73,7 +73,7 @@
         <p class="lead">Experience life in a neighborhood by viewing a live Instagram feed and exploring local spots with an interactive map</p>
       </div>
     </div>
-<!-- 
+<!--
     <hr class="featurette-divider">
  -->
     <div class="row featurette featurette3">

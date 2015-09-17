@@ -1,4 +1,4 @@
-app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Charts', function (Map, ServerApi, $state, Details, Charts){
+app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Charts', '$anchorScroll', '$location', function (Map, ServerApi, $state, Details, Charts, $anchorScroll, $location){
 
   var main = this;
   main.picturesArr = [];
@@ -294,7 +294,21 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       console.log(neighborhoodObj)
     });
     return marker;
-  }
+  };
+
+
+
+  //----------------------------------------------------------------------------------
+  //Function to move the page
+
+  main.goToAnchor = function(anchorId) {
+    // set the location.hash to the id of
+    // the element you wish to scroll to.
+    $location.hash(anchorId);
+
+    // call $anchorScroll()
+    $anchorScroll();
+  };
 
   //----------------------------------------------------------------------------------
   // Helper functions - GOOGLE MAPS
