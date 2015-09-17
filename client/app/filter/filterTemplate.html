@@ -20,7 +20,7 @@
     <!--end of order-by section -->
   </div>
 
-  <div>
+  <div ng-show = "!isCollapsed">
     <form collapse="isCollapsed">
   <!-- start of rent section -->
       <div class="form-group">
@@ -56,7 +56,9 @@
             <button type="button" ng-click="main.filterNeighborhoods()" class="btn btn-default filter-btn">Filter</button>
           </div>
         </div>
+        <hr>
       </div>
+
     </form>
   </div>
 </div>
