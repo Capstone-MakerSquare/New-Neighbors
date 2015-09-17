@@ -188,7 +188,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       // console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
       if(place.formatted_address || main.searchInfo.address.length > 0) {
         main.searchInfo.address = place.formatted_address || main.searchInfo.address;
-        main.submitAddress();
+        // main.submitAddress();
       }
     });
   };
