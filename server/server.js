@@ -87,8 +87,8 @@ app.post('/api/getNeighbors', function (req, res) {
           .then(function (neighborhood) {
             if(neighborhoodObject[neighborhood].country === 'USA') {
               return Q.all([
-                getRentEstimate(neighborhood),
-                getDemography(neighborhood)
+                // getRentEstimate(neighborhood),
+                // getDemography(neighborhood)
               ]);
             }
             else { return 'Other Country'; }
