@@ -7,7 +7,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   detail.selectedServiceCategory = 0;
 
   detail.currentNeighborhood = Details.currentNeighborhood;
-  console.log('detailsController says:', Details.currentNeighborhood);
+  // console.log('detailsController says:', Details.currentNeighborhood);
 
   detail.displayMarkers = function(place) {
     var icon = Map.getIcon();

@@ -15,6 +15,9 @@ mapMod // = angular.module('myApp.mapServices',[])
   var circle;
   var iconCounter = 0;
 
+  //temporary variables
+  var userDestination;
+
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
   var initialize = function (coordinates) {
@@ -30,7 +33,6 @@ mapMod // = angular.module('myApp.mapServices',[])
     // console.log("map initialized")
   }
 
-
   //----------------------------------------------------------------------------------
   //Pan and focus on the coordinate set of interest
   var panAndFocus = function (coordinates, zoom) {
@@ -40,6 +42,25 @@ mapMod // = angular.module('myApp.mapServices',[])
     map.panTo(latLng);
     map.setZoom(zoom);
   }
+
+  //----------------------------------------------------------------------------------
+  //Pan and focus on the user's destination
+  var panAndFocusDestination = function(address) {
+    var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ 'address': address }, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          var address = results[0].formatted_address;
+          var coordinates = { latitude : results[0].geometry.location.H, longitude : results[0].geometry.location.L };
+
+          panAndFocus(coordinates);
+          dropMarkerWithLabel(coordinates);
+
+        } else {
+          console.log('submitAddress(): NOT_OK geocode says: Status, results: ', status, ',', results);
+        }
+      });
+  }
+
 
   //----------------------------------------------------------------------------------
   //Drop a marker
@@ -81,7 +102,6 @@ mapMod // = angular.module('myApp.mapServices',[])
         infowindow.open(map, marker);
       });
     }
-
 
     return marker;
   }
@@ -162,9 +182,11 @@ mapMod // = angular.module('myApp.mapServices',[])
     markers: markers,
     clearMarkers: clearMarkers,
     panAndFocus: panAndFocus,
+    panAndFocusDestination: panAndFocusDestination,
     dropMarker: dropMarker,
     drawCircle: drawCircle,
-    dropMarkerWithLabel: dropMarkerWithLabel
+    dropMarkerWithLabel: dropMarkerWithLabel,
+    userDestination: userDestination
   };
 
 }]);

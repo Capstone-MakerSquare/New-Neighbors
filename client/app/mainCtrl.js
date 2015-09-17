@@ -23,7 +23,6 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.serviceObj = {};
   main.attractionObj = {};
 
-
   main.coordinates = {
       latitude: 38.5,
       longitude: -98.5
@@ -197,41 +196,20 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //Function to fetch address and validate it
   main.submitAddress = function() {
     $state.go('main.results');
-    // console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
-    // console.log('mainCtrl.js says: Submitted address (angular):', main.searchInfo.address);
     main.filteredNeighborhoodArray = [];
     requestNeighborhoods();
-
-    //Get the geocode of the address
-    //drop a marker on the geocode
-
-    var geocoder = new google.maps.Geocoder();
-
-    geocoder.geocode({ 'address': main.searchInfo.address }, function(results, status) {
-
-      if (status === google.maps.GeocoderStatus.OK) {
-        var address = results[0].formatted_address;
-        var coordinates = { latitude : results[0].geometry.location.H, longitude : results[0].geometry.location.L };
-
-        //remove
-        // console.log('submitAddress():geocode says: Results: ',results);
-        // console.log('submitAddress():geocode says: Address: ',address);
-        // console.log('submitAddress():geocode says: Coordinates: ',coordinates);
-
-        Map.panAndFocus(coordinates);
-        //Map.dropMarker(coordinates);
-
-        //testing an animated marker
-        Map.dropMarkerWithLabel(coordinates);
-
-        //remove
-        //Map.drawCircle(coordinates, 4000);
-
-      } else {
-        console.log('submitAddress(): NOT_OK geocode says: Status, results: ', status, ',', results);
-      }
-    });
+    Map.panAndFocusDestination(main.searchInfo.address);
   };
+
+  //Rerouters
+  main.getResults = function() {
+    Map.userDestination = main.searchInfo.address;
+    $state.go('main.results');
+    main.submitAddress();
+  }
+  main.gotoLanding = function() {
+    $state.go('landing');
+  }
 
   //----------------------------------------------------------------------------------
   // Function to make an API request for neighborhoods
@@ -243,14 +221,11 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
         return data[key];
       });
 
-      // console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
       main.attractionObj = Details.createPlacesObj(main.neighborhoods, Details.attractionDict);
       main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
       main.getBuyPrice(main.neighborhoods);
       main.neighborhoodArray = main.orderByArray(main.neighborhoods);
       main.filterNeighborhoods();
-       //remove
-       // console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
 
       main.markNeighborhoods();
     });
@@ -259,12 +234,12 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //----------------------------------------------------------------------------------
   // Function to filter neighborhoods by user's filter options
   main.filterNeighborhoods = function() {
-    // console.log('filterNeighborhoods')
     main.filteredNeighborhoodArray = main.neighborhoodArray.filter(function(obj) {
       return !(main.searchInfo.maxRent < obj.estimateLow) &&
       !(main.searchInfo.commuteTime < obj.commuteTime) &&
       !(main.searchInfo.commuteDistance < obj.commuteDistance);
     });
+    // console.log('main.filteredNeighborhoodArray',main.filteredNeighborhoodArray);
   };
 
   //----------------------------------------------------------------------------------
