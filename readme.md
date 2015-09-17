@@ -1,59 +1,97 @@
-# New-Neighbors
-[![Dependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev)
-[![devDependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev/dev-status.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev#info=devDependencies)<br>
+# Turf
 
-An application to help you move into any new locality in the United States, by suggesting you personalized recommendations for the best neighborhoods around.
+### A web application to help you move into any new locality in the United States, by showing you information about nearby neighborhoods and allowing you to compare them.
+
+##User information
+
+#####Searching for Neighborhoods
+To get started:
+- Type in an address or city that you would like to be close to
+- Select if you would like to Rent or Buy
+- Enter the number of bedrooms and bathrooms you are looking for
+
+This will display a list of nearby neighborhoods as well as the price ranges to rent/buy homes there, as well as the commute distance and time to the address you provided.
+
+#####Ordering the Search Results
+You may also order the results by the search factors using the Order drop down
+
+#####Filtering the Search Results
+You can filter the search results by the following criteria:
+- Maximum commute distance
+- Maximum commute driving time
+
+Expand the filter section by clicking on the Filter Options button to do this.
 
 
-*******PLEASE READ WHEN FIRST INSTALLING DEPENDENCIES FOR REPO *********
+## Developer Information
 
-# Foundation for Apps Template
+### Getting Started
 
-This is the default template project for Foundation for Apps, powered by Gulp, Angular, and libsass. It provides you with a basic template to get started with Foundation for Apps and Angular.
+###Requirements
 
-If you're already an Angular developer, you may instead want to install the components into your own stack using Bower: `bower install foundation-apps`
+####Software
 
-## Requirements
+[Node.js](https://nodejs.org/en/): Use the installer for your OS.
+[Git](http://git-scm.com/downloads): Use the installer for your OS.
+  Windows users can also try [Git for Windows](http://git-for-windows.github.io/).
+[Bower](http://bower.io/) Run npm install -g bower
 
-You'll need the following software installed to get started.
+From within the root directory:
 
-  - [Node.js](http://nodejs.org): Use the installer for your OS.
-  - [Git](http://git-scm.com/downloads): Use the installer for your OS.
-    - Windows users can also try [Git for Windows](http://git-for-windows.github.io/).
-  - [Gulp](http://gulpjs.com/) and [Bower](http://bower.io): Run `npm install -g gulp bower`
-    - Depending on how Node is configured on your machine, you may need to run `sudo npm install -g gulp bower` instead, if you get an error with the first command.
-
-## Get Started
-
-Clone this repository, where `app` is the name of your app.
-
-```bash
-git clone https://github.com/zurb/foundation-apps-template.git app
-```
-
-Change into the directory.
-
-```bash
-cd app
-```
-
-Install the dependencies. If you're running Mac OS or Linux, you may need to run `sudo npm install` instead, depending on how your machine is configured.
-
-```bash
+```sh
 npm install
 bower install
 ```
 
-While you're working on your project, run:
+####API's
+- [Google Maps API](https://developers.google.com/maps/?hl=en) is used for the map, commute information and nearby places
+- [Zilpy API](http://www.zilpy.com/api) is used for renting price information
+- [Instagram API](https://instagram.com/developer/) is used to display photos from the area in the details view
+- [Zillow API](http://www.zillow.com/howto/api/APIOverview.htm) is used for home purchase prices and Statistical data for the bar and pie charts
 
-```bash
-npm start
+
+#### API keys
+
+Create a file located at server/config/keys.js with your API key information:
+
+```
+module.exports = {
+  zwsId : 'your zillow API key',
+  instagramAccessToken : 'your instagram API key',
+  googleAPIKey : 'your google API key',
+};
 ```
 
-This will compile the Sass and assemble your Angular app. **Now go to `localhost:8080` in your browser to see it in action.** When you change any file in the `client` folder, the appropriate Gulp task will run to build new files.
+Once you have a google API key make sure you enable the following APIs:
+BigQuery API
+Cloud Debugger API
+Debuglet Controller API
+Google Cloud SQL
+Google Cloud Storage
+Google Cloud Storage JSON API
+Google Maps Directions API
+Google Maps Distance Matrix API
+Google Maps Embed API
+Google Maps Geocoding API
+Google Maps Geolocation API
+Google Maps JavaScript API
+Google Places API Web Service
+Google Static Maps API
+Google Street View Image API
 
-To run the compiling process once, without watching any files, use the `build` command.
+#### The Tech Stack
 
-```bash
-npm start build
+- [Angular](https://angularjs.org/)
+- [Node.js](https://nodejs.org/en/)
+- [Bootstrap](http://getbootstrap.com/)
+- [Slick Carousel](http://kenwheeler.github.io/slick/)
+
+### Running the application
+
+Once you have your API keys from the root directory, start the server using
+
 ```
+nodemon index.js
+```
+
+Then just go to localhost:8000 in your browser to see this app in action!
