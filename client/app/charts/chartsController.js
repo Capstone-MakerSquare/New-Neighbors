@@ -142,7 +142,7 @@ angular.module('myApp.charts', [])
   };
 
   var drawBar = function() {
-    console.log('DrawBar init, runDrawBar:', runDrawBar);
+    // console.log('DrawBar init, runDrawBar:', runDrawBar);
 
     if (runDrawBar){
       $('#percentage-chart').highcharts({
@@ -247,7 +247,7 @@ angular.module('myApp.charts', [])
   };
 
   var drawPie = function() {
-    console.log('DrawPie init');
+    // console.log('DrawPie init');
 
     if (runDrawPie) {
       $('#pie-chart').highcharts({

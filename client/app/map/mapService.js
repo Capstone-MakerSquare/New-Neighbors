@@ -43,10 +43,9 @@ mapMod // = angular.module('myApp.mapServices',[])
 
   //----------------------------------------------------------------------------------
   //Drop a marker
-  var dropMarker = function (coordinates, title, placeObj, icon) {
+  var dropMarker = function (coordinates, title, placeObj, icon, markerType) {
 
     var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
-    // console.log(latLng)
     var marker = new google.maps.Marker({
       position: latLng,
       map: map,
@@ -66,20 +65,22 @@ mapMod // = angular.module('myApp.mapServices',[])
       ratingHTML = 'Rating:' + placeObj.rating;
     }
 
-    var infowindow = new google.maps.InfoWindow();
-    infowindow.setContent('<b>'+ placeObj.name + '</b><br>' + ratingHTML);
-    google.maps.event.addListener(marker, 'click', function() {
-      //remove
-      console.log('Place Clicked:', placeObj);
+    if(markerType === 'amenities_attractions') {
+      var infowindow = new google.maps.InfoWindow();
+      infowindow.setContent('<b>'+ placeObj.name + '</b><br>' + ratingHTML);
+      google.maps.event.addListener(marker, 'click', function() {
+        //remove
+        console.log('Place Clicked:', placeObj);
 
-      var photoUrl = '';
-      if(placeObj.photos && placeObj.photos.length) {
-        var photoReference = placeObj.photos[0].photo_reference;
-        console.log('Photo Reference:',photoReference);
-      }
-      if(isInfoWindowOpen(infowindow)) { infowindow.close(); return; }
-      infowindow.open(map, marker);
-    });
+        var photoUrl = '';
+        if(placeObj.photos && placeObj.photos.length) {
+          var photoReference = placeObj.photos[0].photo_reference;
+          console.log('Photo Reference:',photoReference);
+        }
+        if(isInfoWindowOpen(infowindow)) { infowindow.close(); return; }
+        infowindow.open(map, marker);
+      });
+    }
 
 
     return marker;

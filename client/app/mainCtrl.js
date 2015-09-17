@@ -279,19 +279,22 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //Drop a marker with a link to be clicked
   main.dropNeighborhoodMarker = function (coordinates, title, neighborhoodObj) {
     var icon = {
-      url: "assets/images/hood-icon.png",
-      size: new google.maps.Size(50, 50),
-      origin: new google.maps.Point(0, 0),
+      url: "assets/images/housepurplewhite.png",
+      size: new google.maps.Size(5.3*4, 13*6),
+      origin: new google.maps.Point(0, 5),
       anchor: new google.maps.Point(20, 20),
-      scaledSize: new google.maps.Size(40, 40)
+      scaledSize: new google.maps.Size(5.3*4, 13*6)
     };
 
-    var marker = Map.dropMarker(coordinates, title, title, icon);
+    var marker = Map.dropMarker(coordinates, title, title, icon, 'neighborhood');
 
 
     marker.addListener('click', function() {
+      if(neighborhoodObj.name === main.currentNeighborhood.name) { return; }
+
       main.selectNeighborhood(neighborhoodObj)
-      console.log(neighborhoodObj)
+      console.log('neighborhoodObj:',neighborhoodObj);
+      console.log('main.currneigh:',main.currentNeighborhood);
     });
     return marker;
   };
