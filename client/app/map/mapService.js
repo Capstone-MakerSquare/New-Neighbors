@@ -75,7 +75,7 @@ mapMod // = angular.module('myApp.mapServices',[])
         var photoUrl = '';
         if(placeObj.photos && placeObj.photos.length) {
           var photoReference = placeObj.photos[0].photo_reference;
-          console.log('Photo Reference:',photoReference);
+          // console.log('Photo Reference:',photoReference);
         }
         if(isInfoWindowOpen(infowindow)) { infowindow.close(); return; }
         infowindow.open(map, marker);

@@ -280,10 +280,10 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.dropNeighborhoodMarker = function (coordinates, title, neighborhoodObj) {
     var icon = {
       url: "assets/images/housepurplewhite.png",
-      size: new google.maps.Size(5.3*4, 13*6),
-      origin: new google.maps.Point(0, 5),
-      anchor: new google.maps.Point(20, 20),
-      scaledSize: new google.maps.Size(5.3*4, 13*6)
+      size: new google.maps.Size(5.3*8, 13*8),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(20, 30),
+      scaledSize: new google.maps.Size(5.3*4, 13*4)
     };
 
     var marker = Map.dropMarker(coordinates, title, title, icon, 'neighborhood');
