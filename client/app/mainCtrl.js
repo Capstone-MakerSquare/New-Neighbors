@@ -19,6 +19,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.serverResponse = {};
   main.filterType = 'estimateLow';
   main.currentNeighborhood;
+  main.loading = false;
 
   main.serviceObj = {};
   main.attractionObj = {};
@@ -196,6 +197,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //Function to fetch address and validate it
   main.submitAddress = function() {
     // $state.go('main.results');
+    main.loading = true;
     main.filteredNeighborhoodArray = [];
     requestNeighborhoods();
     Map.panAndFocusDestination(main.searchInfo.address);
@@ -214,6 +216,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   var requestNeighborhoods = function() {
     ServerApi.submit(main.searchInfo)
     .then(function(data) {
+      main.loading = false;
       main.serverResponse = data;
       main.neighborhoods = Object.keys(data).map(function(key) {
         return data[key];
@@ -245,7 +248,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   // Function to filter neighborhoods by user's filter options
   main.markNeighborhoods = function() {
     for (var i = 0; i < main.neighborhoodArray.length; i++) {
-      main.dropNeighborhoodMarker(main.neighborhoodArray[i].coordinates, main.neighborhoodArray[i].name, main.neighborhoodArray[i]);
+      Details.neighborhoodMarkers.push(main.dropNeighborhoodMarker(main.neighborhoodArray[i].coordinates, main.neighborhoodArray[i].name, main.neighborhoodArray[i]));
     }
   };
 
@@ -267,8 +270,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       if(neighborhoodObj.name === main.currentNeighborhood.name) { return; }
 
       main.selectNeighborhood(neighborhoodObj)
-      console.log('neighborhoodObj:',neighborhoodObj);
-      console.log('main.currneigh:',main.currentNeighborhood);
+      // console.log('neighborhoodObj:',neighborhoodObj);
+      // console.log('main.currneigh:',main.currentNeighborhood);
     });
 
     return marker;
