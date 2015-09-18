@@ -42,15 +42,25 @@ From the details view click on the Statictics button
 
 ## Developer Information
 
+### Strategy
+Our goals were threefold: 
+- To make the user feel comfortable browsing our app, the way they would in a suitable neighborhood
+- To deliver a multitude of data, returned quickly from several APIs
+- To give the user the feeling of a neighborhood--not just its raw facts
+
+We created a crisp clear design style, with colors you might find on a cozy couch.  We used AngularJS with UI Router so we could load subviews instantly without needing to wait for other parts of the page to reload.  On the back end Node, Express, and Q provided fast, reliable timing on several parallel asynchronous API calls.  We delivered nearby Instagram photos to convey the personality and culture of the area.  
+
 ###Front End
 
 ####Client Application Information
-We loosely modeled the directory structure from the information in this article:
+We loosely modeled the directory structure from the best practices demonstrated in the following article:
 https://scotch.io/tutorials/angularjs-best-practices-directory-structure
 
 ```
 app
 ├── app.js
+├── mainCtrl.js
+├── services.js
 ├── attractions
 │   └── attractionsTemplate.html
 ├── charts
@@ -69,7 +79,6 @@ app
 │   └── landing.html
 ├── main
 │   └── main.html
-├── mainCtrl.js
 ├── map
 │   ├── mapController.js
 │   ├── mapDirective.js
@@ -83,9 +92,6 @@ app
 │   └── searchFormTemplate.html
 ├── services
 │   └── servicesTemplate.html
-├── services.js
-├── statistics
-│   └── statisticsTemplate.html
 └── thumbnails
     ├── thumbnailsController.js
     ├── thumbnailsDirective.js
@@ -115,7 +121,7 @@ server
   └── server.js
 ```
 
-##Requirements
+###Requirements
 
 ####Software
 
