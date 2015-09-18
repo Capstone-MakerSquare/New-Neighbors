@@ -1,27 +1,25 @@
 # Turf
 
-### A web application to help you move into any new area, by showing you information about nearby neighborhoods and allowing you to compare them.
+### A web application that helps you move into any new area by showing you information about nearby neighborhoods so you can see how well they suit your style.
 
 ##User information
 
 #####Searching for Neighborhoods
 To get started:
-- Type in an address or city that you would like to be close to
+- Type in a specific address or a general region that you would like to be close to
 - Select if you would like to Rent or Buy
-- Enter the number of bedrooms and bathrooms you are looking for
+- Enter the number of bedrooms and bathrooms you desire
 
-This will display a list of nearby neighborhoods as well as the price ranges to rent/buy homes there, as well as the commute distance and time to the address you provided.
+This displays a list of nearby neighborhoods.  Each neighborhood is shown with the price ranges to live there, as well as the commute distance and time to the address provided.
 
 #####Ordering the Search Results
-You may also order the results by the search factors using the Order drop down
+You can prioritize the results by using the Order drop down
 
 #####Filtering the Search Results
-You can filter the search results by the following criteria:
-- Maximum commute distance
-- Maximum commute driving time
-
-Expand the filter section by clicking on the Filter Options button to do this.
-
+By clicking on the Filter Options button, you can filter the search results by the following criteria:
+- Price
+- Commute distance
+- Commute driving time
 
 ## Developer Information
 
@@ -29,9 +27,8 @@ Expand the filter section by clicking on the Filter Options button to do this.
 
 ####Software
 
-[Node.js](https://nodejs.org/en/): Use the installer for your OS.
 [Git](http://git-scm.com/downloads): Use the installer for your OS.
-  Windows users can also try [Git for Windows](http://git-for-windows.github.io/).
+[Node.js](https://nodejs.org/en/): Use the installer for your OS. 
 [Bower](http://bower.io/) Run npm install -g bower
 
 From within the root directory:
@@ -42,10 +39,10 @@ bower install
 ```
 
 ####API's
-- [Google Maps API](https://developers.google.com/maps/?hl=en) is used for the map, commute information and nearby places
-- [Zilpy API](http://www.zilpy.com/api) is used for renting price information
-- [Instagram API](https://instagram.com/developer/) is used to display photos from the area in the details view
-- [Zillow API](http://www.zillow.com/howto/api/APIOverview.htm) is used for home purchase prices and Statistical data for the bar and pie charts
+- [Google APIs](https://developers.google.com/maps/?hl=en) is used for the map, commute information, nearby neighborhoods, attractions, and amenities
+- [Zilpy API](http://www.zilpy.com/api) is used for rental price information
+- [Instagram API](https://instagram.com/developer/) is used to display photos from the area
+- [Zillow API](http://www.zillow.com/howto/api/APIOverview.htm) is used for home sale values and demographic statistics
 
 #### API keys
 
@@ -58,6 +55,7 @@ module.exports = {
   googleAPIKey : 'your google API key',
 };
 ```
+
 #####Instagram
 Go [here](https://instagram.com/developer/authentication/) to sign up for an access token.
 
@@ -68,32 +66,29 @@ Go [here](http://www.zillow.com/howto/api/APIOverview.htm) to sign up for an API
 Go [here](https://console.developers.google.com) to request an API key.
 
 Once you have a google API key make sure you enable the following APIs:
-BigQuery API
-Cloud Debugger API
-Debuglet Controller API
-Google Cloud SQL
-Google Cloud Storage
-Google Cloud Storage JSON API
-Google Maps Directions API
-Google Maps Distance Matrix API
-Google Maps Embed API
-Google Maps Geocoding API
-Google Maps Geolocation API
-Google Maps JavaScript API
-Google Places API Web Service
-Google Static Maps API
-Google Street View Image API
+- Google Maps Directions API
+- Google Maps Distance Matrix API
+- Google Maps Embed API
+- Google Maps Geocoding API
+- Google Maps JavaScript API
+- Google Places API Web Service
+- Google Street View Image API
 
 #### The Tech Stack
 
-- [Angular](https://angularjs.org/)
-- [Node.js](https://nodejs.org/en/)
-- [Bootstrap](http://getbootstrap.com/)
-- [Slick Carousel](http://kenwheeler.github.io/slick/)
+- [Angular](https://angularjs.org/) v1.4.5
+- [Angular Animate](https://docs.angularjs.org/api/ngAnimate) v1.4.5
+- [Angular UI Bootstrap](https://angular-ui.github.io/bootstrap/) v0.13.4
+- [UI Router](https://angular-ui.github.io/ui-router/site/#/api/ui.router) v0.2.15
+- [Node](https://nodejs.org/en/) v4.1.0
+- [Express](https://expressjs.com/) v4.13.3
+- [Q](https://github.com/kriskowal/q) v1.4.1
+- [Bootstrap](http://getbootstrap.com/) v3.3.5
+- [Slick Carousel](http://kenwheeler.github.io/slick/) v1.5.8
 
 ### Running the application
 
-Once you have your API keys from the root directory, start the server using
+Once you have your API keys and dependencies installed, start the server from the root directory using
 
 ```
 nodemon index.js
