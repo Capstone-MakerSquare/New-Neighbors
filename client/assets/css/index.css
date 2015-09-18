@@ -90,6 +90,12 @@ small {
   margin-bottom: 10px;
 }
 
+.results-container .direction {
+  color: #5f327c;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
 .details-container .details-neighborhood-bg {
   background: webkit-background-size: cover;
         -moz-background-size: cover;
@@ -137,12 +143,6 @@ small {
   margin-right:0px;
   width:25px;
   height:25px;
-}
-
-.details-container .card-block img {
-  display: inline-block;
-  width:50px;
-  height:50px;
 }
 
 .details-container .commute .card-block {
@@ -251,6 +251,42 @@ small {
 
 .thumbnails-container h4 {
   font-size: 16px;
+}
+
+.thumbnails-container .card {
+  background-color: #fff;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  padding-bottom:10px;
+}
+
+.thumbnails-container .card-title-container {
+  display: flex;
+  background-color: #5f327c;
+  color:#fff;
+  font-size: 18px;
+  height:60px;
+  padding:10px;
+}
+
+.thumbnails-container .card-container {
+  margin-bottom: 30px;
+}
+
+.thumbnails-container .card-title-text {
+  word-break: break-all;
+  display: inline-block;
+  align-self:center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.thumbnails-container .card h5 {
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.thumbnails-container .card h6 {
+  margin-top: 2px;
 }
 
 .searchForm form {

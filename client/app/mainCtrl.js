@@ -43,14 +43,16 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     var obj = {}
     if(main.searchInfo.buyOrRent === 'rent') {
       if(!neighborhood.rentEstimate) {
-        obj.title = 'Rent Estimate Not Available';
+        obj.title = 'Rent Estimate';
+        obj.price = 'Not Available';
         return obj;
       }
       obj.title = 'Rent Estimate';
       obj.price = (neighborhood.rentEstimate.estimateLow) ? '$' + neighborhood.rentEstimate.estimateLow.toLocaleString() + ' - ' + '$' + neighborhood.rentEstimate.estimateHigh.toLocaleString() : 'Not Available';
     } else {
         if(!main.buyPrice[neighborhood.name].priceStr) {
-          obj.title = 'Home Price Not Available';
+          obj.title = 'Home Price';
+          obj.price = 'Not Available';
           return obj;
         }
         obj.title = main.buyPrice[neighborhood.name].housetype;
@@ -186,7 +188,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     autocomplete.addListener('place_changed', function() {
       var place = autocomplete.getPlace();
       // console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
-      if(place.formatted_address || main.searchInfo.address.length > 0) {
+      if(main.searchInfo.address.length > 0 || place.formatted_address) {
         main.searchInfo.address = place.formatted_address || main.searchInfo.address;
         // main.submitAddress();
       }
