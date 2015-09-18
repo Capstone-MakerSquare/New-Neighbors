@@ -257,6 +257,10 @@ small {
   margin-top:20px;
 }
 
+.filterForm .orderBy {
+  display: inline-block;
+}
+
 .filterForm .orderBy label {
   margin-top:5px;
 }
@@ -274,7 +278,37 @@ small {
   bottom:0;
   height:auto;
   width: 100%;
-  padding-top: 20px;
+  padding: 20px 5px 5px 0;
   background-color:#f8f8f8;
   border-color: #e7e7e7;
 }
+
+@media only screen and (min-width:380px) and (max-width: 992px)  {
+
+  .filterForm .orderBy {
+    display: none;
+  }
+
+  .main-container .map-container {
+    height:450px;
+  }
+
+  .main-container .results-container {
+    min-height:450px;
+    padding:0 10px 10px 10px;
+  }
+
+  .main-container {
+    margin-left:30px;
+    margin-bottom: 110px;
+  }
+
+  .form-control {
+    margin-bottom:10px;
+  }
+
+  .main-left-container {
+    padding-left:0;
+  }
+}
+
