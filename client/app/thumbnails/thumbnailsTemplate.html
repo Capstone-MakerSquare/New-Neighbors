@@ -3,9 +3,9 @@
   <!---single glance card start-->
     <div class="card-deck">
       <div ng-repeat="neighborhood in main.filteredNeighborhoodArray | orderBy:main.filterType">
-        <div class="card col-md-4" ng-click="main.selectNeighborhood(neighborhood)">
-          <img class="card-img-top" src="assets/images/santamonicasmall.jpg" alt="picture of neighborhood">
-          <h3 class="card-title">{{neighborhood.name}}</h3>
+        <div class="card col-md-3" ng-click="main.selectNeighborhood(neighborhood)">
+     <!--      <img class="card-img-top" src="assets/images/santamonicasmall.jpg" alt="picture of neighborhood">
+ -->          <h3 class="card-title">{{neighborhood.name}}</h3>
           <div class="card-block">
             <h4 class="card-title">{{neighborhood.priceString.title}}</h4>
             <p class="card-text">{{neighborhood.priceString.price}}</p>

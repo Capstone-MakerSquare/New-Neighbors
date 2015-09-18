@@ -141,8 +141,8 @@ small {
 
 .details-container .card-block img {
   display: inline-block;
-  width:100px;
-  height:100px;
+  width:50px;
+  height:50px;
 }
 
 .details-container .commute .card-block {
