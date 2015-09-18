@@ -75,13 +75,14 @@ small {
 .results-container {
   padding:0 10px 10px 10px;
   margin-top:10px;
+  text-align:center;
 }
 
 .details-container .details-neighborhood-bg {
-  background: webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
+  background:webkit-background-size: cover;
+        -moz-background-size:cover;
+        -o-background-size:cover;
+        background-size:cover;
   width:100%;
   height:100px;
 }
