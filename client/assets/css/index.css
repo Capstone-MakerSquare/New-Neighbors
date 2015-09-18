@@ -77,6 +77,11 @@ small {
   margin-top:10px;
 }
 
+.results-container hr {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
 .details-container .details-neighborhood-bg {
   background: webkit-background-size: cover;
         -moz-background-size: cover;

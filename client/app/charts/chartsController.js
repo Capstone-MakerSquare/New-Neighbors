@@ -218,8 +218,6 @@ angular.module('myApp.charts', [])
   // Draws the bar chart , only drawing columns when data is available for that subject.
 
   var drawBar = function() {
-    //console.log('DrawBar init, runDrawBar:', runDrawBar);
-
     if (runDrawBar){
       $('#percentage-chart').highcharts({
         chart: {
@@ -331,8 +329,6 @@ angular.module('myApp.charts', [])
 
 
   var drawPie = function() {
-    //console.log('DrawPie init');
-
     if (runDrawPie) {
       $('#pie-chart').highcharts({
           chart: {

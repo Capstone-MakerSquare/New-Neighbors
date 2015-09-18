@@ -15,6 +15,9 @@ mapMod // = angular.module('myApp.mapServices',[])
   var circle;
   var iconCounter = 0;
 
+  //temporary variables
+  var targetLocation;  // temp for evan
+
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
   var initialize = function (coordinates) {
@@ -28,8 +31,8 @@ mapMod // = angular.module('myApp.mapServices',[])
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     // console.log("map initialized")
-  }
 
+  }
 
   //----------------------------------------------------------------------------------
   //Pan and focus on the coordinate set of interest
@@ -42,11 +45,29 @@ mapMod // = angular.module('myApp.mapServices',[])
   }
 
   //----------------------------------------------------------------------------------
+  //Pan and focus on the user's destination
+  var panAndFocusDestination = function(address) {
+    var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ 'address': address }, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          var address = results[0].formatted_address;
+          var coordinates = { latitude : results[0].geometry.location.H, longitude : results[0].geometry.location.L };
+
+          panAndFocus(coordinates);
+          dropMarkerWithLabel(coordinates);
+
+        } else {
+          console.log('submitAddress(): NOT_OK geocode says: Status, results: ', status, ',', results);
+        }
+      });
+  }
+
+
+  //----------------------------------------------------------------------------------
   //Drop a marker
-  var dropMarker = function (coordinates, title, placeObj, icon) {
+  var dropMarker = function (coordinates, title, placeObj, icon, markerType) {
 
     var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
-    // console.log(latLng)
     var marker = new google.maps.Marker({
       position: latLng,
       map: map,
@@ -66,21 +87,22 @@ mapMod // = angular.module('myApp.mapServices',[])
       ratingHTML = 'Rating:' + placeObj.rating;
     }
 
-    var infowindow = new google.maps.InfoWindow();
-    infowindow.setContent('<b>'+ placeObj.name + '</b><br>' + ratingHTML);
-    google.maps.event.addListener(marker, 'click', function() {
-      //remove
-      console.log('Place Clicked:', placeObj);
+    if(markerType === 'amenities_attractions') {
+      var infowindow = new google.maps.InfoWindow();
+      infowindow.setContent('<b>'+ placeObj.name + '</b><br>' + ratingHTML);
+      google.maps.event.addListener(marker, 'click', function() {
+        //remove
+        console.log('Place Clicked:', placeObj);
 
-      var photoUrl = '';
-      if(placeObj.photos && placeObj.photos.length) {
-        var photoReference = placeObj.photos[0].photo_reference;
-        console.log('Photo Reference:',photoReference);
-      }
-      if(isInfoWindowOpen(infowindow)) { infowindow.close(); return; }
-      infowindow.open(map, marker);
-    });
-
+        var photoUrl = '';
+        if(placeObj.photos && placeObj.photos.length) {
+          var photoReference = placeObj.photos[0].photo_reference;
+          // console.log('Photo Reference:',photoReference);
+        }
+        if(isInfoWindowOpen(infowindow)) { infowindow.close(); return; }
+        infowindow.open(map, marker);
+      });
+    }
 
     return marker;
   }
@@ -161,9 +183,11 @@ mapMod // = angular.module('myApp.mapServices',[])
     markers: markers,
     clearMarkers: clearMarkers,
     panAndFocus: panAndFocus,
+    panAndFocusDestination: panAndFocusDestination,
     dropMarker: dropMarker,
     drawCircle: drawCircle,
-    dropMarkerWithLabel: dropMarkerWithLabel
+    dropMarkerWithLabel: dropMarkerWithLabel,
+    targetLocation: targetLocation
   };
 
 }]);

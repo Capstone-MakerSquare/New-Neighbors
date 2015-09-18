@@ -7,7 +7,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   detail.selectedServiceCategory = 0;
 
   detail.currentNeighborhood = Details.currentNeighborhood;
-  console.log('detailsController says:', Details.currentNeighborhood);
+  // console.log('detailsController says:', Details.currentNeighborhood);
 
   detail.displayMarkers = function(place) {
     var icon = Map.getIcon();
@@ -19,7 +19,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
         latitude: place[i].geometry.location.lat,
         longitude: place[i].geometry.location.lng
       }
-      detail.markers.push(Map.dropMarker(coordinates, place[i].name, place[i], icon))
+      detail.markers.push(Map.dropMarker(coordinates, place[i].name, place[i], icon, 'amenities_attractions'))
     }
     for (var j = 0; j < detail.markers.length; j++){
       Details.currentMarkers.push(detail.markers[j])
@@ -72,7 +72,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
     } else {
       detail.selectedServiceCategory = index;
     }
-    console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
+    // console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
   };
 
   //----------------------------------------------------------------------------------
