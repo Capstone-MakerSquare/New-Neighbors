@@ -373,17 +373,16 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     // console.log('detailsController says: picturesArr:', main.picturesArr);
   }
 
-  //remove
-
 
   //----------------------------------------------------------------------------------
   // Initialization functions
-  setTimeout(main.autoCompleteInit, 200);
-  // setTimeout(Map.initialize, 10000);
   main.initialize = function() {
     Map.initialize();
     main.submitAddress();
-    // main.autoCompleteInit();
+  }
+
+  main.autoCompleteInitialize = function() {
+    setTimeout(main.autoCompleteInit,200);
   }
 
   main.randomImage = function(){
