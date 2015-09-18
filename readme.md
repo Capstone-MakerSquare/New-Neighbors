@@ -183,6 +183,7 @@ Once you have a google API key make sure you enable the following APIs:
 - [Q](https://github.com/kriskowal/q) v1.4.1
 - [Bootstrap](http://getbootstrap.com/) v3.3.5
 - [Slick Carousel](http://kenwheeler.github.io/slick/) v1.5.8
+- [Highcharts](http://www.highcharts.com/)
 
 ### Running the application
 
