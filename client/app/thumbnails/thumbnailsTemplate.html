@@ -3,8 +3,8 @@
   <!---single glance card start-->
     <div class="card-deck">
       <div ng-repeat="neighborhood in main.filteredNeighborhoodArray | orderBy:main.filterType">
-        <div class="col-md-4 card-container" ng-click="main.selectNeighborhood(neighborhood)">
-          <div class="card">
+        <div class="col-md-4 card-container" >
+          <div class="card" ng-click="main.selectNeighborhood(neighborhood)">
             <!-- Card -->
             <div class="card-title-container">
               <div class="card-title-text">{{neighborhood.name}}</div>

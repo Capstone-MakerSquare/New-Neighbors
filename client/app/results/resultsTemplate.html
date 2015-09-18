@@ -9,9 +9,27 @@
 
   <!-- <div ng-show="main.searchInfo.address.length === 0 || !main.searchInfo.address.length">Enter an address to search for neighborhoods</div> -->
 
-  <div ng-show="main.filteredNeighborhoodArray.length === 0 && !main.loading">There are no results to display.</div>
+  <div class="direction" ng-show="main.filteredNeighborhoodArray.length === 0 && !main.loading">There are no results to display.</div>
+
+  <img class="loading-image" ng-show="main.loading" src="assets/images/houseLoading.png" alt="loading static image">
 
   <span ng-show="main.loading">
-    <img src="assets/images/loading.gif">
+    <div class="spinner">
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+    </div>
   </span>
+
+  <div class="direction loading-text" ng-show="main.loading">Turf is fetching you neighborhoods...</div>
+
 </div>

@@ -51,17 +51,19 @@
   width: 100%;
   background-color: #fff;
   background-color: rgba(255,255,255, 0.3);
-  border-bottom:1px solid #5F327C; 
-  padding-bottom:5px; 
+  border-bottom:1px solid #5F327C;
+  padding-bottom:5px;
 }
 
-.landing-container .landing-btn {
+.landing-btn {
+  color: #FFF;
+  vertical-align: middle;
   background-color: #5F327C;
   font-size: 16px;
   font-weight: bold;
 }
 
-.landing-container .landing-submit {
+.landing-submit {
   height:33px;
   padding-top: 10px;
 }
