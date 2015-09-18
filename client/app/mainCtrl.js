@@ -1,4 +1,4 @@
-app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Charts', '$anchorScroll', '$location', function (Map, ServerApi, $state, Details, Charts, $anchorScroll, $location){
+app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Charts', '$anchorScroll', '$location', '$scope', '$timeout', function (Map, ServerApi, $state, Details, Charts, $anchorScroll, $location, $scope, $timeout){
 
   var main = this;
   main.picturesArr = [];
@@ -195,7 +195,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //----------------------------------------------------------------------------------
   //Function to fetch address and validate it
   main.submitAddress = function() {
-    $state.go('main.results');
+    // $state.go('main.results');
     main.filteredNeighborhoodArray = [];
     requestNeighborhoods();
     Map.panAndFocusDestination(main.searchInfo.address);
@@ -203,9 +203,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
   //Rerouters
   main.getResults = function() {
-    Map.userDestination = main.searchInfo.address;
     $state.go('main.results');
-    main.submitAddress();
   }
   main.gotoLanding = function() {
     $state.go('landing');
@@ -228,6 +226,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       main.filterNeighborhoods();
 
       main.markNeighborhoods();
+
     });
   };
 
@@ -239,7 +238,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       !(main.searchInfo.commuteTime < obj.commuteTime) &&
       !(main.searchInfo.commuteDistance < obj.commuteDistance);
     });
-    // console.log('main.filteredNeighborhoodArray',main.filteredNeighborhoodArray);
+    console.log('main.filteredNeighborhoodArray',main.filteredNeighborhoodArray);
   };
 
   //----------------------------------------------------------------------------------
@@ -271,6 +270,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       console.log('neighborhoodObj:',neighborhoodObj);
       console.log('main.currneigh:',main.currentNeighborhood);
     });
+
     return marker;
   };
 
@@ -379,6 +379,12 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //----------------------------------------------------------------------------------
   // Initialization functions
   setTimeout(main.autoCompleteInit, 200);
+  // setTimeout(Map.initialize, 10000);
+  main.initialize = function() {
+    Map.initialize();
+    main.submitAddress();
+    // main.autoCompleteInit();
+  }
 
   main.randomImage = function(){
     // removed this line so the image is no longer random: return { 'background-image': 'url("' + main.imageArray[Math.floor(Math.random() * main.imageArray.length)] + '")' };

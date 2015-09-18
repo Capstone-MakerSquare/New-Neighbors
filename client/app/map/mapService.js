@@ -16,7 +16,7 @@ mapMod // = angular.module('myApp.mapServices',[])
   var iconCounter = 0;
 
   //temporary variables
-  var userDestination;
+  var targetLocation;  // temp for evan
 
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
@@ -31,6 +31,7 @@ mapMod // = angular.module('myApp.mapServices',[])
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     // console.log("map initialized")
+
   }
 
   //----------------------------------------------------------------------------------
@@ -186,7 +187,7 @@ mapMod // = angular.module('myApp.mapServices',[])
     dropMarker: dropMarker,
     drawCircle: drawCircle,
     dropMarkerWithLabel: dropMarkerWithLabel,
-    userDestination: userDestination
+    targetLocation: targetLocation
   };
 
 }]);
