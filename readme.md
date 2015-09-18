@@ -23,9 +23,9 @@ By clicking on the Filter Options button, you can filter the search results by t
 
 ## Developer Information
 
-##Front End
+###Front End
 
-###Client Application Information
+####Client Application Information
 We loosely modeled the directory structure from the information in this article:
 https://scotch.io/tutorials/angularjs-best-practices-directory-structure
 
@@ -72,8 +72,31 @@ app
     ├── thumbnailsDirective.js
     └── thumbnailsTemplate.html
 ```
+###Back End
 
-###Requirements
+####Server Information
+The server makes asynchronous calls to various API endpoints so that the data can be passed to the user quickly. The promise library Q was used to simplify the callback complexities with Node. There is no database for this application because APIs used did not allow persistant data.
+
+```
+server
+  ├── config
+  │   ├── keys.js
+  │   └── middleware.js
+  ├── helpers
+  │   ├── geoCode.js
+  │   ├── getDistances.js
+  │   ├── getInstagram.js
+  │   ├── getRequest.js
+  │   ├── getXmlRequest.js
+  │   ├── queryAmenitiesAndAttractions.js
+  │   ├── reverseGeocode.js
+  │   ├── trulia.js
+  │   ├── zillow.js
+  │   └── zilpy.js
+  └── server.js
+```
+
+##Requirements
 
 ####Software
 
