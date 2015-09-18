@@ -23,6 +23,56 @@ By clicking on the Filter Options button, you can filter the search results by t
 
 ## Developer Information
 
+##Front End
+
+###Client Application Information
+We loosely modeled the directory structure from the information in this article:
+https://scotch.io/tutorials/angularjs-best-practices-directory-structure
+
+```
+app
+├── app.js
+├── attractions
+│   └── attractionsTemplate.html
+├── charts
+│   ├── chartsController.js
+│   ├── chartsDirective.js
+│   └── chartsTemplate.html
+├── details
+│   ├── detailsController.js
+│   ├── detailsService.js
+│   └── detailsTemplate.html
+├── filter
+│   ├── filterController.js
+│   ├── filterDirective.js
+│   └── filterTemplate.html
+├── landing
+│   └── landing.html
+├── main
+│   └── main.html
+├── mainCtrl.js
+├── map
+│   ├── mapController.js
+│   ├── mapDirective.js
+│   ├── mapService.js
+│   └── mapTemplate.html
+├── results
+│   └── resultsTemplate.html
+├── searchForm
+│   ├── searchFormController.js
+│   ├── searchFormDirective.js
+│   └── searchFormTemplate.html
+├── services
+│   └── servicesTemplate.html
+├── services.js
+├── statistics
+│   └── statisticsTemplate.html
+└── thumbnails
+    ├── thumbnailsController.js
+    ├── thumbnailsDirective.js
+    └── thumbnailsTemplate.html
+```
+
 ###Requirements
 
 ####Software
