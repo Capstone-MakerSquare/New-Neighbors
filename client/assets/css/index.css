@@ -14,7 +14,9 @@
 /* default styles */
 
 body {
+  background-color: #d3d3d3;
   color:#5f327;
+  overflow-x:hidden;
   font-family: AvenirNextPro, cursive;
 }
 
@@ -49,16 +51,19 @@ small {
   top:0;
   left:0;
   z-index:99;
+  cursor: pointer;
 }
 
 .main-container {
-  margin-right:20px;
+  margin: 20px 10px 75px 10px;
 }
 
 .main-container .map-container {
   width:100%;
   /* fixed width must be set for map-canvas */
-  height:650px;
+  height:950px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  margin:0;
 }
 
 .main-container #map-canvas {
@@ -66,15 +71,18 @@ small {
   width:100%;
 }
 
-.details-container, .results-container {
-  height:650px;
-  overflow:scroll;
-  border:2px solid #5f327c;
+.main-container #main-resultanddetails-container {
+  padding-left:0;
 }
 
-.results-container {
-  padding:0 10px 10px 10px;
-  margin-top:10px;
+.details-container, .results-container {
+  min-height:950px;
+  overflow:scroll;
+  border:2px solid #5f327c;
+  background-color: #fff;
+  overflow-x:hidden;
+  margin:0;
+  padding:0 20px 10px 20px;
 }
 
 .results-container hr {
