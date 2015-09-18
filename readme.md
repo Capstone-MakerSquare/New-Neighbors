@@ -21,19 +21,19 @@ By clicking on the Filter Options button, you can filter the search results by t
 - Commute driving time
 
 #####Exploring a Neighborhood's Details
-To get details on a neighborhood click on it's name this will open the details view
-- In the details view you can see a stream of Instagram photos taken nearby
+To get details on a neighborhood click on its name to open the details view
+- In the details view you can see a stream of nearby Instagram photos
 
 ######Amenities and Attractions
-Click on the buttons to see the types of Amenities and Attractions nearby
+Click on the buttons to see the types of Amenities and Attractions close by
 + Amenities will display nearby: libraries, stores, restaurants, schools...
 + Attractions will display nearby: museums, night clubs, staduims...
 
 ######Statistics
-From the details view click on the Statictics button
-+ You can see the Median Household Income, Size and Construction Year
-+ The pie chart displays the Resident Age Distribution
-+ The bar chart shows how the neighborhood compares with the nation for percentage of:
+From the details view click on the Statictics button to see
++ The Median Household Income, Size and Construction Year
++ The pie chart with the Resident Age Distribution
++ The bar chart showing how the neighborhood compares with the nation for percentage of:
     + homes with kids
     + property owners vs. renters
     + single residents
