@@ -1,4 +1,4 @@
-app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Charts', '$anchorScroll', '$location', function (Map, ServerApi, $state, Details, Charts, $anchorScroll, $location){
+app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Charts', '$anchorScroll', '$location', '$scope', '$timeout', function (Map, ServerApi, $state, Details, Charts, $anchorScroll, $location, $scope, $timeout){
 
   var main = this;
   main.picturesArr = [];
@@ -19,10 +19,10 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.serverResponse = {};
   main.filterType = 'estimateLow';
   main.currentNeighborhood;
+  main.loading = false;
 
   main.serviceObj = {};
   main.attractionObj = {};
-
 
   main.coordinates = {
       latitude: 38.5,
@@ -196,82 +196,59 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //----------------------------------------------------------------------------------
   //Function to fetch address and validate it
   main.submitAddress = function() {
-    $state.go('main.results');
-    // console.log('mainCtrl.js says: Submitted address (autocomplete):', place.formatted_address);
-    // console.log('mainCtrl.js says: Submitted address (angular):', main.searchInfo.address);
+    // $state.go('main.results');
+    main.loading = true;
     main.filteredNeighborhoodArray = [];
     requestNeighborhoods();
-
-    //Get the geocode of the address
-    //drop a marker on the geocode
-
-    var geocoder = new google.maps.Geocoder();
-
-    geocoder.geocode({ 'address': main.searchInfo.address }, function(results, status) {
-
-      if (status === google.maps.GeocoderStatus.OK) {
-        var address = results[0].formatted_address;
-        var coordinates = { latitude : results[0].geometry.location.H, longitude : results[0].geometry.location.L };
-
-        //remove
-        // console.log('submitAddress():geocode says: Results: ',results);
-        // console.log('submitAddress():geocode says: Address: ',address);
-        // console.log('submitAddress():geocode says: Coordinates: ',coordinates);
-
-        Map.panAndFocus(coordinates);
-        //Map.dropMarker(coordinates);
-
-        //testing an animated marker
-        Map.dropMarkerWithLabel(coordinates);
-
-        //remove
-        //Map.drawCircle(coordinates, 4000);
-
-      } else {
-        console.log('submitAddress(): NOT_OK geocode says: Status, results: ', status, ',', results);
-      }
-    });
+    Map.panAndFocusDestination(main.searchInfo.address);
   };
+
+  //Rerouters
+  main.getResults = function() {
+    $state.go('main.results');
+  }
+  main.gotoLanding = function() {
+    $state.go('landing');
+  }
 
   //----------------------------------------------------------------------------------
   // Function to make an API request for neighborhoods
   var requestNeighborhoods = function() {
     ServerApi.submit(main.searchInfo)
     .then(function(data) {
+      main.loading = false;
       main.serverResponse = data;
       main.neighborhoods = Object.keys(data).map(function(key) {
         return data[key];
       });
 
-      // console.log('requestNeighborhoods main.neighborhoods', main.neighborhoods);
       main.attractionObj = Details.createPlacesObj(main.neighborhoods, Details.attractionDict);
       main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
       main.getBuyPrice(main.neighborhoods);
       main.neighborhoodArray = main.orderByArray(main.neighborhoods);
       main.filterNeighborhoods();
-       //remove
-       // console.log('requestNeighborhoods main.neighborhoodArray', main.neighborhoodArray);
 
       main.markNeighborhoods();
+
     });
   };
 
   //----------------------------------------------------------------------------------
   // Function to filter neighborhoods by user's filter options
   main.filterNeighborhoods = function() {
-    // console.log('filterNeighborhoods')
     main.filteredNeighborhoodArray = main.neighborhoodArray.filter(function(obj) {
       return !(main.searchInfo.maxRent < obj.estimateLow) &&
       !(main.searchInfo.commuteTime < obj.commuteTime) &&
       !(main.searchInfo.commuteDistance < obj.commuteDistance);
     });
+    console.log('main.filteredNeighborhoodArray',main.filteredNeighborhoodArray);
   };
 
   //----------------------------------------------------------------------------------
   // Function to filter neighborhoods by user's filter options
   main.markNeighborhoods = function() {
     for (var i = 0; i < main.neighborhoodArray.length; i++) {
-      main.dropNeighborhoodMarker(main.neighborhoodArray[i].coordinates, main.neighborhoodArray[i].name, main.neighborhoodArray[i]);
+      Details.neighborhoodMarkers.push(main.dropNeighborhoodMarker(main.neighborhoodArray[i].coordinates, main.neighborhoodArray[i].name, main.neighborhoodArray[i]));
     }
   };
 
@@ -279,20 +256,24 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //Drop a marker with a link to be clicked
   main.dropNeighborhoodMarker = function (coordinates, title, neighborhoodObj) {
     var icon = {
-      url: "assets/images/hood-icon.png",
-      size: new google.maps.Size(50, 50),
+      url: "assets/images/housepurplewhite.png",
+      size: new google.maps.Size(5.3*8, 13*8),
       origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(20, 20),
-      scaledSize: new google.maps.Size(40, 40)
+      anchor: new google.maps.Point(20, 30),
+      scaledSize: new google.maps.Size(5.3*4, 13*4)
     };
 
-    var marker = Map.dropMarker(coordinates, title, title, icon);
+    var marker = Map.dropMarker(coordinates, title, title, icon, 'neighborhood');
 
 
     marker.addListener('click', function() {
+      if(neighborhoodObj.name === main.currentNeighborhood.name) { return; }
+
       main.selectNeighborhood(neighborhoodObj)
-      console.log(neighborhoodObj)
+      // console.log('neighborhoodObj:',neighborhoodObj);
+      // console.log('main.currneigh:',main.currentNeighborhood);
     });
+
     return marker;
   };
 
@@ -398,12 +379,17 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     // console.log('detailsController says: picturesArr:', main.picturesArr);
   }
 
-  //remove
-
 
   //----------------------------------------------------------------------------------
   // Initialization functions
-  setTimeout(main.autoCompleteInit, 200);
+  main.initialize = function() {
+    Map.initialize();
+    main.submitAddress();
+  }
+
+  main.autoCompleteInitialize = function() {
+    setTimeout(main.autoCompleteInit,200);
+  }
 
   main.randomImage = function(){
     // removed this line so the image is no longer random: return { 'background-image': 'url("' + main.imageArray[Math.floor(Math.random() * main.imageArray.length)] + '")' };

@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="../assets/css/app.css">
 <link rel="stylesheet" href="../assets/scss/foundation-icons.css">
 
-<div class="landing-container">
+<div class="landing-container" ng-init="main.autoCompleteInit();">
   <div class="landing-photo">
     <div class="site-wrapper">
       <div class="site-wrapper-inner">
@@ -47,7 +47,7 @@
           </select>
         </div>
         <div class="col-sm-2 col-md-1 landing-form">
-          <button type="button" class="landing-btn landing-submit" ng-click="main.submitAddress()">Submit</button>
+          <button type="button" ng-click="main.getResults()" class="landing-btn landing-submit">Submit</button>
         </div>
       </div>
     </form>

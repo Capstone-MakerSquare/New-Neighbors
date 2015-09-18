@@ -4,6 +4,7 @@ details
   var neighborhoodDetailsObj;
   var currentNeighborhood;
   var currentMarkers = [];
+  var neighborhoodMarkers = [];
 
   var serviceDict = {
     airport: [],
@@ -102,7 +103,8 @@ details
     currentNeighborhood: currentNeighborhood,
     currentMarkers: currentMarkers,
     neighborhoodDetailsObj: neighborhoodDetailsObj,
-    createPlacesObj : createPlacesObj
+    createPlacesObj : createPlacesObj,
+    neighborhoodMarkers: neighborhoodMarkers
     // mapCurrentNeighborhood:mapCurrentNeighborhood
   };
 });
