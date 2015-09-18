@@ -1,6 +1,6 @@
 # Turf
 
-### A web application that helps you move into any new area by showing you information about nearby neighborhoods so you can see how well they suit your style.
+#### A web application that helps you move into any new area by showing you information about nearby neighborhoods so you can see how well they suit your style.
 
 ##User information
 
