@@ -4,22 +4,41 @@
 
 ##User information
 
-#####Searching for Neighborhoods
-To get started:
+#####Getting Started and Searching
 - Type in a specific address or a general region that you would like to be close to
 - Select if you would like to Rent or Buy
 - Enter the number of bedrooms and bathrooms you desire
 
 This displays a list of nearby neighborhoods.  Each neighborhood is shown with the price ranges to live there, as well as the commute distance and time to the address provided.
 
-#####Ordering the Search Results
+######Ordering the Search Results
 You can prioritize the results by using the Order drop down
 
-#####Filtering the Search Results
+######Filtering the Search Results
 By clicking on the Filter Options button, you can filter the search results by the following criteria:
 - Price
 - Commute distance
 - Commute driving time
+
+#####Exploring a Neighborhood's Details
+- To get details on a neighborhood click on it's name this will open the details view
+- In the details view you can see a stream of Instagram photos taken nearby
+
+######Amenities and Attractions
+- Click on the buttons to see the types of Amenities and Attractions nearby
++ Amenities will display nearby: libraries, stores, restaurants, schools...
++ Attractions will display nearby: museums, night clubs, staduims...
+
+######Statistics
+- From the details view click on the Statictics button
++ You can see the Median Household Income, Size and Construction Year
++ The pie chart displays the Resident Age Distribution
++ The bar chart shows how the neighborhood compares with the nation for percentage of:
+    + homes with kids
+    + property owners vs. renters
+    + single residents
+
+
 
 ## Developer Information
 
