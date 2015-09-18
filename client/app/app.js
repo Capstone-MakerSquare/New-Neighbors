@@ -75,6 +75,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
    .state('main.details.charts', {
       url: "/charts",
+      controller: 'chartsController',
+      controllerAs: 'chart',
       views: {
         "detail-section": {
           template: '<charts></charts>'

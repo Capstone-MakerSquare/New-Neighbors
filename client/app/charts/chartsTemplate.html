@@ -1,6 +1,7 @@
-<div>
-  <h1>Charts</h1>
-  <!-- style="min-width: 400px; height: 400px; margin: 0 auto" -->
-  <div id="percentage-chart"></div>
-  <span id="pie-chart"></span>
+<div ng-controller="chartsController as chart">
+  <span>{{chart.incomeString}}</span>
+  <span>{{chart.sqftString}}</span>
+  <span>{{chart.yearBuiltString}}</span>
+  <span style=" min-width: 280px; margin: 0 auto" id="pie-chart"></span>
+  <span style=" min-width: 280px; margin: 0 auto" id="percentage-chart"></span>
 </div>
