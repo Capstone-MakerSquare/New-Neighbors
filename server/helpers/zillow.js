@@ -1,6 +1,6 @@
 var Q = require('q');
 var getXmlRequest = require('./getXmlRequest.js');
-var keys = require('./../config/keys.js');
+// var keys = require('./../config/keys.js');
 
 //-----------------------------------------------------------------------------------
 //GET demography information for a neighborhood and a city from Zillow
