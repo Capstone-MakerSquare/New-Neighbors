@@ -32,7 +32,7 @@ module.exports = function (coordinates) {
 
   getRequest(geocodeUrl)
   .then(function (streetAddress) {
-     console.log('***********reverse Geocode**********');
+     // console.log('***********reverse Geocode**********');
      // console.log('streetAddress fetched.');
      // console.log('LatLng:',coordinates.latitude, coordinates.longitude);
      // console.log('Street Address:',streetAddress);
