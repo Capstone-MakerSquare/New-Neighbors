@@ -1,7 +1,7 @@
 {
   "name": "Turf",
   "version": "1.1.0",
-  "main": index.js,
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
