@@ -1,7 +1,11 @@
 var Q = require('q');
 var getRequest = require('./getRequest.js');
-var keys = require('./../config/keys.js');
-
+// var keys = require('./../config/keys.js');
+var keys = {
+  googleAPIKey: process.env.GOOGLE_KEY,
+  zwsId: process.env.ZILLOW_KEY,
+  instagramAccessToken: process.env.INSTAGRAM_KEY
+}
 
 //-----------------------------------------------------------------------------------
 //GET distances and commute time from each neighborhood to user destination
@@ -32,7 +36,7 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
 
   var origins = originsArr.join('|');
 
-  //remove
+  // remove
   // console.log('origins:',origins);
   // console.log('destination', destination);
 
