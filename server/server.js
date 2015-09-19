@@ -2,7 +2,7 @@ var express = require('express');
 var middleware = require('./config/middleware.js');
 var http = require('http');
 var Q = require('q');
-var keys = require('./config/keys.js');
+// var keys = require('./config/keys.js');
 var request = require('request');
 var _ = require('underscore');
 var parseString = require('xml2js').parseString;
@@ -30,6 +30,11 @@ var searchInfo;
 var neighborhoodObject = {};
 var neighborhoods;
 var numNeighborhoods;
+var keys = {
+  googleAPIKey: process.env.GOOGLE_KEY,
+  zwsId: process.env.ZILLOW_KEY,
+  instagramAccessToken: process.env.INSTAGRAM_KEY
+}
 
 //Handle a POST request
 //api/getNeighbors
