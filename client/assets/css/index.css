@@ -226,13 +226,11 @@ small {
   color:white;
 }
 
+.amenities-container .activeCategory,
 .attractions-container .activeCategory {
   color:red;
 }
 
-.attractions-container .activeServiceCategory {
-  color:red;
-}
 .nav-container {
   margin-top: 10px;
   text-align: center;

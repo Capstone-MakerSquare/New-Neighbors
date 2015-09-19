@@ -3,14 +3,17 @@
   <!-- <hr> -->
   <div class="col-md-4 amenities-categories">
     <ul ng-repeat="service in details.currentNeighborhood.services">
-      <li ng-click="details.displayMarkers(service); details.serviceSelectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{activeServiceCategory: $index === details.selectedServiceCategory}">
+      <li ng-click="details.displayMarkers(service, 'amenity'); details.selectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{activeCategory: $index === details.selectedCategory}">
         <!-- <img class="icon" src="{{service[0].icon}}" alt="service category icon"> -->
         <img src="assets/images/defaultball.png" alt="colored ball icon">
         <span>{{service[0].displayName}}</span>
       </li>
     </ul>
   </div>
+
   <div class="col-md-8 amenities-list">
-    List Goes here..
+    <ul ng-repeat="spot in details.currentSpotsToDisplay">
+      <li ng-click="details.toggleTooltip(details.currentSpotsToDisplay[$index]);">{{spot.name}}</li>
+    </ul>
   </div>
 </div>

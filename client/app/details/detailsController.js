@@ -3,15 +3,19 @@ var details = angular.module('myApp.details', []);
 details.controller('detailsController', ['Details', 'Map', function (Details, Map){
   var detail = this;
   detail.markers = [];
-  detail.selectedAttractionCategory = 0;
-  detail.selectedServiceCategory = 0;
+  detail.selectedCategory = 0;
+  detail.currentSpotsToDisplay = [];
 
   detail.currentNeighborhood = Details.currentNeighborhood;
   // console.log('detailsController says: This is where you print from:', detail.currentNeighborhood.services);
 
-  detail.displayMarkers = function(place) {
+  detail.displayMarkers = function(place, type) {
     var icon = Map.getIcon();
     // console.log('place1', place)
+    // console.log('Type:',type);
+    console.log('detail.currentNeighborhood.attractions', detail.currentNeighborhood.attractions);
+    console.log('detail.currentNeighborhood.services', detail.currentNeighborhood.services);
+    console.log('place selected:',place);
 
     Map.clearMarkers(Details.currentMarkers);
     for (var i = 0; i < place.length; i++) {
@@ -19,7 +23,13 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
         latitude: place[i].geometry.location.lat,
         longitude: place[i].geometry.location.lng
       }
-      detail.markers.push(Map.dropMarker(coordinates, place[i].name, place[i], icon, 'amenities_attractions'))
+      var tuple = Map.dropMarker(coordinates, place[i].name, place[i], icon, 'amenities_attractions');
+      //[marker, infowindow]
+      detail.markers.push(tuple[0]);
+
+      if(type === 'amenity') {
+        place[i].marker = tuple[0]; place[i].infowindow = tuple[1];
+      }
     }
     for (var j = 0; j < detail.markers.length; j++){
       Details.currentMarkers.push(detail.markers[j])
@@ -66,26 +76,26 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   //----------------------------------------------------------------------------------
   //
 
-   detail.selectCategory = function(index, category) {
-    if (category === "attractionCategory") {
-      detail.selectedAttractionCategory = index;
-    } else {
-      detail.selectedServiceCategory = index;
+   detail.selectCategory = function(index) {
+     console.log("selected category fn called with index", index)
+      detail.selectedCategory = index;
+
+    // console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
+  };
+
+  //----------------------------------------------------------------------------------
+
+  //----------------------------------------------------------------------------------
+
+   detail.displayAmenitiesOrAttractions = function(spotsArray) {
+    console.log('Selected Spots:', spotsArray);
+    detail.currentSpotsToDisplay = spotsArray;
+  };
+
+  //----------------------------------------------------------------------------------
+    detail.toggleTooltip = function (spot) {
+      console.log('Tool tip toggle for spot:', spot);
+      Map.toggleInfoWindow(spot.infowindow, spot.marker);
     }
-    // console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
-  };
-
-  //----------------------------------------------------------------------------------
-
-  //----------------------------------------------------------------------------------
-
-   detail.displayAmenitiesOrAttractions = function(type) {
-    console.log(type);
-
-    // console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
-  };
-
-  //----------------------------------------------------------------------------------
-
 
 }]);
