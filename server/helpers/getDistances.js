@@ -12,7 +12,7 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
   var transitMode = transitMode || 'driving';
   var deferred = Q.defer();
   //remove
-  // console.log('getDistances called.');
+  console.log('getDistances called.');
 
   //make an origins array
   var originsArr = [];
