@@ -1,6 +1,6 @@
 var Q = require('q');
 var getRequest = require('./getRequest.js');
-var keys = require('./../config/keys.js');
+// var keys = require('./../config/keys.js');
 
 //-----------------------------------------------------------------------------------
 //GET the street address of a latitude/longitude pair

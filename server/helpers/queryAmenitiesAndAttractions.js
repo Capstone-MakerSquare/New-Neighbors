@@ -1,6 +1,6 @@
 var Q = require('q');
 var getRequest = require('./getRequest.js');
-var keys = require('./../config/keys.js');
+// var keys = require('./../config/keys.js');
 
 //-----------------------------------------------------------------------------------
 //Get amenities for a given neighrbood for radii 0.5, 1.5 and 2.5 kilometers
