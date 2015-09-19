@@ -3,15 +3,23 @@ var details = angular.module('myApp.details', []);
 details.controller('detailsController', ['Details', 'Map', function (Details, Map){
   var detail = this;
   detail.markers = [];
-  detail.selectedAttractionCategory = 0;
-  detail.selectedServiceCategory = 0;
+  detail.selectedCategory = 0;
+  detail.currentSpotsToDisplay = [];
 
   detail.currentNeighborhood = Details.currentNeighborhood;
+
+  // State Flags
+  detail.tabs = [1,0,0];    //[amenities, attractions, charts]
+
   // console.log('detailsController says: This is where you print from:', detail.currentNeighborhood.services);
 
   detail.displayMarkers = function(place) {
     var icon = Map.getIcon();
     // console.log('place1', place)
+    // console.log('Type:',type);
+    // console.log('detail.currentNeighborhood.attractions', detail.currentNeighborhood.attractions);
+    // console.log('detail.currentNeighborhood.services', detail.currentNeighborhood.services);
+    // console.log('place selected:',place);
 
     Map.clearMarkers(Details.currentMarkers);
     for (var i = 0; i < place.length; i++) {
@@ -19,7 +27,11 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
         latitude: place[i].geometry.location.lat,
         longitude: place[i].geometry.location.lng
       }
-      detail.markers.push(Map.dropMarker(coordinates, place[i].name, place[i], icon, 'amenities_attractions'))
+      var tuple = Map.dropMarker(coordinates, place[i].name, place[i], icon, 'amenities_attractions');
+      //[marker, infowindow]
+      detail.markers.push(tuple[0]);
+
+      place[i].marker = tuple[0]; place[i].infowindow = tuple[1];
     }
     for (var j = 0; j < detail.markers.length; j++){
       Details.currentMarkers.push(detail.markers[j])
@@ -66,26 +78,62 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   //----------------------------------------------------------------------------------
   //
 
-   detail.selectCategory = function(index, category) {
-    if (category === "attractionCategory") {
-      detail.selectedAttractionCategory = index;
-    } else {
-      detail.selectedServiceCategory = index;
+   detail.selectCategory = function(index) {
+     // console.log("selected category fn called with index", index)
+      detail.selectedCategory = index;
+
+    // console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
+  };
+
+  //----------------------------------------------------------------------------------
+
+  //HELPERS
+  //----------------------------------------------------------------------------------
+
+   detail.displayAmenitiesOrAttractions = function(spotsArray) {
+    // console.log('Selected Spots:', spotsArray);
+    detail.currentSpotsToDisplay = spotsArray;
+  };
+
+  //----------------------------------------------------------------------------------
+    detail.toggleTooltip = function (spot) {
+      // console.log('Tool tip toggle for spot:', spot);
+      Map.toggleInfoWindow(spot.infowindow, spot.marker);
     }
-    // console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
-  };
 
   //----------------------------------------------------------------------------------
+    detail.getAmenitiesIcon = function(amenity) {
+      // console.log('getAmenitiesIcon says: amenity:',amenity);
+      return './assets/images/Amenities/'+amenity.displayName+'.png';
+    }
 
   //----------------------------------------------------------------------------------
-
-   detail.displayAmenitiesOrAttractions = function(type) {
-    console.log(type);
-
-    // console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
-  };
+    detail.getAttractionsIcon = function(attraction) {
+      // console.log('getAttractionsIcon says: attraction:',attraction);
+      return './assets/images/Attractions/'+attraction.displayName+'.png';
+    }
 
   //----------------------------------------------------------------------------------
+    detail.stateSwitch = function(currState) {
+      switch(currState) {
+        case 'amenities': detail.tabs = [1,0,0];
+                          break;
+        case 'attractions': detail.tabs = [0,1,0];
+                            break;
+        case 'charts': detail.tabs = [0,0,1];
+                           break;
+        default: break;
+      }
+      console.log('stateSwitch says:',detail.tabs);
+    }
 
 
 }]);
+
+
+
+
+
+
+
+

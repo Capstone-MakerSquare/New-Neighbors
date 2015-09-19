@@ -68,6 +68,7 @@ mapMod // = angular.module('myApp.mapServices',[])
   var dropMarker = function (coordinates, title, placeObj, icon, markerType) {
 
     var latLng = {lat: coordinates.latitude, lng: coordinates.longitude};
+    var infowindow;
     var marker = new google.maps.Marker({
       position: latLng,
       map: map,
@@ -88,7 +89,7 @@ mapMod // = angular.module('myApp.mapServices',[])
     }
 
     if(markerType === 'amenities_attractions') {
-      var infowindow = new google.maps.InfoWindow();
+      infowindow = new google.maps.InfoWindow();
       infowindow.setContent('<b>'+ placeObj.name + '</b><br>' + ratingHTML);
       google.maps.event.addListener(marker, 'click', function() {
         //remove
@@ -104,7 +105,7 @@ mapMod // = angular.module('myApp.mapServices',[])
       });
     }
 
-    return marker;
+    return [marker, infowindow];
   }
 
   //----------------------------------------------------------------------------------
@@ -137,6 +138,17 @@ mapMod // = angular.module('myApp.mapServices',[])
       labelAnchor: new google.maps.Point(10, 10),
       labelClass: "popper", // the CSS class for the label
     });
+  }
+
+  //Toggle infowindow on a target marker
+  var toggleInfoWindow = function (infoWindow, marker) {
+    //helper function
+    function isInfoWindowOpen(infoWindow){
+      var map = infoWindow.getMap();
+      return (map !== null && typeof map !== "undefined");
+    }
+    if(isInfoWindowOpen(infoWindow)) { infoWindow.close(); return; }
+    infoWindow.open(map, marker);
   }
 
   //----------------------------------------------------------------------------------
@@ -187,7 +199,8 @@ mapMod // = angular.module('myApp.mapServices',[])
     dropMarker: dropMarker,
     drawCircle: drawCircle,
     dropMarkerWithLabel: dropMarkerWithLabel,
-    targetLocation: targetLocation
+    targetLocation: targetLocation,
+    toggleInfoWindow: toggleInfoWindow
   };
 
 }]);
