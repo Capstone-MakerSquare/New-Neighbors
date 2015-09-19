@@ -3,7 +3,7 @@
   <!-- <hr> -->
   <div class="col-md-4 amenities-categories">
     <ul ng-repeat="service in details.currentNeighborhood.services">
-      <li ng-click="details.displayMarkers(service); details.serviceSelectCategory($index)" ng-class="{activeServiceCategory: $index === details.selectedServiceCategory}">
+      <li ng-click="details.displayMarkers(service); details.serviceSelectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{activeServiceCategory: $index === details.selectedServiceCategory}">
         <!-- <img class="icon" src="{{service[0].icon}}" alt="service category icon"> -->
         <img src="assets/images/defaultball.png" alt="colored ball icon">
         <span>{{service[0].displayName}}</span>

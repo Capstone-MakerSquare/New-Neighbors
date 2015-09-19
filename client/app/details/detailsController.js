@@ -77,4 +77,15 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
 
   //----------------------------------------------------------------------------------
 
+  //----------------------------------------------------------------------------------
+
+   detail.displayAmenitiesOrAttractions = function(type) {
+    console.log(type);
+
+    // console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
+  };
+
+  //----------------------------------------------------------------------------------
+
+
 }]);
