@@ -18,9 +18,9 @@ module.exports = function (address) {
   var address = address;
   var gPlacesUrl_address = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
   var gPlacesUrl_sensor = '&sensor=false';
-  console.log('server.js says: geoCode called.');
-  console.log('address: ',address);
-  console.log('googleAPIKey: ',keys.googleAPIKey);
+  // console.log('server.js says: geoCode called.');
+  // console.log('address: ',address);
+  // console.log('googleAPIKey: ',keys.googleAPIKey);
   var gPlacesUrl = gPlacesUrl_address + address + gPlacesUrl_sensor;
   getRequest(gPlacesUrl)
   .then(function (coordinatesObj) {

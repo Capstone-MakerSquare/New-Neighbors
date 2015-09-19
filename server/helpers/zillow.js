@@ -24,7 +24,7 @@ module.exports = function (neighborhood, city) {
   var zillowUrl = zillowUrl_zwsId + zwsId + zillowUrl_neighborhood + neighborhood + zillowUrl_city + city;
 
   //remove
-  console.log('ZillowUrl:', zillowUrl);
+  // console.log('ZillowUrl:', zillowUrl);
 
   getXmlRequest(zillowUrl)
   .then(function (responseObj) {
