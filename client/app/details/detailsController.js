@@ -9,13 +9,13 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   detail.currentNeighborhood = Details.currentNeighborhood;
   // console.log('detailsController says: This is where you print from:', detail.currentNeighborhood.services);
 
-  detail.displayMarkers = function(place, type) {
+  detail.displayMarkers = function(place) {
     var icon = Map.getIcon();
     // console.log('place1', place)
     // console.log('Type:',type);
-    console.log('detail.currentNeighborhood.attractions', detail.currentNeighborhood.attractions);
-    console.log('detail.currentNeighborhood.services', detail.currentNeighborhood.services);
-    console.log('place selected:',place);
+    // console.log('detail.currentNeighborhood.attractions', detail.currentNeighborhood.attractions);
+    // console.log('detail.currentNeighborhood.services', detail.currentNeighborhood.services);
+    // console.log('place selected:',place);
 
     Map.clearMarkers(Details.currentMarkers);
     for (var i = 0; i < place.length; i++) {
@@ -27,9 +27,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
       //[marker, infowindow]
       detail.markers.push(tuple[0]);
 
-      if(type === 'amenity') {
-        place[i].marker = tuple[0]; place[i].infowindow = tuple[1];
-      }
+      place[i].marker = tuple[0]; place[i].infowindow = tuple[1];
     }
     for (var j = 0; j < detail.markers.length; j++){
       Details.currentMarkers.push(detail.markers[j])
@@ -77,7 +75,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   //
 
    detail.selectCategory = function(index) {
-     console.log("selected category fn called with index", index)
+     // console.log("selected category fn called with index", index)
       detail.selectedCategory = index;
 
     // console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
@@ -88,14 +86,34 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   //----------------------------------------------------------------------------------
 
    detail.displayAmenitiesOrAttractions = function(spotsArray) {
-    console.log('Selected Spots:', spotsArray);
+    // console.log('Selected Spots:', spotsArray);
     detail.currentSpotsToDisplay = spotsArray;
   };
 
   //----------------------------------------------------------------------------------
     detail.toggleTooltip = function (spot) {
-      console.log('Tool tip toggle for spot:', spot);
+      // console.log('Tool tip toggle for spot:', spot);
       Map.toggleInfoWindow(spot.infowindow, spot.marker);
     }
 
+  //----------------------------------------------------------------------------------
+    detail.getAmenitiesIcon = function(amenity) {
+      console.log('getAmenitiesIcon says: amenity:',amenity);
+      return './assets/images/Amenities/'+amenity.displayName+'.png';
+    }
+
+  //----------------------------------------------------------------------------------
+    detail.getAttractionsIcon = function(attraction) {
+      console.log('getAttractionsIcon says: attraction:',attraction);
+      return './assets/images/Attractions/'+attraction.displayName+'.png';
+    }
+
 }]);
+
+
+
+
+
+
+
+

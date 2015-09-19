@@ -21,7 +21,6 @@
 
 body {
   background-color: #d3d3d3;
-  color:#5f327;
   overflow-x:hidden;
   font-family: AvenirNextPro, cursive;
 }
@@ -385,11 +384,12 @@ small {
 
 
 /* Amenities a.k.a services */
-.amenities-container {
+.amenities-container,
+.attractions-container{
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
   height: inherit;
   min-height:570px;
-  margin-top:30px;
+  margin-top:20px;
   padding:20px;
 }
 

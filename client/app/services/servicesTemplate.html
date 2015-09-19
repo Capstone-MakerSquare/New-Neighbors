@@ -1,11 +1,11 @@
 <!-- Local Services -->
-<div class="col-md-12 amenities-container">
+<div class="col-md-12 amenities-container" ng-init="details.currentSpotsToDisplay = [];">
   <!-- <hr> -->
   <div class="col-md-4 amenities-categories">
     <ul ng-repeat="service in details.currentNeighborhood.services">
-      <li ng-click="details.displayMarkers(service, 'amenity'); details.selectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{activeCategory: $index === details.selectedCategory}">
-        <!-- <img class="icon" src="{{service[0].icon}}" alt="service category icon"> -->
-        <img src="assets/images/defaultball.png" alt="colored ball icon">
+      <li ng-click="details.displayMarkers(service); details.selectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{activeCategory: $index === details.selectedCategory}">
+        <!-- <img src="assets/images/defaultball.png" alt="colored ball icon"> -->
+        <img ng-src="{{details.getAmenitiesIcon(service[0])}}" alt="">
         <span>{{service[0].displayName}}</span>
       </li>
     </ul>
