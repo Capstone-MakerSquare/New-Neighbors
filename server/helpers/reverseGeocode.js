@@ -28,11 +28,11 @@ module.exports = function (coordinates) {
   var geocodeUrl = geocodeUrl_latlng + coordinates.latitude + ',' + coordinates.longitude + geocodeUrl_key + keys.googleAPIKey;
 
   //remove
-  // console.log('reverseGeocodeUrl:',geocodeUrl);
+  console.log('reverseGeocodeUrl:',geocodeUrl);
 
   getRequest(geocodeUrl)
   .then(function (streetAddress) {
-     // console.log('***********reverse Geocode**********');
+     console.log('***********reverse Geocode**********');
      // console.log('streetAddress fetched.');
      // console.log('LatLng:',coordinates.latitude, coordinates.longitude);
      // console.log('Street Address:',streetAddress);

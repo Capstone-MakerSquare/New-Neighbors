@@ -44,8 +44,8 @@ module.exports = function (searchInfo) {
   //----------------------------------------------------------------------------
   getRequest(zilpyUrl)
   .then(function (zilpyData) {
-     // console.log('Zilpy Data:',zilpyData);
-     // console.log('************************');
+     console.log('Zilpy Data:',zilpyData);
+     console.log('************************');
     deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType]);
   }, function (errorMessage) {
     console.log('Error/server not responding.');
