@@ -36,7 +36,7 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
 
   var origins = originsArr.join('|');
 
-  remove
+  // remove
   console.log('origins:',origins);
   console.log('destination', destination);
 
