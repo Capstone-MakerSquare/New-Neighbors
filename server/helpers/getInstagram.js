@@ -1,8 +1,12 @@
 var Q = require('q');
 var getRequest = require('./getRequest.js');
-var keys = require('./../config/keys.js');
+// var keys = require('./../config/keys.js');
 var _ = require('underscore');
-
+var keys = {
+  googleAPIKey: process.env.GOOGLE_KEY,
+  zwsId: process.env.ZILLOW_KEY,
+  instagramAccessToken: process.env.INSTAGRAM_KEY
+}
 
 //-----------------------------------------------------------------------------------
 //GET INSTAGRAM pictures that are location specific
@@ -23,7 +27,7 @@ module.exports = function (coordinates) {
                  instaUrl_distance + 2000;
 
   //remove
-  // console.log('instaUrl:', instaUrl);
+  console.log('instaUrl:', instaUrl);
 
   getRequest(instaUrl)
   .then(function (responseObj) {
