@@ -7,6 +7,10 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   detail.currentSpotsToDisplay = [];
 
   detail.currentNeighborhood = Details.currentNeighborhood;
+
+  // State Flags
+  detail.tabs = [1,0,0];    //[amenities, attractions, charts]
+
   // console.log('detailsController says: This is where you print from:', detail.currentNeighborhood.services);
 
   detail.displayMarkers = function(place) {
@@ -83,6 +87,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
 
   //----------------------------------------------------------------------------------
 
+  //HELPERS
   //----------------------------------------------------------------------------------
 
    detail.displayAmenitiesOrAttractions = function(spotsArray) {
@@ -98,15 +103,30 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
 
   //----------------------------------------------------------------------------------
     detail.getAmenitiesIcon = function(amenity) {
-      console.log('getAmenitiesIcon says: amenity:',amenity);
+      // console.log('getAmenitiesIcon says: amenity:',amenity);
       return './assets/images/Amenities/'+amenity.displayName+'.png';
     }
 
   //----------------------------------------------------------------------------------
     detail.getAttractionsIcon = function(attraction) {
-      console.log('getAttractionsIcon says: attraction:',attraction);
+      // console.log('getAttractionsIcon says: attraction:',attraction);
       return './assets/images/Attractions/'+attraction.displayName+'.png';
     }
+
+  //----------------------------------------------------------------------------------
+    detail.stateSwitch = function(currState) {
+      switch(currState) {
+        case 'amenities': detail.tabs = [1,0,0];
+                          break;
+        case 'attractions': detail.tabs = [0,1,0];
+                            break;
+        case 'charts': detail.tabs = [0,0,1];
+                           break;
+        default: break;
+      }
+      console.log('stateSwitch says:',detail.tabs);
+    }
+
 
 }]);
 

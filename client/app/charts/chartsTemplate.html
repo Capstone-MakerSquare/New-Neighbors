@@ -1,7 +1,13 @@
-<div ng-controller="chartsController as chart">
-  <span>{{chart.incomeString}}</span>
-  <span>{{chart.sqftString}}</span>
-  <span>{{chart.yearBuiltString}}</span>
-  <span style=" min-width: 280px; margin: 0 auto" id="pie-chart"></span>
-  <span style=" min-width: 280px; margin: 0 auto" id="percentage-chart"></span>
+<div ng-controller="chartsController as chart" ng-init="details.stateSwitch('charts')" class="col-md-12 charts-container">
+  <div class="col-md-6">
+    <span>{{chart.incomeString}}</span>
+    <span>{{chart.sqftString}}</span>
+    <span>{{chart.yearBuiltString}}</span>
+  </div>
+  <div class="col-md-6">
+    <div id="percentage-chart"></div>
+   </div>
+   <div class="col-md-12">
+    <div id="pie-chart"></div>
+   </div>
 </div>

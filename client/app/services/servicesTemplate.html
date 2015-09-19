@@ -1,10 +1,9 @@
 <!-- Local Services -->
-<div class="col-md-12 amenities-container" ng-init="details.currentSpotsToDisplay = [];">
+<div class="col-md-12 amenities-container" ng-init="details.currentSpotsToDisplay = []; details.stateSwitch('amenities');">
   <!-- <hr> -->
   <div class="col-md-4 amenities-categories">
     <ul ng-repeat="service in details.currentNeighborhood.services">
-      <li ng-click="details.displayMarkers(service); details.selectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{activeCategory: $index === details.selectedCategory}">
-        <!-- <img src="assets/images/defaultball.png" alt="colored ball icon"> -->
+      <li ng-click="details.displayMarkers(service); details.selectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{'activeCategory next': $index === details.selectedCategory}">
         <img ng-src="{{details.getAmenitiesIcon(service[0])}}" alt="">
         <span>{{service[0].displayName}}</span>
       </li>
@@ -13,7 +12,7 @@
 
   <div class="col-md-8 amenities-list">
     <ul ng-repeat="spot in details.currentSpotsToDisplay">
-      <li ng-click="details.toggleTooltip(details.currentSpotsToDisplay[$index]);">{{spot.name}}</li>
+      <li class="spot" ng-click="details.toggleTooltip(details.currentSpotsToDisplay[$index]);">{{spot.name}}</li>
     </ul>
   </div>
 </div>
