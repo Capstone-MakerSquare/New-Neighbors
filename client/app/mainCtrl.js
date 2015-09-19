@@ -18,7 +18,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.filteredNeighborhoodArray = [];
   main.serverResponse = {};
   main.filterType = 'estimateLow';
-  main.currentNeighborhood;
+  main.currentNeighborhood = { name: 'default' };
   main.loading = false;
 
   main.serviceObj = {};
@@ -190,7 +190,6 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       // console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
       if(main.searchInfo.address.length > 0 || place.formatted_address) {
         main.searchInfo.address = place.formatted_address || main.searchInfo.address;
-        // main.submitAddress();
       }
     });
   };
@@ -220,12 +219,17 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     .then(function(data) {
       main.loading = false;
       main.serverResponse = data;
-      main.neighborhoods = Object.keys(data).map(function(key) {
-        return data[key];
-      });
+      main.neighborhoods = Object.keys(data).map(function(key) { return data[key]; });  //converts object of objects to array of objects
+
+      //remove
+      // console.log('requestNeighborhoods says: main.neighborhoods:',main.neighborhoods);
 
       main.attractionObj = Details.createPlacesObj(main.neighborhoods, Details.attractionDict);
       main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
+
+      //remove
+      console.log('requestNeighborhoods says: main.serviceObj:',main.serviceObj);
+
       main.getBuyPrice(main.neighborhoods);
       main.neighborhoodArray = main.orderByArray(main.neighborhoods);
       main.filterNeighborhoods();
@@ -243,7 +247,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       !(main.searchInfo.commuteTime < obj.commuteTime) &&
       !(main.searchInfo.commuteDistance < obj.commuteDistance);
     });
-    console.log('main.filteredNeighborhoodArray',main.filteredNeighborhoodArray);
+    // console.log('main.filteredNeighborhoodArray',main.filteredNeighborhoodArray);
   };
 
   //----------------------------------------------------------------------------------
@@ -269,6 +273,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
 
     marker.addListener('click', function() {
+      console.log('neighborhood clicked:', neighborhoodObj);
       if(neighborhoodObj.name === main.currentNeighborhood.name) { return; }
 
       main.selectNeighborhood(neighborhoodObj)
@@ -331,16 +336,21 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     Details.currentNeighborhood.services = main.serviceObj[neighborhood.name];
     Details.currentNeighborhood.attractions = main.attractionObj[neighborhood.name];
 
-    for (var place in Details.currentNeighborhood.services){
-      if (place === "grocery_or_supermarket") {
-        Details.currentNeighborhood.services[place][0].displayName = "grocery";
-      } else {
-        Details.currentNeighborhood.services[place][0].displayName = place.replace("_", " ");
-      }
+
+    for (var service in Details.currentNeighborhood.services){
+      var serviceArray = Details.currentNeighborhood.services[service];
+      serviceArray.forEach(function(serviceSpot) {
+        if(service === 'grocery_or_supermarket') { serviceSpot.displayName = 'grocery'; }
+        else { serviceSpot.displayName = service.replace("_", " ");}
+      });
     }
+
     for (var place in Details.currentNeighborhood.attractions){
       Details.currentNeighborhood.attractions[place][0].displayName = place.replace("_", " ");
     }
+
+    //remove
+    console.log("mapCurrentNeighborhood says: Details.currentNeighborhood:", Details.currentNeighborhood);
   }
 
   //----------------------------------------------------------------------------------
@@ -360,9 +370,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
     $state.go('main.results');
     setTimeout(function() {
-
-
-      $state.go('main.details');
+      $state.go('main.details.services');
 
       Charts.barChartData(neighborhood);
       Charts.pieChartData(neighborhood);
@@ -390,7 +398,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   }
 
   main.autoCompleteInitialize = function() {
-    setTimeout(main.autoCompleteInit,200);
+    setTimeout(main.autoCompleteInit,100);
   }
 
   main.randomImage = function(){

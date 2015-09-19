@@ -386,6 +386,36 @@ small {
 }
 
 
+/* Amenities a.k.a services */
+.amenities-container {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  height: inherit;
+  min-height:570px;
+  margin-top:30px;
+  padding:20px;
+}
+
+.amenities-categories {
+   border-right:2px solid #5F327C;
+}
+
+.amenities-categories ul {
+  margin-left:0;
+}
+
+.amenities-categories li {
+  display: block;
+  margin-left: -50px;
+  text-align: left;
+  font-size: 16px;
+  color:#5F327C;
+}
+
+.amenities-categories img {
+  display: inline-block;
+  width:20px;
+}
+
 /*SPINNER*/
 
 .loading-image {

@@ -1,9 +1,16 @@
 <!-- Local Services -->
-<div class="col-md-12 service-container">
-  <ul ng-repeat="service in details.currentNeighborhood.services">
-    <li ng-click="details.displayMarkers(service); details.serviceSelectCategory($index)" ng-class="{activeServiceCategory: $index === details.selectedServiceCategory}">
-      <!-- <img class="icon" src="{{service[0].icon}}" alt="service category icon"> -->
-      <span>{{service[0].displayName}}</span>
-    </li>
-  </ul>
+<div class="col-md-12 amenities-container">
+  <!-- <hr> -->
+  <div class="col-md-4 amenities-categories">
+    <ul ng-repeat="service in details.currentNeighborhood.services">
+      <li ng-click="details.displayMarkers(service); details.serviceSelectCategory($index)" ng-class="{activeServiceCategory: $index === details.selectedServiceCategory}">
+        <!-- <img class="icon" src="{{service[0].icon}}" alt="service category icon"> -->
+        <img src="assets/images/defaultball.png" alt="colored ball icon">
+        <span>{{service[0].displayName}}</span>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-8 amenities-list">
+    List Goes here..
+  </div>
 </div>
