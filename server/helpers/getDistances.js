@@ -32,9 +32,9 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
 
   var origins = originsArr.join('|');
 
-  //remove
-  // console.log('origins:',origins);
-  // console.log('destination', destination);
+  remove
+  console.log('origins:',origins);
+  console.log('destination', destination);
 
   var gDrivingUrl = gDrivingUrl_origins + origins +
                     gDrivingUrl_destinations + destination +
@@ -42,14 +42,14 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
                     gDrivingUrl_key + keys.googleAPIKey;
 
   // remove
-  // console.log('gDrivingUrl:', gDrivingUrl);
+  console.log('gDrivingUrl:', gDrivingUrl);
 
   getRequest(gDrivingUrl)
   .then(function (distancesObj) {
     var distances = distancesObj.rows;
     var commuteObj = {};
     //remove
-    // console.log('Number of rows:',distances.length);
+    console.log('Number of rows:',distances.length);
 
     for(var neighborhood in neighborhoodObj) {
 
@@ -60,8 +60,8 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
       time = +time.split(' ')[0];
 
       //remove
-      // console.log('Distance:',distance);
-      // console.log('Time:',time);
+      console.log('Distance:',distance);
+      console.log('Time:',time);
 
       commuteObj[neighborhood] = {
         commuteDistance : distance,
