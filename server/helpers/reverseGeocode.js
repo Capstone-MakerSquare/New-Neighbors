@@ -1,6 +1,12 @@
 var Q = require('q');
 var getRequest = require('./getRequest.js');
-var keys = require('./../config/keys.js');
+// var keys = require('./../config/keys.js');
+
+var keys = {
+  googleAPIKey: process.env.GOOGLE_KEY,
+  zwsId: process.env.ZILLOW_KEY,
+  instagramAccessToken: process.env.INSTAGRAM_KEY
+}
 
 //-----------------------------------------------------------------------------------
 //GET the street address of a latitude/longitude pair
@@ -22,7 +28,7 @@ module.exports = function (coordinates) {
   var geocodeUrl = geocodeUrl_latlng + coordinates.latitude + ',' + coordinates.longitude + geocodeUrl_key + keys.googleAPIKey;
 
   //remove
-  // console.log('reverseGeocodeUrl:',geocodeUrl);
+  console.log('reverseGeocodeUrl:',geocodeUrl);
 
   getRequest(geocodeUrl)
   .then(function (streetAddress) {

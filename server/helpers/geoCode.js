@@ -7,6 +7,12 @@ var getRequest = require('./getRequest.js');
             place_id :
           }
 */
+
+var keys = {
+  googleAPIKey: process.env.GOOGLE_KEY,
+  zwsId: process.env.ZILLOW_KEY,
+  instagramAccessToken: process.env.INSTAGRAM_KEY
+}
 module.exports = function (address) {
   var deferred = Q.defer();
   var address = address;

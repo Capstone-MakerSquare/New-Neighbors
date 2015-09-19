@@ -1,6 +1,12 @@
 var Q = require('q');
 var getRequest = require('./getRequest.js');
-var keys = require('./../config/keys.js');
+// var keys = require('./../config/keys.js');
+
+var keys = {
+  googleAPIKey: process.env.GOOGLE_KEY,
+  zwsId: process.env.ZILLOW_KEY,
+  instagramAccessToken: process.env.INSTAGRAM_KEY
+}
 //-----------------------------------------------------------------------------------
 //GET Rent estimate High/Low
 /*Prerequisites:
@@ -39,7 +45,7 @@ module.exports = function (searchInfo) {
   getRequest(zilpyUrl)
   .then(function (zilpyData) {
      // console.log('Zilpy Data:',zilpyData);
-     // console.log('************************');
+     console.log('************************');
     deferred.resolve([zilpyData.estimate, zilpyData.subjectPropertyUserEntry.propertyType]);
   }, function (errorMessage) {
     console.log('Error/server not responding.');
