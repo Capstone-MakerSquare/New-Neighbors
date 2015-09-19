@@ -374,6 +374,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
       Charts.barChartData(neighborhood);
       Charts.pieChartData(neighborhood);
+      Charts.createStrings(neighborhood);
       Map.panAndFocus(neighborhood.coordinates, 13);
       Map.drawCircle(neighborhood.coordinates, 2000);
     }, 200)

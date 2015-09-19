@@ -4,20 +4,16 @@ angular.module('myApp.charts', [])
 
   var chart = this;
 
-  chart.income = Charts.demographicsObj.income;
-  chart.sqft = Charts.demographicsObj.sqft;
-  chart.yearBuilt = Charts.demographicsObj.yearBuilt;
-
-  chart.incomeString = "Median Household Income: $" + parseInt(chart.income).toLocaleString();
-  chart.sqftString = "Median Home Size: " + parseInt(chart.sqft).toLocaleString() + " sq. ft.";
-  chart.yearBuiltString = "Average Year of Home Construction: " + String(chart.yearBuilt);
+  chart.incomeString = Charts.demographicsObj.incomeString;
+  chart.sqftString = Charts.demographicsObj.sqftString;
+  chart.yearBuiltString = Charts.demographicsObj.yearBuiltString;
 
 }])
 
 .factory('Charts', function () {
 
   var runDrawBar = false;
-  var runDrawPie = true;
+  var runDrawPie = false;
   var demographicsObj = {};
   var barChartObj = {};
   var pieChartObj = {};
@@ -276,7 +272,7 @@ angular.module('myApp.charts', [])
 
   var pieChartData = function(obj) {
     pieChartObj = {};
-    runDrawPie = true;
+    runDrawPie = false;
     if (obj &&
         obj.demography &&
         obj.demography.pages &&
@@ -317,8 +313,10 @@ angular.module('myApp.charts', [])
       if (agePath[1] && agePath[1].value && agePath[1].value[0] && agePath[1].value[0]._) {
         pieChartObj['0-10 years'] = Math.round(100 * parseFloat(agePath[1].value[0]._));
       }
-    } else {
-      runDrawPie = true;
+    }
+    if (pieChartObj['0-10 years'] && pieChartObj['10-20 years'] && pieChartObj['20-30 years'] && pieChartObj['30-40 years'] &&
+        pieChartObj['40-50 years'] && pieChartObj['50-60 years'] && pieChartObj['60-70 years'] && pieChartObj['70+ years']) {
+        runDrawPie = true;
     }
     // console.log('runDrawPie', runDrawPie);
     // console.log('pieChartObj', JSON.stringify(pieChartObj));
@@ -374,12 +372,26 @@ angular.module('myApp.charts', [])
     }
   };
 
+  var createStrings = function () {
+    if (!!demographicsObj.income) {
+      demographicsObj.incomeString = "Median Household Income: $" + parseInt(demographicsObj.income).toLocaleString();
+    }
+    if (!!demographicsObj.sqft) {
+      demographicsObj.sqftString = "Median Home Size: " + parseInt(demographicsObj.sqft).toLocaleString() + " sq. ft.";
+    }
+    if (!!demographicsObj.yearBuilt) {
+      demographicsObj.yearBuiltString = "Average Year of Home Construction: " + String(demographicsObj.yearBuilt);
+    }
+    console.log('Charts demographicsObj', demographicsObj);
+  };
+
   return {
     drawBar: drawBar,
     drawPie: drawPie,
     barChartData: barChartData,
     pieChartData: pieChartData,
-    demographicsObj: demographicsObj
+    demographicsObj: demographicsObj,
+    createStrings: createStrings
   };
 
 });
