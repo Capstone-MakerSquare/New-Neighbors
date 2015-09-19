@@ -2,6 +2,12 @@ var Q = require('q');
 var getXmlRequest = require('./getXmlRequest.js');
 // var keys = require('./../config/keys.js');
 
+var keys = {
+  googleAPIKey: process.env.GOOGLE_KEY,
+  zwsId: process.env.ZILLOW_KEY,
+  instagramAccessToken: process.env.INSTAGRAM_KEY
+}
+
 //-----------------------------------------------------------------------------------
 //GET demography information for a neighborhood and a city from Zillow
 /*Input: neighborhood, city

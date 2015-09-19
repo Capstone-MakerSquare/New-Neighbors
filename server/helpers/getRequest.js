@@ -1,5 +1,12 @@
 var Q = require('q');
 var request = require('request');
+
+var keys = {
+  googleAPIKey: process.env.GOOGLE_KEY,
+  zwsId: process.env.ZILLOW_KEY,
+  instagramAccessToken: process.env.INSTAGRAM_KEY
+}
+
 module.exports = function (url) {
   var deferred = Q.defer();
   //remove
