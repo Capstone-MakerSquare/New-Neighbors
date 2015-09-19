@@ -50,6 +50,37 @@ details
     zoo: []
   };
 
+  var amenitiesIcons = {
+    airport: [],
+    atm: [],
+    bank: [],
+    bar: [],
+    book_store: [],
+    cafe: [],
+    car_rental: [],
+    convenience_store: [],
+    fire_station: [],
+    gas_station: [],
+    grocery_or_supermarket: [],
+    gym: [],
+    hospital: [],
+    laundry: [],
+    library: [],
+    pharmacy: [],
+    police: [],
+    post_office: [],
+    restaurant: [],
+    school: [],
+    store: [],
+    subway_station: [],
+    train_station: [],
+    veterinary_care: []
+  }
+
+  // var getAmenitiesIcon = function(amenity) {
+  //   return './assets/images/Amenities/'+amenity.displayName+'.png';
+  // }
+
 
   //----------------------------------------------------------------------------------
   //Creates objects that can be displayed in the amenities and attractions sections.

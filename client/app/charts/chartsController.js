@@ -214,6 +214,7 @@ angular.module('myApp.charts', [])
   // Draws the bar chart , only drawing columns when data is available for that subject.
 
   var drawBar = function() {
+    runDrawBar = true; //remove this line when doing the API calls
     if (runDrawBar){
       $('#percentage-chart').highcharts({
         chart: {
@@ -252,13 +253,15 @@ angular.module('myApp.charts', [])
         series: [{
             name: 'Nation',
             color: 'rgba(165,170,217,1)',
-            data: barChartArr[0],
+            //data: barChartArr[0],
+            data: [50, 10, 60],
             pointPadding: 0,
             pointPlacement: 0
         }, {
             name: 'Neighborhood',
             color: '#5F327C',
-            data: barChartArr[1],
+            //data: barChartArr[1],
+            data: [40, 20, 30],
             pointPadding: 0.2,
             pointPlacement: 0
         }]
@@ -347,23 +350,24 @@ angular.module('myApp.charts', [])
           },
           series: [{
             data: [
-              ['0-10 years old',    pieChartObj['0-10 years']],
-              ['10-20 years old',    pieChartObj['10-20 years']],
-              ['20-30 years old',    pieChartObj['20-30 years']],
-              ['30-40 years old',    pieChartObj['30-40 years']],
-              ['40-50 years old',    pieChartObj['40-50 years']],
-              ['50-60 years old',    pieChartObj['50-60 years']],
-              ['60-70 years old',    pieChartObj['60-70 years']],
-              ['70+ years old',    pieChartObj['70+ years']]
+              // ['0-10 years old',    pieChartObj['0-10 years']],
+              // ['10-20 years old',    pieChartObj['10-20 years']],
+              // ['20-30 years old',    pieChartObj['20-30 years']],
+              // ['30-40 years old',    pieChartObj['30-40 years']],
+              // ['40-50 years old',    pieChartObj['40-50 years']],
+              // ['50-60 years old',    pieChartObj['50-60 years']],
+              // ['60-70 years old',    pieChartObj['60-70 years']],
+              // ['70+ years old',    pieChartObj['70+ years']]
 
-              // ['0-10 years old', 5],   /// test data
-              // ['10-20 years old', 10],
-              // ['20-30 years old', 15],
-              // ['30-40 years old', 32],
-              // ['40-50 years old', 32],
-              // ['50-60 years old', 32],
-              // ['60-70 years old', 32],
-              // ['70+ years old', 32]
+              // test data
+              ['0-10 years old', 5],
+              ['10-20 years old', 10],
+              ['20-30 years old', 15],
+              ['30-40 years old', 32],
+              ['40-50 years old', 32],
+              ['50-60 years old', 32],
+              ['60-70 years old', 32],
+              ['70+ years old', 32]
             ]
           }]
       });

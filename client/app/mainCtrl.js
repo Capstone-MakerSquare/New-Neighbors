@@ -228,7 +228,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
 
       //remove
-      console.log('requestNeighborhoods says: main.serviceObj:',main.serviceObj);
+      // console.log('requestNeighborhoods says: main.serviceObj:',main.serviceObj);
 
       main.getBuyPrice(main.neighborhoods);
       main.neighborhoodArray = main.orderByArray(main.neighborhoods);
@@ -269,7 +269,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       scaledSize: new google.maps.Size(5.3*4, 13*4)
     };
 
-    var marker = Map.dropMarker(coordinates, title, title, icon, 'neighborhood');
+    var marker = Map.dropMarker(coordinates, title, title, icon, 'neighborhood')[0];
 
 
     marker.addListener('click', function() {
@@ -350,7 +350,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     }
 
     //remove
-    console.log("mapCurrentNeighborhood says: Details.currentNeighborhood:", Details.currentNeighborhood);
+    // console.log("mapCurrentNeighborhood says: Details.currentNeighborhood:", Details.currentNeighborhood);
   }
 
   //----------------------------------------------------------------------------------
