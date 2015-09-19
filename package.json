@@ -5,6 +5,9 @@
   "scripts": {
     "start": "node index.js"
   },
+  "engines": {
+    "node": "0.12.x"
+  },
   "devDependencies": {
     "body": "^5.1.0",
     "body-parser": "^1.13.3",
