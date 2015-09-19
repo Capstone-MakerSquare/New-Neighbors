@@ -7,7 +7,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   detail.selectedServiceCategory = 0;
 
   detail.currentNeighborhood = Details.currentNeighborhood;
-  // console.log('detailsController says:', Details.currentNeighborhood);
+  // console.log('detailsController says: This is where you print from:', detail.currentNeighborhood.services);
 
   detail.displayMarkers = function(place) {
     var icon = Map.getIcon();
@@ -76,5 +76,16 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   };
 
   //----------------------------------------------------------------------------------
+
+  //----------------------------------------------------------------------------------
+
+   detail.displayAmenitiesOrAttractions = function(type) {
+    console.log(type);
+
+    // console.log(category, "attraction index:", detail.selectedAttractionCategory, "service index:", detail.selectedServiceCategory);
+  };
+
+  //----------------------------------------------------------------------------------
+
 
 }]);

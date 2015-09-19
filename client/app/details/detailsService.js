@@ -53,30 +53,30 @@ details
 
   //----------------------------------------------------------------------------------
   //Creates objects that can be displayed in the amenities and attractions sections.
-  //The dictionary argument determines which catagory it applies to
+  //The dictionary argument determines which category it applies to
 
   var createPlacesObj = function (neighborhoodArr, dictionary) {
     var results = {};
-    var categories;
+    var spots;
     neighborhoodArr = neighborhoodArr || [];
     var thisType = '';
     var thisHoodObj;
 
     for (var i = 0; i < neighborhoodArr.length; i++) {
       thisHoodObj = {};
-      categories = neighborhoodArr[i].amenities_attractions;
+      spots = neighborhoodArr[i].amenities_attractions;
 
-      for (var place in categories) {
-        if (categories[place].types && Array.isArray(categories[place].types)) {
-          for (var j = 0; j < categories[place].types.length; j++){
+      for (var place in spots) {
+        if (spots[place].types && Array.isArray(spots[place].types)) {
+          for (var j = 0; j < spots[place].types.length; j++){
 
-            thisType = categories[place].types[j];
+            thisType = spots[place].types[j];
             if (dictionary[thisType]) {
 
               if (!thisHoodObj[thisType]) {
                 thisHoodObj[thisType] = []
               }
-              thisHoodObj[thisType].push(categories[place]);
+              thisHoodObj[thisType].push(JSON.parse(JSON.stringify(spots[place])));
               thisHoodObj[thisType][0].type = thisType
             }
           }
