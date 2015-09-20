@@ -27,6 +27,41 @@ angular.module('myApp.charts', [])
     if(tuple[1]) { chart.pieChart = true; }
   }
 
+  var options = {
+    useEasing:true,
+    useGrouping: true,
+    separator:',',
+    decimal:'.',
+    prefix:'',
+    suffix:''
+  }
+
+  chart.countup = function() {
+    console.log("countup called");
+    var flags = [1,1,1];
+
+    if(chart.incomeString === 'Not Available') { flags[0] = 0; }
+    if(chart.sqftString === 'Not Available') { flags[1] = 0; }
+    if(chart.yearBuiltString === 'Not Available') { flags[2] = 0; }
+
+    setTimeout(function() {
+      console.log('chart.values:',chart.incomeString, chart.sqftString, chart.yearBuiltString);
+      console.log('chart.parsedValues:',parseInt(chart.incomeString));
+      if(flags[0]) {
+        var c1 = new CountUp('countup1', 0, parseInt(chart.incomeString), 0, 2.5, options);
+        c1.start();
+      }
+      if(flags[1]) {
+        var c2 = new CountUp('countup2', 0, parseInt(chart.sqftString), 0, 2.5, options);
+        c2.start();
+      }
+      if(flags[2]) {
+        var c3 = new CountUp('countup3', 0, parseInt(chart.yearBuiltString), 0, 2.5, options);
+        c3.start();
+      }
+    }, 20);
+  }
+
 }])
 
 .factory('Charts', function () {
@@ -284,14 +319,14 @@ angular.module('myApp.charts', [])
         },
         series: [{
             name: 'Nation',
-            color: 'rgba(165,170,217,1)',
+            color: '#3878C7',
             data: barChartArr[0],
             // data: [50, 10, 60],
             pointPadding: 0,
             pointPlacement: 0
         }, {
             name: 'Neighborhood',
-            color: '#5F327C',
+            color: '#E28F00',
             data: barChartArr[1],
             // data: [40, 20, 30],
             pointPadding: 0.2,
@@ -364,6 +399,16 @@ angular.module('myApp.charts', [])
   var drawPie = function() {
     console.log('runDrawPie:', runDrawPie);
     if (runDrawPie) {
+
+      Highcharts.setOptions({
+       colors: ['#FA9E25','#FFC735', '#A5AAD9', '#FF7D70', '#CAE0A8', '#5F347C', '#B2D0FF', '#3878C7'],
+        chart: {
+          style: {
+            fontFamily: 'AvenirNextPro'
+         }
+        }
+      });
+
       $('#pie-chart').highcharts({
           chart: {
               type: 'pie'
@@ -404,8 +449,6 @@ angular.module('myApp.charts', [])
             ]
           }]
       });
-    } else if (!runDrawPie && !runDrawBar) {
-
     }
   };
 
@@ -414,10 +457,10 @@ angular.module('myApp.charts', [])
       demographicsObj.incomeString = parseInt(demographicsObj.income);
     }
     if (!!demographicsObj.sqft) {
-      demographicsObj.sqftString = parseInt(demographicsObj.sqft).toLocaleString() + " sq. ft.";
+      demographicsObj.sqftString = parseInt(demographicsObj.sqft);
     }
     if (!!demographicsObj.yearBuilt) {
-      demographicsObj.yearBuiltString = String(demographicsObj.yearBuilt);
+      demographicsObj.yearBuiltString = demographicsObj.yearBuilt;
     }
     // console.log('Charts demographicsObj', demographicsObj);
   };
