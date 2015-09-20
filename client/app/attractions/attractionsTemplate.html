@@ -2,9 +2,9 @@
 <div class="col-md-12 attractions-container" ng-init="details.currentSpotsToDisplay = []; details.stateSwitch('attractions');">
   <div class="col-md-4 amenities-categories">
     <ul ng-repeat="attraction in details.currentNeighborhood.attractions">
-      <li ng-click="details.displayMarkers(attraction); details.selectCategory($index); details.displayAmenitiesOrAttractions(attraction);" ng-class="{'activeCategory next': $index === details.selectedCategory}">
+      <li class="category-container" ng-click="details.displayMarkers(attraction); details.selectCategory($index); details.displayAmenitiesOrAttractions(attraction);" ng-class="{'activeCategory': $index === details.selectedCategory}">
         <img ng-src="{{details.getAttractionsIcon(attraction[0])}}" alt="">
-        <span>{{attraction[0].displayName}}</span>
+        <span> {{attraction[0].displayName}}</span>
       </li>
     </ul>
    </div>

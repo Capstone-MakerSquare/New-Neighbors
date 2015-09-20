@@ -3,7 +3,7 @@
   <!-- <hr> -->
   <div class="col-md-4 amenities-categories">
     <ul ng-repeat="service in details.currentNeighborhood.services">
-      <li ng-click="details.displayMarkers(service); details.selectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{'activeCategory next': $index === details.selectedCategory}">
+      <li class="category-container" ng-click="details.displayMarkers(service); details.selectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{'activeCategory next': $index === details.selectedCategory}">
         <img ng-src="{{details.getAmenitiesIcon(service[0])}}" alt="">
         <span>{{service[0].displayName}}</span>
       </li>
