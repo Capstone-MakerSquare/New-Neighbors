@@ -10,12 +10,12 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.searchInfo.buyOrRent = 'rent';
   main.searchInfo.bedrooms = 1;
   main.searchInfo.bathrooms = 1;
-  main.searchInfo.maxRent = 8000;
-  main.searchInfo.commuteTime = 45;
-  main.searchInfo.commuteDistance = 30;
-  main.imageArray = ['../assets/images/default-neighborhood-bg.jpg', '../assets/images/default-photo-gallery.jpg', '../assets/images/santamonica.jpg'];
 
-  main.filter = {};
+  main.filter = {}; //object to collect filter specific information
+  main.filter.maxRent = 8000;
+  main.filter.commuteTime = 45;
+  main.filter.commuteDistance = 30;
+
   main.filter.maxBuy = 5000000;
 
   main.filteredNeighborhoodArray = [];
@@ -248,10 +248,10 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.filterNeighborhoods = function() {
     main.filteredNeighborhoodArray = main.neighborhoodArray.filter(function(obj) {
       return !(
-        (main.searchInfo.buyOrRent === 'rent' && main.searchInfo.maxRent < obj.estimateLow) ||
+        (main.searchInfo.buyOrRent === 'rent' && main.filter.maxRent < obj.estimateLow) ||
         (main.searchInfo.buyOrRent === 'buy' && main.filter.maxBuy < obj.orderPrice) ||
-        (main.searchInfo.communuteTime < obj.commuteTime) ||
-        (main.searchInfo.commuteDistance < obj.commuteDistance) );
+        (main.filter.communuteTime < obj.commuteTime) ||
+        (main.filter.commuteDistance < obj.commuteDistance) );
     });
   };
 
@@ -406,11 +406,6 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   main.autoCompleteInitialize = function() {
     setTimeout(main.autoCompleteInit,100);
   }
-
-  main.randomImage = function(){
-    // removed this line so the image is no longer random: return { 'background-image': 'url("' + main.imageArray[Math.floor(Math.random() * main.imageArray.length)] + '")' };
-    return { 'background-image': 'url("' + main.imageArray[1] + '")' };
-  };
 
 }]);
 
