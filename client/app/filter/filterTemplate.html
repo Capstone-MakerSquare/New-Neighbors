@@ -26,8 +26,8 @@
       <div class="form-group">
         <div ng-show="main.searchInfo.buyOrRent === 'rent'">
         <!-- Filter slider if Rent is Selected -->
-          <label>Max Monthly Price: ${{main.searchInfo.maxRent}}</label>
-          <input type="range" name="rentRange" min="0" max="8000" value="4000" step="25" ng-model="main.searchInfo.maxRent">
+          <label>Max Monthly Price: ${{main.filter.maxRent}}</label>
+          <input type="range" name="rentRange" min="0" max="8000" value="4000" step="25" ng-model="main.filter.maxRent">
         </div>
         <!-- Filter slider if Buy is Selected -->
         <div ng-show="main.searchInfo.buyOrRent === 'buy'">
@@ -42,7 +42,7 @@
         <div class="row">
           <div class="col-sm-10 col-md-5">
           <label>Max Commute Time:</label>
-            <select class="form-control" name="commuteTime" ng-model="main.searchInfo.commuteTime">
+            <select class="form-control" name="commuteTime" ng-model="main.filter.commuteTime">
               <option value="15">15 min</option>
               <option value="30">30 min</option>
               <option value="45">45 min</option>
@@ -50,7 +50,7 @@
           </div>
           <div class="col-sm-10 col-md-5">
           <label>Max Commute Distance:</label>
-            <select class="form-control" name="commuteDistance" ng-model="main.searchInfo.commuteDistance">
+            <select class="form-control" name="commuteDistance" ng-model="main.filter.commuteDistance">
               <option value="5">5 miles</option>
               <option value="10">10 miles</option>
               <option value="15">15 miles</option>
