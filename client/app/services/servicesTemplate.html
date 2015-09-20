@@ -1,18 +1,27 @@
 <!-- Local Services -->
 <div class="col-md-12 amenities-container" ng-init="details.currentSpotsToDisplay = []; details.stateSwitch('amenities');">
-  <!-- <hr> -->
+  <img src="assets/images/messages/AmenityMessage.png" alt="default-msg">
   <div class="col-md-4 amenities-categories">
+    <h4>Categories</h4>
+    <hr>
     <ul ng-repeat="service in details.currentNeighborhood.services">
-      <li ng-click="details.displayMarkers(service); details.selectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{'activeCategory next': $index === details.selectedCategory}">
-        <img ng-src="{{details.getAmenitiesIcon(service[0])}}" alt="">
+      <li class="category-container" ng-click="details.displayMarkers(service); details.selectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{'activeCategory next': $index === details.selectedCategory}">
+        <img ng-src="{{details.getAmenitiesIcon(service[0])}}" alt="icon for amenity category">
         <span>{{service[0].displayName}}</span>
       </li>
     </ul>
   </div>
 
   <div class="col-md-8 amenities-list">
+    <h4>Listings</h4>
+    <hr>
     <ul ng-repeat="spot in details.currentSpotsToDisplay">
-      <li class="spot" ng-click="details.toggleTooltip(details.currentSpotsToDisplay[$index]);">{{spot.name}}</li>
+      <li class="spot" ng-click="details.toggleTooltip(details.currentSpotsToDisplay[$index]);">
+        <span>{{spot.name}}</span>
+        <img src="assets/images/mapmarkergray.png" alt="">
+        <div>Address</div>
+        <div></div>
+      </li>
     </ul>
   </div>
 </div>
