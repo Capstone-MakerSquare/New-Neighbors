@@ -3,7 +3,7 @@ var details = angular.module('myApp.details', []);
 details.controller('detailsController', ['Details', 'Map', function (Details, Map){
   var detail = this;
   detail.markers = [];
-  detail.selectedCategory = 0;
+  detail.selectedCategory = undefined;
   detail.currentSpotsToDisplay = [];
 
   detail.currentNeighborhood = Details.currentNeighborhood;
@@ -20,6 +20,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
     // console.log('detail.currentNeighborhood.attractions', detail.currentNeighborhood.attractions);
     // console.log('detail.currentNeighborhood.services', detail.currentNeighborhood.services);
     // console.log('place selected:',place);
+    console.log('details.currentSpotsToDisplay:', detail.currentSpotsToDisplay);
 
     Map.clearMarkers(Details.currentMarkers);
     for (var i = 0; i < place.length; i++) {

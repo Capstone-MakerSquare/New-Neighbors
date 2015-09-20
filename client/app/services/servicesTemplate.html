@@ -1,8 +1,7 @@
 <!-- Local Services -->
-<div class="col-md-12 amenities-container" ng-init="details.currentSpotsToDisplay = []; details.stateSwitch('amenities');">
-  <img src="assets/images/messages/AmenityMessage.png" alt="default-msg">
+<div class="col-md-12 amenities-container" ng-init="details.currentSpotsToDisplay = []; details.stateSwitch('amenities'); details.selectedCategory = undefined;">
   <div class="col-md-4 amenities-categories">
-    <h4>Categories</h4>
+    <h3>Categories</h3>
     <hr>
     <ul ng-repeat="service in details.currentNeighborhood.services">
       <li class="category-container" ng-click="details.displayMarkers(service); details.selectCategory($index); details.displayAmenitiesOrAttractions(service);" ng-class="{'activeCategory next': $index === details.selectedCategory}">
@@ -13,14 +12,18 @@
   </div>
 
   <div class="col-md-8 amenities-list">
-    <h4>Listings</h4>
+    <h3>Listings</h3>
     <hr>
+    <img ng-if="details.selectedCategory === undefined" src="assets/images/messages/AmenityMessage.png" alt="default-msg">
     <ul ng-repeat="spot in details.currentSpotsToDisplay">
       <li class="spot" ng-click="details.toggleTooltip(details.currentSpotsToDisplay[$index]);">
-        <span>{{spot.name}}</span>
-        <img src="assets/images/mapmarkergray.png" alt="">
-        <div>Address</div>
-        <div></div>
+        <div class="spot-name">
+          <h4>{{spot.name}}</h4>
+          <div ng-if="spot.rating">Rating: {{spot.rating}}</div>
+        </div>
+        <div class="spot-address">
+          <div>{{spot.vicinity}}</div>
+        </div>
       </li>
     </ul>
   </div>
