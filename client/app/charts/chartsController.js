@@ -15,9 +15,9 @@ angular.module('myApp.charts', [])
     var demographicsObj = Charts.getDemographicsObj();
     console.log('inside setStrings:',demographicsObj);
     if(Object.keys(demographicsObj).length > 0) {
-      chart.incomeString = demographicsObj.incomeString;
-      chart.sqftString = demographicsObj.sqftString;
-      chart.yearBuiltString = demographicsObj.yearBuiltString;
+      chart.incomeString = demographicsObj.incomeString || chart.incomeString;
+      chart.sqftString = demographicsObj.sqftString || chart.sqftString;
+      chart.yearBuiltString = demographicsObj.yearBuiltString || chart.yearBuiltString;
     }
   };
 
@@ -46,7 +46,7 @@ angular.module('myApp.charts', [])
 
     setTimeout(function() {
       console.log('chart.values:',chart.incomeString, chart.sqftString, chart.yearBuiltString);
-      console.log('chart.parsedValues:',parseInt(chart.incomeString));
+      console.log('chart.parsedValues:',parseInt(chart.incomeString),parseInt(chart.sqftString),parseInt(chart.yearBuiltString));
       if(flags[0]) {
         var c1 = new CountUp('countup1', 0, parseInt(chart.incomeString), 0, 2.5, options);
         c1.start();
@@ -56,7 +56,9 @@ angular.module('myApp.charts', [])
         c2.start();
       }
       if(flags[2]) {
-        var c3 = new CountUp('countup3', 0, parseInt(chart.yearBuiltString), 0, 2.5, options);
+        var yearOption = options;
+        yearOption.separator = '';
+        var c3 = new CountUp('countup3', 0, parseInt(chart.yearBuiltString), 0, 2.5, yearOption);
         c3.start();
       }
     }, 20);
