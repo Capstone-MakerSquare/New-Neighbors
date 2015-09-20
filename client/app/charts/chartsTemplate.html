@@ -1,13 +1,26 @@
-<div ng-controller="chartsController as chart" ng-init="details.stateSwitch('charts')" class="col-md-12 charts-container">
-  <div class="col-md-6">
-    <span>{{chart.incomeString}}</span>
-    <span>{{chart.sqftString}}</span>
-    <span>{{chart.yearBuiltString}}</span>
+<div ng-controller="chartsController as chart" ng-init="details.stateSwitch('charts'); chart.setStrings(); chart.setFlags();" class="col-md-12 charts-container">
+  <div class="col-md-4">
+    <ul>
+      <li>
+        <h4>Median Household Income</h4>
+        <span>{{chart.incomeString}}</span>
+      </li>
+      <li>
+        <h4>Median Home Size</h4>
+        <span>{{chart.sqftString}}</span>
+      </li>
+      <li>
+        <h4>Average Year of Construction</h4>
+        <span>{{chart.yearBuiltString}}</span>
+      </li>
+    </ul>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-8">
+    <div ng-show="!chart.barChart">No Bar chart Boss.</div>
     <div id="percentage-chart"></div>
    </div>
   <div class="col-md-12">
+    <div ng-show="!chart.pieChart">No Pie chart Boss.</div>
     <div id="pie-chart"></div>
   </div>
 </div>

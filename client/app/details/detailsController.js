@@ -124,7 +124,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
                            break;
         default: break;
       }
-      console.log('stateSwitch says:',detail.tabs);
+      // console.log('stateSwitch says:',detail.tabs);
     }
 
 
