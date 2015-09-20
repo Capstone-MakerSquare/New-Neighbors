@@ -12,8 +12,6 @@
    outline: none !important;
 }
 
-
-
 /* prevents unintentional routing in Angular via href tags on empty anchors Bootstrap uses for styling */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
@@ -85,7 +83,7 @@ small {
 }
 
 .details-container, .results-container {
-  min-height:950px;
+  height:950px;
   overflow:scroll;
   border:2px solid #5f327c;
   background-color: #fff;
@@ -434,7 +432,6 @@ small {
   }
 }
 
-
 /* Amenities a.k.a services */
 .amenities-container,
 .attractions-container,
@@ -447,14 +444,58 @@ small {
   margin-bottom: 8px;
 }
 
+.amenities-categories {
+  min-height:450px;
+}
+
 .amenities-categories,
 .charts-container .factual-info  {
-   border-right:2px solid #5F327C;
+   border-right:2px solid #af98bd;
+}
+
+.attractions-list,
+.amenities-list {
+  margin-left:-2px;
+  border-left:2px solid #af98bd;
+}
+
+.amenities-list .spot-name {
+  display:block;
+  text-align:left;
+}
+
+.amenities-list .spot-name h4 {
+  display:inline-block;
+  margin-left:0;
+}
+
+.amenities-list .spot-name div {
+  display:inline-block;
+  float:right;
+}
+
+.amenities-list .spot-address {
+  text-align:left;
+}
+
+.amenities-list .spot-address div {
+  display:inline-block;
 }
 
 .amenities-container h4 {
   margin-left:0;
   color:#5F327C;
+}
+
+.amenities-list img,
+.attractions-list img {
+  display:block;
+  margin:0 auto;
+  width:80%;
+}
+
+.amenities-list img {
+  width:70%;
 }
 
 .charts-container ul {
