@@ -3,10 +3,64 @@ angular.module('myApp.charts', [])
 .controller('chartsController', ['$scope', 'Charts', function ($scope, Charts){
 
   var chart = this;
+  chart.incomeString = 'Not Available';
+  chart.sqftString = 'Not Available';
+  chart.yearBuiltString = 'Not Available';
 
-  chart.incomeString = Charts.demographicsObj.incomeString;
-  chart.sqftString = Charts.demographicsObj.sqftString;
-  chart.yearBuiltString = Charts.demographicsObj.yearBuiltString;
+  chart.barChart = false;
+  chart.pieChart = false;
+
+  chart.setStrings = function () {
+    // console.log('setStrings called.');
+    var demographicsObj = Charts.getDemographicsObj();
+    console.log('inside setStrings:',demographicsObj);
+    if(Object.keys(demographicsObj).length > 0) {
+      chart.incomeString = demographicsObj.incomeString;
+      chart.sqftString = demographicsObj.sqftString;
+      chart.yearBuiltString = demographicsObj.yearBuiltString;
+    }
+  };
+
+  chart.setFlags = function () {
+    var tuple = Charts.getFlags();    //[barchart, piechart]
+    if(tuple[0]) { chart.barChart = true; }
+    if(tuple[1]) { chart.pieChart = true; }
+  }
+
+  var options = {
+    useEasing:true,
+    useGrouping: true,
+    separator:',',
+    decimal:'.',
+    prefix:'',
+    suffix:''
+  }
+
+  chart.countup = function() {
+    console.log("countup called");
+    var flags = [1,1,1];
+
+    if(chart.incomeString === 'Not Available') { flags[0] = 0; }
+    if(chart.sqftString === 'Not Available') { flags[1] = 0; }
+    if(chart.yearBuiltString === 'Not Available') { flags[2] = 0; }
+
+    setTimeout(function() {
+      console.log('chart.values:',chart.incomeString, chart.sqftString, chart.yearBuiltString);
+      console.log('chart.parsedValues:',parseInt(chart.incomeString));
+      if(flags[0]) {
+        var c1 = new CountUp('countup1', 0, parseInt(chart.incomeString), 0, 2.5, options);
+        c1.start();
+      }
+      if(flags[1]) {
+        var c2 = new CountUp('countup2', 0, parseInt(chart.sqftString), 0, 2.5, options);
+        c2.start();
+      }
+      if(flags[2]) {
+        var c3 = new CountUp('countup3', 0, parseInt(chart.yearBuiltString), 0, 2.5, options);
+        c3.start();
+      }
+    }, 20);
+  }
 
 }])
 
@@ -18,6 +72,19 @@ angular.module('myApp.charts', [])
   var barChartObj = {};
   var pieChartObj = {};
   var barChartArr = [[],[]];
+
+
+  //----------------------------------------------------------------------------------
+  // Clears Chart data before new neighborhood searches
+  var clearCharts = function() {
+    // console.log('clearCharts called.');
+    runDrawBar = false;
+    runDrawPie = false;
+    demographicsObj = {};
+    barChartObj = {};
+    pieChartObj = {};
+    barChartArr = [[],[]];
+  }
 
   //----------------------------------------------------------------------------------
   // Compiles, validates, and maps data for a bar graph from the Zillow Demography data
@@ -214,7 +281,7 @@ angular.module('myApp.charts', [])
   // Draws the bar chart , only drawing columns when data is available for that subject.
 
   var drawBar = function() {
-    runDrawBar = true; //remove this line when doing the API calls
+    // runDrawBar = true; //remove this line when doing the API calls
     if (runDrawBar){
       $('#percentage-chart').highcharts({
         chart: {
@@ -252,16 +319,16 @@ angular.module('myApp.charts', [])
         },
         series: [{
             name: 'Nation',
-            color: 'rgba(165,170,217,1)',
-            //data: barChartArr[0],
-            data: [50, 10, 60],
+            color: '#3878C7',
+            data: barChartArr[0],
+            // data: [50, 10, 60],
             pointPadding: 0,
             pointPlacement: 0
         }, {
             name: 'Neighborhood',
-            color: '#5F327C',
-            //data: barChartArr[1],
-            data: [40, 20, 30],
+            color: '#E28F00',
+            data: barChartArr[1],
+            // data: [40, 20, 30],
             pointPadding: 0.2,
             pointPlacement: 0
         }]
@@ -330,7 +397,18 @@ angular.module('myApp.charts', [])
 
 
   var drawPie = function() {
+    console.log('runDrawPie:', runDrawPie);
     if (runDrawPie) {
+
+      Highcharts.setOptions({
+       colors: ['#FA9E25','#FFC735', '#A5AAD9', '#FF7D70', '#CAE0A8', '#5F347C', '#B2D0FF', '#3878C7'],
+        chart: {
+          style: {
+            fontFamily: 'AvenirNextPro'
+         }
+        }
+      });
+
       $('#pie-chart').highcharts({
           chart: {
               type: 'pie'
@@ -341,61 +419,70 @@ angular.module('myApp.charts', [])
           plotOptions: {
               pie: {
                   borderWidth: 2,
-                  showInLegend: true,
-                  dataLabels: {
-                    enabled: false
-                  }
+                  // showInLegend: true,
+                  // dataLabels: {
+                  //   enabled: false
+                  // }
               },
 
           },
           series: [{
             data: [
-              // ['0-10 years old',    pieChartObj['0-10 years']],
-              // ['10-20 years old',    pieChartObj['10-20 years']],
-              // ['20-30 years old',    pieChartObj['20-30 years']],
-              // ['30-40 years old',    pieChartObj['30-40 years']],
-              // ['40-50 years old',    pieChartObj['40-50 years']],
-              // ['50-60 years old',    pieChartObj['50-60 years']],
-              // ['60-70 years old',    pieChartObj['60-70 years']],
-              // ['70+ years old',    pieChartObj['70+ years']]
+              ['0-10 years old',    pieChartObj['0-10 years']],
+              ['10-20 years old',    pieChartObj['10-20 years']],
+              ['20-30 years old',    pieChartObj['20-30 years']],
+              ['30-40 years old',    pieChartObj['30-40 years']],
+              ['40-50 years old',    pieChartObj['40-50 years']],
+              ['50-60 years old',    pieChartObj['50-60 years']],
+              ['60-70 years old',    pieChartObj['60-70 years']],
+              ['70+ years old',    pieChartObj['70+ years']]
 
               // test data
-              ['0-10 years old', 5],
-              ['10-20 years old', 10],
-              ['20-30 years old', 15],
-              ['30-40 years old', 32],
-              ['40-50 years old', 32],
-              ['50-60 years old', 32],
-              ['60-70 years old', 32],
-              ['70+ years old', 32]
+              // ['0-10 years old', 5],
+              // ['10-20 years old', 10],
+              // ['20-30 years old', 15],
+              // ['30-40 years old', 32],
+              // ['40-50 years old', 32],
+              // ['50-60 years old', 32],
+              // ['60-70 years old', 32],
+              // ['70+ years old', 32]
             ]
           }]
       });
-    } else if (!runDrawPie && !runDrawBar) {
-      $('#pie-chart').html('<div>No Charts Available</div>');
     }
   };
 
   var createStrings = function () {
     if (!!demographicsObj.income) {
-      demographicsObj.incomeString = "Median Household Income: $" + parseInt(demographicsObj.income).toLocaleString();
+      demographicsObj.incomeString = parseInt(demographicsObj.income);
     }
     if (!!demographicsObj.sqft) {
-      demographicsObj.sqftString = "Median Home Size: " + parseInt(demographicsObj.sqft).toLocaleString() + " sq. ft.";
+      demographicsObj.sqftString = parseInt(demographicsObj.sqft);
     }
     if (!!demographicsObj.yearBuilt) {
-      demographicsObj.yearBuiltString = "Average Year of Home Construction: " + String(demographicsObj.yearBuilt);
+      demographicsObj.yearBuiltString = demographicsObj.yearBuilt;
     }
-    console.log('Charts demographicsObj', demographicsObj);
+    // console.log('Charts demographicsObj', demographicsObj);
   };
+
+  var getDemographicsObj = function () {
+    return demographicsObj;
+  }
+
+  var getFlags = function () {
+    return [runDrawBar, runDrawPie];
+  }
 
   return {
     drawBar: drawBar,
     drawPie: drawPie,
     barChartData: barChartData,
     pieChartData: pieChartData,
+    getDemographicsObj: getDemographicsObj,
     demographicsObj: demographicsObj,
-    createStrings: createStrings
+    clearCharts: clearCharts,
+    createStrings: createStrings,
+    getFlags: getFlags
   };
 
 });

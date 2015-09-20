@@ -205,6 +205,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     main.filteredNeighborhoodArray = [];
     requestNeighborhoods();
     Map.panAndFocusDestination(main.searchInfo.address);
+    Charts.clearCharts();
   };
 
   //Rerouters
