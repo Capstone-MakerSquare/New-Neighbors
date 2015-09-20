@@ -6,8 +6,8 @@ angular.module('myApp.charts')
     templateUrl: 'app/charts/chartsTemplate.html',
     link: function() {
       $timeout( function(){
-        Charts.drawBar()
-        Charts.drawPie()
+        Charts.drawBar();
+        Charts.drawPie();
       }, 0);
     }
   };
