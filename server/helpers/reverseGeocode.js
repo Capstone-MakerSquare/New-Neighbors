@@ -1,8 +1,9 @@
 var Q = require('q');
 var getRequest = require('./getRequest.js');
+var keys;
 
 if (!process.env.POST) {
-  var keys = require('../config/keys.js');
+  keys = require('../config/keys.js');
 } else {
   keys = {
     googleAPIKey: process.env.GOOGLE_KEY,

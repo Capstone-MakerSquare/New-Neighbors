@@ -5,6 +5,7 @@ var Q = require('q');
 var request = require('request');
 var _ = require('underscore');
 var parseString = require('xml2js').parseString;
+var keys;
 
 //Helpers
 var getRequest = require('./helpers/getRequest.js');
@@ -31,7 +32,7 @@ var neighborhoods;
 var numNeighborhoods;
 
 if (!process.env.POST) {
-  var keys = require('./config/keys.js');
+  keys = require('./config/keys.js');
 } else {
   keys = {
     googleAPIKey: process.env.GOOGLE_KEY,
