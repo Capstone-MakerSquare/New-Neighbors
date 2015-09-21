@@ -2,7 +2,6 @@ var express = require('express');
 var middleware = require('./config/middleware.js');
 var http = require('http');
 var Q = require('q');
-var keys = require('./config/keys.js');
 var request = require('request');
 var _ = require('underscore');
 var parseString = require('xml2js').parseString;
@@ -30,6 +29,16 @@ var searchInfo;
 var neighborhoodObject = {};
 var neighborhoods;
 var numNeighborhoods;
+
+if (!process.env.POST) {
+  var keys = require('./config/keys.js');
+} else {
+  keys = {
+    googleAPIKey: process.env.GOOGLE_KEY,
+    zwsId: process.env.ZILLOW_KEY,
+    instagramAccessToken: process.env.INSTAGRAM_KEY
+  }
+}
 
 //Handle a POST request
 //api/getNeighbors
@@ -87,8 +96,8 @@ app.post('/api/getNeighbors', function (req, res) {
           .then(function (neighborhood) {
             if(neighborhoodObject[neighborhood].country === 'USA') {
               return Q.all([
-                getRentEstimate(neighborhood),
-                getDemography(neighborhood)
+                // getRentEstimate(neighborhood),
+                // getDemography(neighborhood)
               ]);
             }
             else { return 'Other Country'; }

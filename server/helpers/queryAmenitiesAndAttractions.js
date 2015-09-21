@@ -1,6 +1,15 @@
 var Q = require('q');
 var getRequest = require('./getRequest.js');
-var keys = require('./../config/keys.js');
+
+if (!process.env.POST) {
+  var keys = require('./config/keys.js');
+} else {
+  keys = {
+    googleAPIKey: process.env.GOOGLE_KEY,
+    zwsId: process.env.ZILLOW_KEY,
+    instagramAccessToken: process.env.INSTAGRAM_KEY
+  }
+}
 
 //-----------------------------------------------------------------------------------
 //Get amenities for a given neighrbood for radii 0.5, 1.5 and 2.5 kilometers

@@ -1,6 +1,15 @@
 var Q = require('q');
 var getRequest = require('./getRequest.js');
-var keys = require('./../config/keys.js');
+
+if (!process.env.POST) {
+  var keys = require('./config/keys.js');
+} else {
+  keys = {
+    googleAPIKey: process.env.GOOGLE_KEY,
+    zwsId: process.env.ZILLOW_KEY,
+    instagramAccessToken: process.env.INSTAGRAM_KEY
+  }
+}
 
 //-----------------------------------------------------------------------------------
 //GET the street address of a latitude/longitude pair
