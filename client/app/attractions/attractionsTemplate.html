@@ -14,7 +14,7 @@
   <div class="col-md-8 attractions-list">
     <h3>Listings</h3>
     <hr>
-    <img ng-if="details.selectedCategory === undefined" src="assets/images/messages/AttractionMessage.png" alt="default-msg">
+    <img ng-if="details.selectedCategory === undefined" src="assets/images/DefaultMessages/AttractionMessage.png" alt="default-msg">
     <ul ng-repeat="spot in details.currentSpotsToDisplay">
       <li class="spot" ng-click="details.toggleTooltip(details.currentSpotsToDisplay[$index]);">
         <div class="spot-name">
