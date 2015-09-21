@@ -38,7 +38,7 @@ if (process.env.PORT) {
     instagramAccessToken: process.env.INSTAGRAM_KEY
   }
 } else {
-  keys = require('../config/keys.js');
+  keys = require('./config/keys.js');
 }
 
 //Handle a POST request
