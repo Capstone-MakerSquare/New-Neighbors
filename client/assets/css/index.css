@@ -232,7 +232,7 @@ small {
   display: block;
   position:absolute;
   max-width:50%;
-  height:40px;
+/*  height:40px;*/
   padding:5px 15px 0 15px;
   background-color: #5f327c;
   z-index:1;
@@ -474,6 +474,7 @@ small {
 .amenities-list .spot-name div,
 .attractions-list .spot-name div {
   display:inline-block;
+  margin-top: 8px;
   float:right;
 }
 
