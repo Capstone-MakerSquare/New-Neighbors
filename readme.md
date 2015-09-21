@@ -1,4 +1,6 @@
 # Turf
+[![Dependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev)
+[![devDependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev/dev-status.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev#info=devDependencies)<br>
 
 #### A web application that helps you move into any new area by showing you information about nearby neighborhoods so you can see how well they suit your style.
 
@@ -178,12 +180,12 @@ Once you have a google API key make sure you enable the following APIs:
 - [Angular Animate](https://docs.angularjs.org/api/ngAnimate) v1.4.5
 - [Angular UI Bootstrap](https://angular-ui.github.io/bootstrap/) v0.13.4
 - [UI Router](https://angular-ui.github.io/ui-router/site/#/api/ui.router) v0.2.15
-- [Node](https://nodejs.org/en/) v4.1.0
+- [Node](https://nodejs.org/en/) v0.12.7
 - [Express](https://expressjs.com/) v4.13.3
 - [Q](https://github.com/kriskowal/q) v1.4.1
 - [Bootstrap](http://getbootstrap.com/) v3.3.5
 - [Slick Carousel](http://kenwheeler.github.io/slick/) v1.5.8
-- [Highcharts](http://www.highcharts.com/)
+- [Highcharts](http://www.highcharts.com/) v4.1.8
 
 ### Running the application
 
