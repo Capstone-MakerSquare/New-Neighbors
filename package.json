@@ -1,27 +1,19 @@
 {
-  "name": "foundation-apps-template",
+  "name": "new-neighborhood",
   "version": "1.1.0",
   "scripts": {
-    "start": "gulp"
+    "start": "nodemon index.js"
   },
   "devDependencies": {
-    "body": "^5.1.0",
+  },
+  "private": true,
+  "dependencies": {
+    "browser-sync": "^2.8.2",
+    "xml2js": "^0.4.12",
     "body-parser": "^1.13.3",
     "browserify": "^11.0.1",
     "express": "^4.13.3",
     "front-router": "^1.0.0",
-    "gulp": "^3.9.0",
-    "gulp-autoprefixer": "^2.3.1",
-    "gulp-browserify": "^0.5.1",
-    "gulp-concat": "^2.6.0",
-    "gulp-if": "^1.2.5",
-    "gulp-load-plugins": "1.0.0-rc.1",
-    "gulp-ng-html2js": "^0.2.0",
-    "gulp-nodemon": "^2.0.4",
-    "gulp-sass": "^2.0.3",
-    "gulp-uglify": "^1.2.0",
-    "gulp-webserver": "^0.9.1",
-    "http": "0.0.0",
     "morgan": "^1.6.1",
     "parser": "^0.1.4",
     "q": "^1.4.1",
@@ -31,9 +23,7 @@
     "underscore": "^1.8.3",
     "yargs": "^3.15.0"
   },
-  "private": true,
-  "dependencies": {
-    "browser-sync": "^2.8.2",
-    "xml2js": "^0.4.12"
+  "engines": {
+    "node": "0.12.x"
   }
 }
