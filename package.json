@@ -1,8 +1,12 @@
 {
-  "name": "new-neighborhood",
-  "version": "1.1.0",
+  "name": "Turf",
+  "version": "1.0.6",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "4.1.x"
   },
   "devDependencies": {
   },
@@ -22,8 +26,5 @@
     "run-sequence": "^1.1.1",
     "underscore": "^1.8.3",
     "yargs": "^3.15.0"
-  },
-  "engines": {
-    "node": "0.12.x"
   }
 }
