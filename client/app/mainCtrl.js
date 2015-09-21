@@ -84,8 +84,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       }
       arr.push({
           name: neighborhoods[i].name,
-          commuteTime: neighborhoods[i].commuteInfo.commuteTime ? neighborhoods[i].commuteInfo.commuteTime : 'Not Available',
-          commuteDistance: neighborhoods[i].commuteInfo.commuteDistance ? neighborhoods[i].commuteInfo.commuteDistance : 'Not Available',
+          commuteTime: (neighborhoods[i].commuteInfo && neighborhoods[i].commuteInfo.commuteTime) ? neighborhoods[i].commuteInfo.commuteTime : 'Not Available',
+          commuteDistance: (neighborhoods[i].commuteInfo && neighborhoods[i].commuteInfo.commuteDistance) ? neighborhoods[i].commuteInfo.commuteDistance : 'Not Available',
           estimateLow: neighborhoods[i].rentEstimate ? neighborhoods[i].rentEstimate.estimateLow : 'Not Available',
           estimateHigh: neighborhoods[i].rentEstimate ? neighborhoods[i].rentEstimate.estimateHigh : 'Not Available',
           instagram: neighborhoods[i].instagram,
