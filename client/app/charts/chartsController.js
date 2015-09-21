@@ -267,6 +267,7 @@ angular.module('myApp.charts', [])
         chart: {
             type: 'column'
         },
+        exporting: { enabled: false },
         title: {
             text: barChartObj.name + ' Compared To Nation'
         },
@@ -396,6 +397,7 @@ angular.module('myApp.charts', [])
           title: {
             text:   "Resident Age Distribution"
           },
+          exporting: { enabled: false },
           plotOptions: {
               pie: {
                   borderWidth: 2,
