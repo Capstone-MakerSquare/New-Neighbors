@@ -136,16 +136,16 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
         dataInfo[1] = 'city';
 
         if (main.searchInfo.bedrooms === '2') {
-          temp.housetype = 'Median 2-Bedroom Home Value';
+          temp.housetype = '2-Bedroom Home';
           dataInfo[0] = 3
         } else if (main.searchInfo.bedrooms === '3') {
-          temp.housetype = 'Median 3-Bedroom Home Value';
+          temp.housetype = '3-Bedroom Home';
           dataInfo[0] = 4;
         } else if (main.searchInfo.bedrooms === '4') {
-          temp.housetype = 'Median 4-Bedroom Home Value';
+          temp.housetype = '4-Bedroom Home';
           dataInfo[0] = 5;
         } else if (main.searchInfo.buyOrRent === 'buy') {
-          temp.housetype = 'Median Single Family Home Value';
+          temp.housetype = 'Single Family Home';
           dataInfo[0] = 1;
         }
         if (priceData[dataInfo[0]] && priceData[dataInfo[0]].values && priceData[dataInfo[0]].values[0]) {
