@@ -1,14 +1,14 @@
 var Q = require('q');
 var getXmlRequest = require('./getXmlRequest.js');
 
-if (!process.env.POST) {
-  var keys = require('../config/keys.js');
-} else {
+if (process.env.PORT) {
   keys = {
     googleAPIKey: process.env.GOOGLE_KEY,
     zwsId: process.env.ZILLOW_KEY,
     instagramAccessToken: process.env.INSTAGRAM_KEY
   }
+} else {
+  keys = require('../config/keys.js');
 }
 
 //-----------------------------------------------------------------------------------

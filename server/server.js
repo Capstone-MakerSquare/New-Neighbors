@@ -31,7 +31,7 @@ var neighborhoodObject = {};
 var neighborhoods;
 var numNeighborhoods;
 
-if (process.env.POST) {
+if (process.env.PORT) {
   keys = {
     googleAPIKey: process.env.GOOGLE_KEY,
     zwsId: process.env.ZILLOW_KEY,
