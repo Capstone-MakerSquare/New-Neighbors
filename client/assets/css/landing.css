@@ -5,13 +5,22 @@
 }
 
 .landing-photo {
-  background-image: url('../images/santamonica.jpg');
+  background-image: url('../images/neighborhood-header2.jpg');
   height: 100%;
   background-size: cover;
   text-align: center;
   padding-top: 300px;
   padding-bottom: 200px;
-  max-height: 580px;
+  max-height: 700px;
+  position:relative;
+}
+
+.logo-header {
+  display:block;
+  width:800px;
+  margin: 0 auto;
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
 }
 
 .cover-heading {
@@ -38,7 +47,6 @@
 
 .landing-container form {
   display: block;
-  margin-top:25px;
 }
 
 .landing-container #place-search {
@@ -48,10 +56,11 @@
 
 .landing-container .searchForm {
   display: block;
+  position:absolute;
+  bottom:0;
   width: 100%;
   background-color: #fff;
   background-color: rgba(255,255,255, 0.3);
-  border-bottom:1px solid #5F327C;
   padding-bottom:5px;
 }
 
@@ -74,38 +83,33 @@
 }
 
 .feature-section {
-  margin:100px 50px 50px 30px;
+  margin:60px 50px 50px 30px;
+  padding-bottom:100px;
 }
 
 .feature-section h1 {
   text-align: center;
-  margin:50px 10px;
+  margin:10px 10px 50px 10px;
 }
 
 .featurette {
   height:350px;
   padding:50px 50px 25px 50px;
-/*  background-size: cover;
-  background-repeat: no-repeat;*/
-}
-
-/* placeholder classes for screenshots */
-
-.featurette1 {
-/*  background-image: url('../../assets/images/DefaultLanding/default1.jpg');*/
 }
 
 .featurette2 {
-  /*background-image: url('../../assets/images/DefaultLanding/default2.jpg');*/
+  background-image: url('../images/Landing/Bar2-background.png');
+  height:100%;
 }
 
-.featurette3 {
-  /*background-image: url('../../assets/images/DefaultLanding/default3.jpg');*/
+.featurette-small {
+  display: block;
+  width:55%;
+  margin:0 auto;
 }
-
 
 .featurette-divider {
-/*  margin: 50px 0; */
+  margin:50px 20px;
 }
 
 /* Thin out the marketing headings */

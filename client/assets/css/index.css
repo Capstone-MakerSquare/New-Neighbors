@@ -459,26 +459,31 @@ small {
   border-left:2px solid #af98bd;
 }
 
-.amenities-list .spot-name {
+.amenities-list .spot-name,
+.attractions-list .spot-name {
   display:block;
   text-align:left;
 }
 
-.amenities-list .spot-name h4 {
+.amenities-list .spot-name h4,
+.attractions-list .spot-name h4 {
   display:inline-block;
   margin-left:0;
 }
 
-.amenities-list .spot-name div {
+.amenities-list .spot-name div,
+.attractions-list .spot-name div {
   display:inline-block;
   float:right;
 }
 
-.amenities-list .spot-address {
+.amenities-list .spot-address,
+.attractions-list .spot-address {
   text-align:left;
 }
 
-.amenities-list .spot-address div {
+.amenities-list .spot-address div,
+.attractions-list .spot-address div {
   display:inline-block;
 }
 
@@ -524,7 +529,7 @@ small {
 }
 
 .chart-splitter {
-  border: 1px solid #5F327C;
+  border: 1px solid #af98bd;
 }
 
 .bar-chart-container,
