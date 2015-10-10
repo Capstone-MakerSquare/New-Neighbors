@@ -65,7 +65,7 @@ mapMod // = angular.module('myApp.mapServices',[])
       geocoder.geocode({ 'address': address }, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
           var address = results[0].formatted_address;
-          var coordinates = { latitude : results[0].geometry.location.H, longitude : results[0].geometry.location.L };
+          var coordinates = { latitude : results[0].geometry.location.J, longitude : results[0].geometry.location.M };
 
           panAndFocus(coordinates);
           dropMarkerWithLabel(coordinates);
