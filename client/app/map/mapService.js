@@ -30,7 +30,7 @@ mapMod // = angular.module('myApp.mapServices',[])
   var iconCounter = 0;
 
   //temporary variables
-  var targetLocation;  // temp for evan
+  var targetLocation;  
 
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
@@ -65,8 +65,7 @@ mapMod // = angular.module('myApp.mapServices',[])
       geocoder.geocode({ 'address': address }, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
           var address = results[0].formatted_address;
-          var coordinates = { latitude : results[0].geometry.location.J, longitude : results[0].geometry.location.M };
-
+          var coordinates = { latitude : results[0].geometry.location.lat(), longitude : results[0].geometry.location.lng() };
           panAndFocus(coordinates);
           dropMarkerWithLabel(coordinates);
 
