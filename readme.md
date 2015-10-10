@@ -4,6 +4,8 @@
 
 #### A web application that helps you move into any new area by showing you information about nearby neighborhoods so you can see how well they suit your style.
 
+###Check out our [demo!](https://vimeo.com/141971801)
+
 ##User information
 
 #####Getting Started and Searching
