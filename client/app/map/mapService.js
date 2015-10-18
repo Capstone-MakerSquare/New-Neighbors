@@ -149,7 +149,7 @@ mapMod // = angular.module('myApp.mapServices',[])
       map: map,
       draggable: true,
       labelAnchor: new google.maps.Point(10, 10),
-      labelClass: "popper", // the CSS class for the label
+      labelClass: "mapPopper", // the CSS class for the label
     });
   }
 
