@@ -267,7 +267,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //Drop a marker with a link to be clicked
   main.dropNeighborhoodMarker = function (coordinates, title, neighborhoodObj) {
     var icon = {
-      url: "assets/images/housepurplewhite.png",
+      url: "assets/images/Loading/housepurplewhite.png",
       size: new google.maps.Size(5.3*8, 13*8),
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(10, 30),
