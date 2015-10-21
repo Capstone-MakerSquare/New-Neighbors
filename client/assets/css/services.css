@@ -1,0 +1,143 @@
+.attractions-container li,
+.amenities-container li {
+  cursor:pointer;
+}
+
+.amenities-container .activeCategory li {
+  font-size: 20px;
+}
+
+.amenities-container .activeCategory img {
+  width: 20px;
+}
+
+.amenities-container,
+.attractions-container,
+.charts-container {
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+  height: inherit;
+  min-height:570px;
+  margin-top:20px;
+  padding:20px;
+  margin-bottom: 8px;
+}
+
+.amenities-categories {
+  min-height:450px;
+}
+
+.amenities-categories,
+.charts-container .factual-info  {
+   border-right:2px solid #af98bd;
+}
+
+.attractions-list,
+.amenities-list {
+  margin-left:-2px;
+  border-left:2px solid #af98bd;
+}
+
+.amenities-list .spot-name,
+.attractions-list .spot-name {
+  display:block;
+  text-align:left;
+}
+
+.amenities-list .spot-name h4,
+.attractions-list .spot-name h4 {
+  display:block;
+  margin-left:0;
+  font-weight: bold;
+}
+
+.amenities-list .spot-name div,
+.attractions-list .spot-name div {
+  display:block;
+  margin-top: 8px;
+  text:right;
+}
+
+.amenities-list .spot-address,
+.attractions-list .spot-address {
+  text-align:left;
+  font-style: italic;
+}
+
+.amenities-list .spot-address div,
+.attractions-list .spot-address div {
+  display:inline-block;
+}
+
+.amenities-container h4 {
+  margin-left:0;
+  color:#5F327C;
+}
+
+.amenities-list img,
+.attractions-list img {
+  display:block;
+  margin:0 auto;
+  width:80%;
+}
+
+.amenities-list img {
+  width:70%;
+}
+
+.amenities-container h4,
+.attractions-container h4 {
+  display:block;
+  margin-left:0;
+}
+
+.amenities-categories ul {
+  margin-left:0;
+}
+
+.amenities-categories li {
+  display: block;
+  margin: 20px -30px;
+  text-align: left;
+  font-size: 16px;
+  color:#000;
+}
+
+.amenities-categories img {
+  display: inline-block;
+  margin-right:7px;
+  width:20px;
+}
+
+.amenities-categories .category-container {
+  margin-left: 5px;
+}
+
+.amenities-categories .category-container {
+  /*transition: font-size 0.2s ease;*/
+  -webkit-transition: font-size 0.2s ease-out;
+  -moz-transition: font-size 0.2s ease-out;
+  -o-transition: font-size 0.2s ease-out;
+  transition: font-size 0.2s ease-out;
+  font-size: 16px;
+}
+
+.amenities-categories .category-container:hover {
+  font-size: 20px;
+}
+
+.amenities-categories .category-container img{
+  /*transition: width 0.2s ease;*/
+  -webkit-transition: width 0.2s ease-out;
+  -moz-transition: width 0.2s ease-out;
+  -o-transition: width 0.2s ease-out;
+  transition: width 0.2s ease-out;
+  width: 16px;
+}
+
+.amenities-categories .category-container:hover img{
+  width: 20px;
+}
+
+.spot-name h4 {
+  color: color:#5F327C;
+}

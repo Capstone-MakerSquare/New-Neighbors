@@ -3,7 +3,7 @@
   <div class="col-md-4 amenities-categories">
     <h3>Categories</h3>
     <hr>
-    <ul ng-repeat="attraction in details.currentNeighborhood.attractions">
+    <ul ng-repeat="attraction in details.currentNeighborhood.attractions" class="service-container">
       <li class="category-container" ng-click="details.displayMarkers(attraction); details.selectCategory($index); details.displayAmenitiesOrAttractions(attraction);" ng-class="{'activeCategory': $index === details.selectedCategory}">
         <img ng-src="{{details.getAttractionsIcon(attraction[0])}}" alt="attraction category icon">
         <span>{{attraction[0].displayName}}</span>

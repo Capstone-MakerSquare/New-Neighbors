@@ -1,0 +1,45 @@
+
+.nav-container {
+  margin-top:10px;
+  margin-bottom:10px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 20px;
+}
+
+.nav-container a:focus {
+  color:#fff;
+}
+
+.nav-container a:hover {
+  color:#5F327C;
+}
+
+.nav-button-default {
+    -webkit-box-shadow: 0px 0px 4px rgba(31, 31, 31, 0.30);
+    -moz-box-shadow:    0px 0px 4px rgba(31, 31, 31, 0.30);
+    box-shadow:         0px 0px 4px rgba(31, 31, 31, 0.30);
+  padding-top:5px;
+  min-width:100px;
+  width:80%;
+  max-height:60px;
+  max-height:60px;
+  margin:0 auto;
+}
+
+.nav-button-on a {
+  color:#fff;
+}
+
+.nav-container .nav-button-on {
+  background-color: #5f327c;
+}
+
+.nav-button-off a {
+  color:#5f327c;
+
+}
+
+.nav-container .nav-button-off {
+  background-color: #FFF;
+}

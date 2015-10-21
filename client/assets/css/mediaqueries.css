@@ -1,0 +1,128 @@
+/* tablet */ 
+
+@media only screen and (min-width:380px) and (max-width: 992px)  {
+
+  .filterForm .orderBy {
+    display: none;
+  }
+
+  .main-container .map-container {
+    height:450px;
+  }
+
+  .main-container .results-container {
+    min-height:450px;
+    padding:0 10px 10px 10px;
+  }
+
+  .main-container {
+    margin-left:30px;
+    margin-bottom: 110px;
+  }
+
+  .form-control {
+    margin-bottom:10px;
+  }
+
+  .main-left-container {
+    padding-left:0;
+  }
+
+  li.category-container {
+    display: inline-block;
+  }
+
+  .attractions-list, 
+  .amenities-list {
+    border-left: none;
+  }
+
+  .amenities-categories, 
+  .charts-container .factual-info {
+    border-right:none;
+  }
+
+
+  .amenities-list .spot-address div,
+  .attractions-list .spot-address div {
+    float:left;
+  }
+
+  .amenities-categories,
+  .factual-info {
+    border-right:0;
+  }
+
+  .amenities-categories .category-container {
+    margin:5px;
+  }
+
+  ul.service-container {
+    display:inline-block;
+    width:25%;
+  }
+
+  .amenities-categories {
+    min-height:250px;
+  }
+
+  .spinner {
+    top:70%;
+    right:50%;
+  }
+
+  .loading-image {
+    top:61%;
+  }
+
+  .loading-text {
+    position: static;
+  }
+
+  input[type="search"] {
+    width:95%;
+  }
+}
+
+/* mobile */ 
+
+@media only screen and (min-width:300px) and (max-width: 480px)  {
+  .results-container {
+    margin:0 0 50px 0;
+  }
+
+  .filterForm .orderBy {
+    display: none;
+  }
+
+  .charts-container ul {
+    margin:0;
+  }
+
+  ul.service-container {
+    display:inline-block;
+    width:50%;
+  }
+
+  .slideshow {
+    height:75px;
+  }
+
+  .slick-slider {
+    display: none;
+  }
+
+  .loading-text {
+    top:80%;
+    right:0;
+  }
+
+  .loading-image {
+    top:65%;
+  }
+
+  .spinner {
+    top:74%;
+    right:53%;
+  }
+}
