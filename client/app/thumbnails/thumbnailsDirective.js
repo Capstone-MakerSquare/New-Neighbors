@@ -1,3 +1,4 @@
+var thumbnails = angular.module('myApp.thumbnails', []);
 thumbnails.directive('thumbnail', [function() {
 
   return {

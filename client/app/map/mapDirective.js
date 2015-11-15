@@ -1,3 +1,5 @@
+var mapMod = angular.module('myApp.map',[]);
+
 mapMod.directive('map', ['Map', '$scope', function (Map, $scope) {
 
   var link = function(scope) {

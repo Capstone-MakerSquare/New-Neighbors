@@ -1,3 +1,4 @@
+var filter = angular.module('myApp.filter', []);
 filter.directive('filters', [function() {
 
   return {
