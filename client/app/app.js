@@ -9,7 +9,8 @@ var app = angular.module('myApp', [
   'myApp.searchForm',
   'myApp.filter',
   'myApp.thumbnails',
-  'myApp.charts'
+  'myApp.charts',
+  'myApp.team'
 ]);
 
 app.config(function($stateProvider, $urlRouterProvider) {
