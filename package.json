@@ -9,15 +9,28 @@
     "node": "4.1.x"
   },
   "devDependencies": {
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat-css": "^2.2.0",
+    "gulp-html-replace": "^1.5.4",
+    "gulp-imagemin": "^2.3.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-nodemon": "^2.0.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.4.2"
   },
   "private": true,
   "dependencies": {
-    "browser-sync": "^2.8.2",
-    "xml2js": "^0.4.12",
     "body-parser": "^1.13.3",
+    "browser-sync": "^2.8.2",
     "browserify": "^11.0.1",
     "express": "^4.13.3",
     "front-router": "^1.0.0",
+    "gulp-uglifycss": "^1.0.4",
+    "imagemin-pngquant": "^4.2.0",
     "morgan": "^1.6.1",
     "parser": "^0.1.4",
     "q": "^1.4.1",
@@ -25,6 +38,7 @@
     "rimraf": "^2.4.1",
     "run-sequence": "^1.1.1",
     "underscore": "^1.8.3",
+    "xml2js": "^0.4.12",
     "yargs": "^3.15.0"
   }
 }
