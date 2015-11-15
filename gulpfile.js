@@ -7,14 +7,13 @@
 
 var gulp = require('gulp');
 var del  = require('del');
+// css modules 
 var sourcemaps = require('gulp-sourcemaps');
 var replace = require('gulp-replace');
-// css modules 
 var concatcss = require('gulp-concat-css');
 var uglifycss = require('gulp-uglifycss');
 var autoprefixer = require('gulp-autoprefixer');
 var uglify = require('gulp-uglify');
-// var rename = require('gulp-rename');
 // js modules 
 var concat = require('gulp-concat');
 // image modules 
@@ -65,17 +64,13 @@ var paths = {
     dist: 'dist/app'
   },
   scripts: {
-    // app: 'client/app/app.js',
-    // appdist: 'client/app',
     dist: 'dist/app',
     lib: 'client/lib/angular-slick/dist/slick.js',
     libdist: 'dist/lib',
-    clientdist:['client/app/map/mapController.js', 'client/app/details/detailsController.js', 
-    'client/app/searchForm/searchFormController.js', 'client/app/filter/filterController.js', 
-    'client/app/thumbnails/thumbnailsController.js','client/app/map/mapDirective.js', 
-    'client/app/searchForm/searchFormDirective.js', 'client/app/filter/filterDirective.js', 
-    'client/app/thumbnails/thumbnailsDirective.js','client/app/mainCtrl.js', 
-    'client/app/charts/chartsController.js', 'client/app/charts/chartsDirective.js', 
+    clientdist:['client/app/details/detailsController.js', 'client/app/thumbnails/thumbnailsController.js',
+    'client/app/map/mapDirective.js', 'client/app/searchForm/searchFormDirective.js', 
+    'client/app/filter/filterDirective.js', 'client/app/thumbnails/thumbnailsDirective.js',
+    'client/app/mainCtrl.js','client/app/charts/chartsController.js', 'client/app/charts/chartsDirective.js', 
     'client/app/countup/countup.min.js', 'client/app/team/teamDirective.js']
   }
 };
@@ -103,11 +98,10 @@ gulp.task('icons',['clean'], function() {
 
 
 // moves lib scripts to dist 
-gulp.task('jslib',['clean'], function() {
+gulp.task('libjs',['clean'], function() {
     return gulp.src(paths.scripts.lib)
     .pipe(gulp.dest(paths.scripts.libdist));
 });
-
 
 // dynamically replaces script files in html file 
 gulp.task('replacescripts', ['clean', 'html'], function() {
@@ -129,6 +123,7 @@ gulp.task('font',['clean'], function() {
     .pipe(gulp.dest(paths.font.dist));
 });
 
+// move slick.js to dist 
 gulp.task('slick',['clean'], function() {
     return gulp.src(paths.slick.main)
     .pipe(gulp.dest(paths.slick.dist));
@@ -139,7 +134,6 @@ gulp.task('services',['clean'], function() {
     return gulp.src(paths.services.main)
     .pipe(gulp.dest(paths.services.dist));
 });
-
 
 //minifies and concats JS files 
 gulp.task('minjs', ['clean'], function() {
@@ -201,10 +195,10 @@ gulp.task('serve', function() {
 // task groupings 
 gulp.task('htmlTasks', ['html', 'replacescripts']);
 gulp.task('cssTasks', ['css', 'libcss']);
-gulp.task('jsTasks', ['minjs', 'jslib', 'services']);
+gulp.task('jsTasks', ['minjs', 'libjs', 'services']);
 gulp.task('assetsTasks', ['slick', 'font', 'icons', 'images']);
 
 // run tasks 
 gulp.task('default', ['watch','serve']); 
-gulp.task('production', ['htmlTasks','cssTasks','jsTasks','assetsTasks']); 
+gulp.task('dist', ['htmlTasks','cssTasks','jsTasks','assetsTasks']); 
 
