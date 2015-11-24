@@ -2,6 +2,7 @@
 
 node_modules/
 client/lib
+dist
 build/**
 bower_components/**
 server/config/keys.js
