@@ -1,6 +1,7 @@
 # Turf
-[![Dependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev)
-[![devDependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev/dev-status.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev#info=devDependencies)<br>
+
+[![Dependency Status](https://david-dm.org/Capstone-MakerSquare/New-Neighbors/cleanup.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev)
+[![devDependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/cleanup/dev-status.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev#info=devDependencies) <br>
 
 #### A web application that helps you move into any new area by showing you information about nearby neighborhoods so you can see how well they suit your style.
 
@@ -55,6 +56,7 @@ Our goals were threefold:
 We created a crisp clear design style, with colors you might find on a cozy couch.  We used AngularJS with UI Router so we could load subviews instantly without needing to wait for other parts of the page to reload.  On the back end Node, Express, and Q provided fast, reliable timing on several parallel asynchronous API calls.  We delivered nearby Instagram photos to convey the personality and culture of the area.  
 
 ###Front End
+![alt text](https://github.com/Capstone-MakerSquare/New-Neighbors/blob/cleanupdeploy/client/assets/images/ReadMe/frontend_diagram.png)
 
 ####Client Application Information
 We loosely modeled the directory structure from the best practices demonstrated in the following article:
@@ -102,6 +104,7 @@ app
     └── thumbnailsTemplate.html
 ```
 ###Back End
+![alt text](https://github.com/Capstone-MakerSquare/New-Neighbors/blob/cleanupdeploy/client/assets/images/ReadMe/backend_diagram.png)
 
 ####Server Information
 The server makes asynchronous calls to various API endpoints so that the data can be passed to the user quickly. The promise library Q was used to simplify the callback complexities with Node. There is no database for this application because APIs used did not allow persistant data.
