@@ -3,7 +3,7 @@
   "version": "1.0.6",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "engines": {
     "node": "4.1.x"
@@ -26,13 +26,12 @@
   },
   "private": true,
   "dependencies": {
+    "body": "^5.1.0",
     "body-parser": "^1.13.3",
     "browser-sync": "^2.8.2",
     "browserify": "^11.0.1",
     "express": "^4.13.3",
     "front-router": "^1.0.0",
-    "gulp-uglifycss": "^1.0.4",
-    "imagemin-pngquant": "^4.2.0",
     "morgan": "^1.6.1",
     "parser": "^0.1.4",
     "q": "^1.4.1",
