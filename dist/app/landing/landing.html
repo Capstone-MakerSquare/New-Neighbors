@@ -1,0 +1,100 @@
+<div class="landing-container" ng-init="main.autoCompleteInit();">
+  <div class="landing-photo">
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <img class="logo-header" src="./assets/images/Logo/logoHeader.png" alt="Introducing Turf logo">
+          <h1 class="cover-heading">Find Your Next Neighborhood</h1>
+          <button class="landing-btn how-it-works" type="button" ng-click="main.goToAnchor('howItWorks')">How It Works</button>
+        </div>
+      </div>
+    </div>
+    <div class="searchForm col-sm-12 col-md-12" id="howItWorks">
+      <form class="landingSearchForm col-md-8 col-md-offset-2">
+        <div class="col-sm-4 col-md-6 landing-form">
+          <input class="form-control" type="search" autofocus="autofocus" ng-model="main.searchInfo.address" id='place-search' placeholder="Enter an Address">
+        </div>
+        <div class="col-sm-2 col-md-1 landing-form">
+          <select class="form-control" id="rentBuy" name="rentBuy" ng-model="main.searchInfo.buyOrRent">
+            <option value="rent">Rent</option>
+            <option value="buy">Buy</option>
+          </select>
+        </div>
+        <div class="col-sm-2 col-md-2 landing-form">
+          <select class="form-control" name="bedrooms" ng-model="main.searchInfo.bedrooms">
+            <option value="1">1 bedroom</option>
+            <option value="2">2 bedrooms</option>
+            <option value="3">3 bedrooms</option>
+            <option value="4">4 bedrooms</option>
+            <option value="5">5 bedrooms</option>
+            <option value="6">6 bedrooms</option>
+            <option value="7">7+ bedrooms</option>
+          </select>
+        </div>
+        <div class="col-sm-2 col-md-2 landing-form">
+          <select class="form-control" ng-model="main.searchInfo.bathrooms">
+            <option value="1" selected>1 bathroom</option>
+            <option value="2">2 bathroom</option>
+            <option value="3">3 bathrooms</option>
+            <option value="4">4 bathrooms</option>
+            <option value="5">5 bathrooms</option>
+            <option value="6">6 bathrooms</option>
+            <option value="7">7+ bathrooms</option>
+          </select>
+        </div>
+        <div class="col-sm-2 col-md-1 landing-form">
+          <button type="button" ng-click="main.getResults()" class="landing-btn landing-submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <div class="feature-section">
+    <h1>Meet Your Next Neighborhood - <span class="text-muted">From Your Browser.</span></h1>
+
+    <div class="featurette featurette1">
+      <div class="col-sm-10 col-md-7 text-container">
+        <h2 class="featurette-heading">Search Any City or Locality.<span class="text-muted"> Worldwide.</span></h2>
+        <p class="lead">Customizable search features that allow you to search, order, and filter results to find the best neighborhoods for your lifestyle.</p>
+        <img class="featurette-small" src="assets/images/Landing/bar1small.png" alt="three small diverse neighborhood photos">
+      </div>
+      <div class="col-md-5 search-city-img">
+        <img src="assets/images/Landing/Bar1.png" alt="example statistics charts for neighborhood">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="featurette featurette2">
+      <div class="row">
+        <div class="col-sm-10 col-md-7 text-container">
+          <h2 class="featurette-heading">Learn Local Culture.<span class="text-muted"> Find Your Place.</span></h2>
+          <p class="lead">Experience life in a neighborhood by viewing a live Instagram feed and exploring local spots with an interactive map</p>
+        </div>
+        <div class="col-md-5">
+          <img src="assets/images/Landing/Bar2.png" alt="example statistics charts for neighborhood">
+        </div>
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="featurette featurette3">
+      <div class="col-sm-10 col-md-7 text-container">
+        <h2 class="featurette-heading">Neighborhood Data.<span class="text-muted"> At Your Fingertips.</span></h2>
+        <p class="lead">Access neighborhood specific rent and purchase prices, local commute times, detailed services and attractions in the area, and extensive demographic information.</p>
+      </div>
+      <div class="col-md-5">
+        <img src="assets/images/Landing/Bar3.png" alt="example statistics charts for neighborhood">
+      </div>
+    </div>
+
+    <div class="search-neighborhood-btn-container">  
+      <button class="landing-btn" type="button" ng-click="main.goToAnchor('howItWorks')">Search Neighborhoods</button>
+    </div>
+
+  </div>
+</div>
+
+

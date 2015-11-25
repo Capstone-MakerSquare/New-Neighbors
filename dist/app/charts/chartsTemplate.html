@@ -1,0 +1,34 @@
+<div ng-controller="chartsController as chart" ng-init="details.stateSwitch('charts'); chart.setStrings(); chart.setFlags(); chart.countup()" class="col-md-12 charts-container">
+  <div class="col-md-4">
+    <ul class="factual-info">
+      <li>
+        <h5>Median Household Income</h5>
+        <span ng-hide="chart.incomeString === 'Not Available'">$</span><span id="countup1">{{chart.incomeString}}</span>
+      </li>
+      <li>
+        <h5>Median Home Size</h5>
+        <span id="countup2">{{chart.sqftString}}</span><span ng-hide="chart.sqftString === 'Not Available'"> sq.ft</span>
+      </li>
+      <li>
+        <h5>Average Year of Construction</h5>
+        <span id="countup3">{{chart.yearBuiltString}}</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-md-8 bar-chart-container">
+    <div ng-show="!chart.barChart">
+      <h4>Demographic Bar Chart Not Available</h4>
+      <img src="assets/images/Errors/NoBarChart.png" alt="No bar chart available">
+    </div>
+    <div id="percentage-chart"></div>
+   </div>
+  <div class="col-md-12 pie-chart-container">
+  <hr class="chart-splitter">
+    <div ng-show="!chart.pieChart">
+      <h4>Age Distribution Not Available for the neighborhood</h4>
+      <img src="assets/images/Errors/NoPieChart.png" alt="">
+    </div>
+    <div id="pie-chart"></div>
+  </div>
+</div>
