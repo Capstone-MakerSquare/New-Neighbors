@@ -1,0 +1,60 @@
+<div class="details-container" ng-controller="detailsController as details">
+  <!-- slideshow ng-class="details.picturesArr.length === 0 ? 'instagram-default-background' : ''" -->
+  <div class="slideshow" >
+   <!-- neighborhood header -->
+    <span class="profile-buttons neighborhood-name">{{main.currentNeighborhood.name}}</span>
+    <span class="profile-buttons back-button"><a style="color:#fff" ui-sref="main.results"> Back </a></span>
+    <slick dots=false infinite=true speed=300 autoplaySpeed=3000 pauseOnHover=true swipe=true variableWidth=true slides-to-show=4 autoplay=true touch-move=true slides-to-scroll=4 arrows=true>
+      <!-- <div ng-if="details.picturesArr.length === 0" class="instagram-default-background">&nbsp; -->
+        <div ng-repeat="pic in main.picturesArr">
+          <div class="picture-container">
+            <img ng-src="{{pic[0]}}"/>
+            <!-- <span class="instagram-username">{{pic[1]}}</span> -->   <!-- uncomment to display user name -->
+          </div>
+        </div>
+      <!-- </div> -->
+    </slick>
+  </div>
+
+  <!-- neighborhood description -->
+  <div class="col-md-12 rent-commute-container">
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6">
+        <div class="card-block">
+          <h5 class="card-title">{{main.priceRange.title}}</h5>
+          <p class="card-text">{{main.priceRange.price}}</p>
+        </div>
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 commute">
+        <div class="card-block">
+          <h5 class="card-title">Commute</h5>
+          <p class="card-text">{{details.currentNeighborhood.commuteDistance}} miles | {{details.currentNeighborhood.commuteTime}} minutes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-10 col-md-offset-1 nav-container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="nav-button-default" ng-class="details.tabs[0] === 1 ? 'nav-button-on' : 'nav-button-off'">
+          <a ui-sref="main.details.services">Amenities</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="nav-button-default" ng-class="details.tabs[1] === 1 ? 'nav-button-on' : 'nav-button-off'">
+          <a ui-sref="main.details.attractions">Attractions</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="nav-button-default" ng-class="details.tabs[2] === 1 ? 'nav-button-on' : 'nav-button-off'">
+          <a ui-sref="main.details.charts">Statistics</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <div ui-view="detail-section"></div>
+
+</div>

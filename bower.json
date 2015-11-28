@@ -1,12 +1,14 @@
 {
-  "name": "MKS20-site-deploy",
-  "main": "index.js",
+  "name": "New-Neighbor-App",
   "version": "0.0.0",
-  "homepage": "https://github.com/epps/MKS20-site-deploy",
+  "homepage": "https://github.com/Capstone-MakerSquare/New-Neighbors/",
   "authors": [
-    "Erik Eppel <eceppel@gmail.com>"
+    "Raghav Abboy <rabboy@eng.ucsd.edu>",
+    "Melinda Sarnicki Bernardo <melindasarnicki@gmail.com>",
+    "Evan Mencke <evanmencke@gmail.com>",
+    "Kalisa Falzone <kalisafalzone@gmail.com>"
   ],
-  "description": "Boilerplate for personal site deploy assignment",
+  "description": "An application that recommends neighborhoods to users moving to a new city",
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -17,6 +19,15 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.4.3"
+    "angular": "~1.4.5",
+    "angular-animate": "~1.4.5",
+    "angular-bootstrap": "0.13.4",
+    "angular-slick": "~0.2.1",
+    "angular-ui-router": "~0.2.15",
+    "bootstrap": "~3.3.5",
+    "foundation-icon-fonts": "*"
+  },
+  "resolutions": {
+    "angular": "1.4.8"
   }
 }

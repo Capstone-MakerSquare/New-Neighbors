@@ -1,0 +1,57 @@
+
+.charts-container ul {
+  /*margin:15px 10px 10px -50px;*/
+  padding-right:20px;
+}
+
+.charts-container li {
+  margin:15px auto;
+  padding-right:10px;
+  text-align: center;
+}
+
+.charts-container li h5 {
+  display:block;
+  font-weight: bold;
+}
+
+.charts-container span {
+  font-size:20px;
+}
+
+#pie-chart {
+  margin-top:20px;
+  padding-top:20px;
+}
+
+.chart-splitter {
+  border: 1px solid #af98bd;
+}
+
+.bar-chart-container,
+.pie-chart-container {
+  text-align: center;
+}
+
+.bar-chart-container h4 {
+  display: block;
+}
+
+.bar-chart-container img,
+.pie-chart-container img{
+  display: inline-block;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 15px;
+  width: 250px;
+  height: auto;
+}
+
+.bar-chart-container {
+  margin-top: 30px;
+}
+
+#pie-chart,
+#percentage-chart {
+  min-width: 280px;
+}

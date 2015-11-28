@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turf</title>
+
+    <link rel="shortcut icon" href="assets/images/Favicon/favicon-32x32.png" type="image/x-icon"/ >
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,300">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css">
+    <link rel="stylesheet" href="assets/css/lib.min.css">
+    <link rel="stylesheet" href="assets/css/styles.min.css">  </head>
+
+  <body ng-controller="MainController as main" id="Turf">
+
+  <div class="header">
+    <img ng-click="main.gotoLanding()" src="assets/images/Logo/turf-logo-small.png">
+  </div>
+
+  <div class="ui-view" autoscroll></div>
+
+  <team></team>
+
+    <!-- Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <script src="https://google-maps-utility-library-v3.googlecode.com/svn-history/r391/trunk/markerwithlabel/src/markerwithlabel.js"></script>
+
+    <!-- Source JS files -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick.min.js"></script>
+     <script src="lib/slick.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.7/slick.min.js"></script>
+
+    <!--Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <script src="app/app.js"></script>
+    <script src="app/app.min.js"></script>    <script src="app/service.js"></script>    <script src="app/mapService.js"></script>    <script src="app/detailsService.js"></script>
+  </body>
+</html>

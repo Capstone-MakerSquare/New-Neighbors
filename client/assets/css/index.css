@@ -1,0 +1,53 @@
+@font-face {
+  font-family: AvenirNextPro;
+  src: url("../font/AvenirLTStd-Light.woff") format("opentype");
+}
+
+/* overriding bootstrap default styles */
+#navbar-margin {
+  margin-bottom:0;
+}
+
+.results-container .searchForm-submit:focus{
+   outline: none !important;
+}
+
+/* prevents unintentional routing in Angular via href tags on empty anchors Bootstrap uses for styling */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+/* default styles */
+
+body {
+  background-color: #d3d3d3;
+  overflow-x:hidden;
+  font-family: AvenirNextPro, cursive;
+}
+
+ ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+li {
+  display: inline-block;
+}
+
+p {
+  margin-bottom: 2px;
+}
+
+a, a:hover, a:focus {
+  color: #5F327C;
+  text-decoration: none;
+  cursor:pointer;
+}
+
+small {
+  font-style: italic;
+}
+
+.main-color {
+  color:#5f327c;
+}
+
+

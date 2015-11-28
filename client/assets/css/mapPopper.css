@@ -1,0 +1,54 @@
+
+.mapPopper {
+  box-sizing:border-box;
+  background: #FFF;
+  box-shadow: 1px 1px 2px #333;
+  border:5px solid #306BA4;
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  -webkit-animation: pulse 1s ease 1s 3;
+  -moz-animation: pulse 1s ease 1s 3;
+  animation: pulse 1s ease 1s 3;
+}
+
+/* ANIMATIONS */
+@-webkit-keyframes pulse {
+ 40% {
+    -webkit-transform: scale(2);
+    -moz-transform: scale(2);
+    transform: scale(2);
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@-moz-keyframes pulse {
+ 40% {
+    -webkit-transform: scale(2);
+    -moz-transform: scale(2);
+    transform: scale(2);
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@keyframes pulse {
+  40% {
+    -webkit-transform: scale(2);
+    -moz-transform: scale(2);
+    transform: scale(2);
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    transform: scale(1);
+  }
+}

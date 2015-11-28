@@ -1,0 +1,28 @@
+<div class="thumbnails-container">
+  <div class="card-deck-wrapper col-md-12">
+  <!---single glance card start-->
+    <div class="card-deck">
+      <div ng-repeat="neighborhood in main.filteredNeighborhoodArray | orderBy:main.filterType">
+        <div class="col-md-4 card-container" >
+          <div class="card" ng-click="main.selectNeighborhood(neighborhood)">
+            <!-- Card -->
+            <div class="card-title-container">
+              <div class="card-title-text">{{neighborhood.name}}</div>
+             </div>
+            <div class="card-info">
+              <div class="card-block">
+                <h5 class="card-title">{{neighborhood.priceString.title}}</h5>
+                <h6 class="card-text">{{neighborhood.priceString.price}}</h6>
+              </div>
+              <div class="card-block">
+                <h5 class="card-title">Commute Time</h5>
+                <h6 class="card-text">{{neighborhood.commuteDistance}} miles | {{neighborhood.commuteTime}} minutes</h6>
+              </div>
+             </div>
+             <!-- Card -->
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ </div>

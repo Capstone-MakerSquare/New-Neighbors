@@ -1,0 +1,37 @@
+<div class="searchForm" ng-init="main.autoCompleteInitialize();">
+  <form name="landingSearchForm">
+    <div class="form-group">
+      <input class="form-control" type="search" ng-model="main.searchInfo.address" id='place-search' placeholder="Enter an Address" required>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-sm-10 col-md-2">
+          <select class="form-control dropdown-toggle" name="rentBuy" ng-model="main.searchInfo.buyOrRent">
+            <option value="rent">Rent<span class="glyphicon glyphicon-star"></span></option>
+            <option value="buy">Buy</option>
+          </select>
+        </div>
+        <div class="col-sm-10 col-md-4">
+          <select class="form-control" name="bathrooms" ng-model="main.searchInfo.bedrooms">
+            <option value="1" selected>1 bedroom</option>
+            <option value="2">2 bedrooms</option>
+            <option value="3">3 bedrooms</option>
+            <option value="4">4 bedrooms</option>
+          </select>
+        </div>
+        <div class="col-sm-10 col-md-4">
+          <select class="form-control" ng-model="main.searchInfo.bathrooms">
+            <option value="1" selected>1 bathroom</option>
+            <option value="2">2 bathroom</option>
+            <option value="3">3 bathrooms</option>
+            <option value="4">4 bathrooms</option>
+          </select>
+        </div>
+        <div class="col-sm-10 col-md-2" >
+           <button type="button" class="searchForm-submit" ng-click="main.submitAddress()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <hr>
+</div>

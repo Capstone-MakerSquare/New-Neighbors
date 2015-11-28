@@ -1,10 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>MKS20 Site Deploy</title>
-</head>
-<body>
-  <h1>Hello, World!</h1>
-</body>
+<!doctype html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turf</title>
+
+    <link rel="shortcut icon" href="assets/images/Favicon/favicon-32x32.png" type="image/x-icon"/ >
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,300">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css">
+    <!-- build:libcss -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick-theme.min.css">
+    <!-- endbuild -->
+    <!-- build:css -->
+    <link rel="stylesheet" href="../assets/css/productionstyles.css">
+    <!-- endbuild -->
+  </head>
+
+  <body ng-controller="MainController as main" id="Turf">
+
+  <div class="header">
+    <img ng-click="main.gotoLanding()" src="assets/images/Logo/turf-logo-small.png">
+  </div>
+
+  <div class="ui-view" autoscroll></div>
+
+  <team></team>
+
+    <!-- Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <script src="https://google-maps-utility-library-v3.googlecode.com/svn-history/r391/trunk/markerwithlabel/src/markerwithlabel.js"></script>
+
+    <!-- Source JS files -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick.min.js"></script>
+     <!-- build:slick -->
+    <script src="lib/angular-slick/dist/slick.js"></script>
+    <!-- endbuild -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.7/slick.min.js"></script>
+
+    <!--Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <!-- build:app -->
+    <script src="app/app.js"></script>
+    <!-- endbuild -->
+    <!-- build:js -->
+    <script src="app/details/detailsController.js"></script>
+    <script src="app/map/mapDirective.js"></script>
+    <script src="app/searchForm/searchFormDirective.js"></script>
+    <script src="app/filter/filterDirective.js"></script>
+    <script src="app/thumbnails/thumbnailsDirective.js"></script>
+    <script src="app/mainCtrl.js"></script>
+    <script src="app/charts/chartsController.js"></script>
+    <script src="app/charts/chartsDirective.js"></script>
+    <script src="app/countup/countup.min.js"></script>
+    <script src="app/team/teamDirective.js"></script>
+    <!-- endbuild -->
+    <!-- build:services -->
+    <script src="app/service.js"></script>
+    <script src="app/map/mapService.js"></script>
+    <script src="app/details/detailsService.js"></script>
+    <!-- endbuild -->
+
+  </body>
 </html>

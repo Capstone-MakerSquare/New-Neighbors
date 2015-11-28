@@ -1,0 +1,35 @@
+<div class="results-container">
+  <searchform></searchform>
+  <filters></filters>
+  <hr>
+
+  <div class="direction" ng-show="main.filteredNeighborhoodArray.length > 0">Click on a neighborhood to view more information:</div>
+
+  <thumbnail></thumbnail>
+
+  <!-- <div ng-show="main.searchInfo.address.length === 0 || !main.searchInfo.address.length">Enter an address to search for neighborhoods</div> -->
+
+  <div class="direction" ng-show="main.filteredNeighborhoodArray.length === 0 && !main.loading">There are no results to display.</div>
+
+  <img class="loading-image" ng-show="main.loading" src="assets/images/Loading/houseLoading.png" alt="loading static image">
+
+  <span ng-show="main.loading">
+    <div class="spinner">
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+      <div class="spoke"></div>
+    </div>
+  </span>
+
+  <div class="direction loading-text" ng-show="main.loading">Turf is fetching you neighborhoods...</div>
+
+</div>
