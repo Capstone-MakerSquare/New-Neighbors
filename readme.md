@@ -1,7 +1,7 @@
 # Turf
 
-[![Dependency Status](https://david-dm.org/Capstone-MakerSquare/New-Neighbors/cleanup.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev)
-[![devDependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/cleanup/dev-status.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/dev#info=devDependencies) <br>
+[![Dependency Status](https://david-dm.org/Capstone-MakerSquare/New-Neighbors/master.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/master)
+[![devDependency Status](https://david-dm.org/Capstone-Makersquare/New-Neighbors/master/dev-status.svg)](https://david-dm.org/Capstone-Makersquare/New-Neighbors/master#info=devDependencies) <br>
 
 #### A web application that helps you move into any new area by showing you information about nearby neighborhoods so you can see how well they suit your style.
 
