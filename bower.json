@@ -24,6 +24,10 @@
     "angular-bootstrap": "0.13.4",
     "angular-slick": "~0.2.1",
     "angular-ui-router": "~0.2.15",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "foundation-icon-fonts": "*"
+  },
+  "resolutions": {
+    "angular": "1.4.8"
   }
 }

@@ -5,23 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Turf</title>
 
-    <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
-    <link href="assets/css/mapPopper.css" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/index.css" rel="stylesheet">
-    <link href="assets/css/landing.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/scss/foundation-icons.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick.min.css" rel="stylesheet" >
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick-theme.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/app.css">
-
-    <!-- favicon info start -->
-    <link rel="icon" type="image/png" href="assets/images/Favicon/favicon-32x32.png" sizes="32x32">
-    <link rel="manifest" href="assets/images/favicons/manifest.json">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-    <!-- favicon info end -->
+    <link rel="shortcut icon" href="assets/images/Favicon/favicon-32x32.png" type="image/x-icon"/ >
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,300">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css">
+    <!-- build:libcss -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick-theme.min.css">
+    <!-- endbuild -->
+    <!-- build:css -->
+    <link rel="stylesheet" href="../assets/css/productionstyles.css">
+    <!-- endbuild -->
   </head>
 
   <body ng-controller="MainController as main" id="Turf">
@@ -32,33 +26,7 @@
 
   <div class="ui-view" autoscroll></div>
 
-<!-- start footer section -->
-  <footer class="footer">
-    <ul>
-      <li>&copy; Turf 2015 | </li>
-      <li>Raghav Abboy</li>
-        <a class="icon-link" href="https://www.linkedin.com/in/raghavabboy"><i class="fi-social-linkedin"></i>
-        </a>
-        <a class="icon-link" href="https://github.com/RaghavAbboy"><i class="fi-social-github"></i></a>
-        <span> | </span>
-      <li>Melinda Bernardo</li>
-        <a class="icon-link" href="https://www.linkedin.com/in/melindasarnicki"><i class="fi-social-linkedin"></i>
-        </a>
-        <a class="icon-link" href="https://github.com/msarnicki"><i class="fi-social-github"></i></a>
-        <span> | </span>
-      <li>Evan Mencke</li>
-        <a class="icon-link" href="https://www.linkedin.com/in/metaevan"><i class="fi-social-linkedin"></i>
-        </a>
-        <a class="icon-link" href="https://github.com/metaevan"><i class="fi-social-github"></i></a>
-        <span> | </span>
-      <li>Kalisa Falzone</li>
-        <a class="icon-link" href="https://www.linkedin.com/in/kalisafalzone"><i class="fi-social-linkedin"></i>
-        </a>
-        <a class="icon-link" href="https://github.com/kalisafalzone"><i class="fi-social-github"></i></a>
-    </ul>
-  </footer>
-
- <!-- end footer section -->
+  <team></team>
 
     <!-- Google Maps -->
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
@@ -68,34 +36,39 @@
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick.min.js"></script>
-    <script src="assets/angular-slick/dist/slick.js"></script>
+     <!-- build:slick -->
+    <script src="lib/angular-slick/dist/slick.js"></script>
+    <!-- endbuild -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.7/slick.min.js"></script>
 
     <!--Highcharts -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-    <!-- App JS files -->
-    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.7/slick.min.js"></script>
+    <!-- build:app -->
     <script src="app/app.js"></script>
-    <script src="app/map/mapController.js"></script>
+    <!-- endbuild -->
+    <!-- build:js -->
     <script src="app/details/detailsController.js"></script>
-    <script src="app/searchForm/searchFormController.js"></script>
-    <script src="app/filter/filterController.js"></script>
-    <script src="app/thumbnails/thumbnailsController.js"></script>
-    <script src="app/services.js"></script>
-    <script src="app/map/mapService.js"></script>
     <script src="app/map/mapDirective.js"></script>
     <script src="app/searchForm/searchFormDirective.js"></script>
     <script src="app/filter/filterDirective.js"></script>
     <script src="app/thumbnails/thumbnailsDirective.js"></script>
-    <script src="app/details/detailsService.js"></script>
     <script src="app/mainCtrl.js"></script>
     <script src="app/charts/chartsController.js"></script>
     <script src="app/charts/chartsDirective.js"></script>
     <script src="app/countup/countup.min.js"></script>
+    <script src="app/team/teamDirective.js"></script>
+    <!-- endbuild -->
+    <!-- build:services -->
+    <script src="app/service.js"></script>
+    <script src="app/map/mapService.js"></script>
+    <script src="app/details/detailsService.js"></script>
+    <!-- endbuild -->
+
   </body>
 </html>

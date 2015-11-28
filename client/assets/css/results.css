@@ -1,0 +1,29 @@
+
+.details-container, .results-container {
+  height:950px;
+  overflow:scroll;
+  border:2px solid #5f327c;
+  background-color: #fff;
+  overflow-x:hidden;
+  margin:0;
+  padding:0 20px 10px 20px;
+}
+
+.results-container hr {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.results-container .direction {
+  color: #5f327c;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.loading-text {
+  position: absolute;
+  text-align: center;
+  margin: 0 auto;
+  top:60%;
+  right:28%;
+}

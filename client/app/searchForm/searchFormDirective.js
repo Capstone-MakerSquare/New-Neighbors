@@ -1,3 +1,4 @@
+var searchForm = angular.module('myApp.searchForm', []);
 searchForm.directive('searchform', [function() {
 
   return {

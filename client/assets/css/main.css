@@ -1,0 +1,20 @@
+.main-container {
+  margin: 20px 10px 75px 10px;
+}
+
+.main-container .map-container {
+  width:100%;
+  /* fixed width must be set for map-canvas */
+  height:950px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  margin:0;
+}
+
+.main-container #map-canvas {
+  height:100%;
+  width:100%;
+}
+
+.main-container #main-resultanddetails-container {
+  padding-left:0;
+}
