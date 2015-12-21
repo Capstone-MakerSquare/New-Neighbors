@@ -1,6 +1,6 @@
 
 .details-container .details-neighborhood-bg {
-  background: webkit-background-size: cover;
+  webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
