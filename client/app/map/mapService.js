@@ -30,7 +30,7 @@ mapMod // = angular.module('myApp.mapServices',[])
   var iconCounter = 0;
 
   //temporary variables
-  var targetLocation;  
+  var targetLocation;
 
   //----------------------------------------------------------------------------------
   //Initialize the map with a coordinates object
@@ -103,7 +103,7 @@ mapMod // = angular.module('myApp.mapServices',[])
 
     if(markerType === 'amenities_attractions') {
       infowindow = new google.maps.InfoWindow();
-      infowindow.setContent('<b>'+ placeObj.name + '</b><br>' + ratingHTML);
+      infowindow.setContent('<div class="scrollFix">' +'<b>'+ placeObj.name + '</b><br>' + ratingHTML + '</div>');
       google.maps.event.addListener(marker, 'click', function() {
         //remove
         console.log('Place Clicked:', placeObj);

@@ -90,6 +90,10 @@
   margin-left:0;
 }
 
+.amenities-categories {
+  min-width:150px;
+}
+
 .amenities-categories ul {
   margin-left:0;
 }
@@ -139,5 +143,5 @@
 }
 
 .spot-name h4 {
-  color: color:#5F327C;
+  color:#5F327C;
 }
