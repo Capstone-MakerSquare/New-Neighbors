@@ -75,7 +75,7 @@ details
     subway_station: [],
     train_station: [],
     veterinary_care: []
-  }
+  };
 
   // var getAmenitiesIcon = function(amenity) {
   //   return './assets/images/Amenities/'+amenity.displayName+'.png';
@@ -105,10 +105,10 @@ details
             if (dictionary[thisType]) {
 
               if (!thisHoodObj[thisType]) {
-                thisHoodObj[thisType] = []
+                thisHoodObj[thisType] = [];
               }
               thisHoodObj[thisType].push(JSON.parse(JSON.stringify(spots[place])));
-              thisHoodObj[thisType][0].type = thisType
+              thisHoodObj[thisType][0].type = thisType;
             }
           }
         }
