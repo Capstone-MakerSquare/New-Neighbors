@@ -32,7 +32,7 @@ module.exports = function (coordinates) {
                  instaUrl_distance + 2000;
 
   //remove
-  // console.log('instaUrl:', instaUrl);
+  console.log('instaUrl:', instaUrl);
 
   getRequest(instaUrl)
   .then(function (responseObj) {
@@ -40,7 +40,7 @@ module.exports = function (coordinates) {
     var imagesArray = [];
 
     //remove
-    // console.log('getInstagram says: Response data fetched: ',results.length);
+    console.log('getInstagram says: Response data fetched: ',results.length);
 
     _.each(results, function (result) {
       imagesArray.push({

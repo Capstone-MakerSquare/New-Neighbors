@@ -88,7 +88,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
           commuteDistance: (neighborhoods[i].commuteInfo && neighborhoods[i].commuteInfo.commuteDistance) ? neighborhoods[i].commuteInfo.commuteDistance : 'Not Available',
           estimateLow: neighborhoods[i].rentEstimate ? neighborhoods[i].rentEstimate.estimateLow : 'Not Available',
           estimateHigh: neighborhoods[i].rentEstimate ? neighborhoods[i].rentEstimate.estimateHigh : 'Not Available',
-          instagram: neighborhoods[i].instagram,
+          googlePics: neighborhoods[i].googlePics,
           coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude},
           demography: neighborhoods[i].demographics,
           priceString : main.getPriceString(neighborhoods[i]),
@@ -372,6 +372,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     //remove
     // console.log('selectNeighborhood says: main.serverResponse:',main.serverResponse);
     // console.log('selectNeighborhood', Details.currentNeighborhood);
+    // Todo: remove setTimeout.  Seriously, it's not even $Timeout.
 
     $state.go('main.results');
     setTimeout(function() {
@@ -386,13 +387,16 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   };
 
   //----------------------------------------------------------------------------------
-  // instagram map
+  // googlePics map
   main.populatePictures = function(hood){
     main.picturesArr = [];
-    hood.instagram.forEach(function (obj) {
-      main.picturesArr.push([obj.images.low_resolution.url, obj.user.full_name]);
+    if (!hood.googlePics) {
+      console.log("No Pictures Found");
+    }
+    hood.googlePics.forEach(function (obj) {
+      main.picturesArr.push([obj.image, obj.userLink]);
     });
-    // console.log('detailsController says: picturesArr:', main.picturesArr);
+    console.log('detailsController says: picturesArr:', main.picturesArr);
   }
 
 

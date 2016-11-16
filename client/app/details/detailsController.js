@@ -58,10 +58,12 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
 
   //----------------------------------------------------------------------------------
   // populates slideshow with Instagram photos
+  // Todo: dupe of main.populatePictures in mainCtrl.js?
+  // Todo: Check sizes?
   detail.populatePictures = function(){
     var pictures = [];
     detail.currentNeighborhood.instagram.forEach(function (obj) {
-      pictures.push([obj.images.low_resolution.url, obj.user.full_name]);
+      pictures.push([obj.image, obj.userLink]);
     });
     return pictures;
   };

@@ -13,7 +13,8 @@ var getXmlRequest = require('./helpers/getXmlRequest.js');
 var geoCode = require('./helpers/geoCode.js');
 var reverseGeocode = require('./helpers/reverseGeocode.js');
 var getDistances = require('./helpers/getDistances.js');
-var getInstagram = require('./helpers/getInstagram.js');
+var getPlaceDetails = require('./helpers/getPlaceDetails.js');
+var getGooglePics = require('./helpers/getGooglePics.js');
 var queryAmenitiesAndAttractions = require('./helpers/queryAmenitiesAndAttractions.js');
 var zilpy = require('./helpers/zilpy.js');
 var zillow = require('./helpers/zillow.js');
@@ -35,7 +36,7 @@ if (process.env.PORT) {
   keys = {
     googleAPIKey: process.env.GOOGLE_KEY,
     zwsId: process.env.ZILLOW_KEY,
-    instagramAccessToken: process.env.INSTAGRAM_KEY
+    // instagramAccessToken: process.env.INSTAGRAM_KEY
   }
 } else {
   keys = require('./config/keys.js');
@@ -104,8 +105,8 @@ app.post('/api/getNeighbors', function (req, res) {
             else { return 'Other Country'; }
           })
           ,
-          getAmenitiesAndAttractions(neighborhood)//,
-          // getPictures(neighborhood)  //remove since instagram changed api rules
+          getAmenitiesAndAttractions(neighborhood),
+          getPictures(neighborhood)  //change since instagram changed api rules
         ])
       .then(function (resultArray) {
         numNeighborhoodsCompleted++;
@@ -149,16 +150,17 @@ app.post('/api/getNeighbors', function (req, res) {
   }
 //-----------------------------------------------------------------------------------
   var getPictures = function (neighborhood) {
+    console.log("getPictures", neighborhood)
     var deferred = Q.defer();
-    var coordinates = {
-      latitude : neighborhoodObject[neighborhood].latitude,
-      longitude : neighborhoodObject[neighborhood].longitude
-    };
-    getInstagram(coordinates)
-    .then(function (imagesArray) {
-      neighborhoodObject[neighborhood].instagram = imagesArray;
-      deferred.resolve(neighborhood + ':Instagram pictures fetched.');
-    });
+    let maxPicsPerLocation = 6;
+    getPlaceDetails(neighborhoodObject[neighborhood].placeId, maxPicsPerLocation)
+    .then(function(picRefsArr){
+      getGooglePics(picRefsArr, neighborhood)
+      .then(function(imagesArray) {
+        neighborhoodObject[neighborhood].googlePics = imagesArray;
+        deferred.resolve(neighborhood + ': GooglePics fetched.');
+      });
+    })
     return deferred.promise;
   }
 //-----------------------------------------------------------------------------------
