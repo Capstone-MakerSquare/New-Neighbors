@@ -16,6 +16,8 @@ module.exports = function (address) {
   // console.log('address: ',address);
   // console.log('googleAPIKey: ',keys.googleAPIKey);
   var gPlacesUrl = gPlacesUrl_address + address + gPlacesUrl_sensor;
+  console.log('gPlacesUrl', gPlacesUrl)
+  console.log("******************************************************")
   getRequest(gPlacesUrl)
   .then(function (coordinatesObj) {
     if(coordinatesObj.status === 'OK') {
