@@ -97,15 +97,15 @@ app.post('/api/getNeighbors', function (req, res) {
           .then(function (neighborhood) {
             if(neighborhoodObject[neighborhood].country === 'USA') {
               return Q.all([
-                getRentEstimate(neighborhood),
-                getDemography(neighborhood)
+                // getRentEstimate(neighborhood),
+                // getDemography(neighborhood)
               ]);
             }
             else { return 'Other Country'; }
           })
           ,
-          getAmenitiesAndAttractions(neighborhood),
-          getPictures(neighborhood)
+          getAmenitiesAndAttractions(neighborhood)//,
+          // getPictures(neighborhood)  //remove since instagram changed api rules
         ])
       .then(function (resultArray) {
         numNeighborhoodsCompleted++;

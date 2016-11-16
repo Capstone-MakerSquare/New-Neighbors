@@ -45,7 +45,7 @@ module.exports = function (coordinates) {
   //Fetch amenities for radii 500, 1500 and 2500
   for(var i=0; i<3; i++) {
     var gAmenitiesUrl = gAmenitiesUrl_1 + radius + gAmenitiesUrl_2;
-    // console.log('gAmenitiesUrl:',gAmenitiesUrl);
+    console.log('gAmenitiesUrl:',gAmenitiesUrl);
     radius += 1000;
 
     getRequest(gAmenitiesUrl)
