@@ -184,13 +184,13 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //Function to set up autocomplete feature for the search field
   main.autoCompleteInit = function () {
     var input = document.getElementById('place-search');
-    var options = { types: [] };
+    var options = { types: [] };   // Todo: limit to [geocode] per https://developers.google.com/maps/documentation/javascript/places-autocomplete ?
     autocomplete = new google.maps.places.Autocomplete(input, options);
 
     //listener to listen to a place change
     autocomplete.addListener('place_changed', function() {
       var place = autocomplete.getPlace();
-      // console.log('mainCtrl.js says: Place changed. Place:',place.formatted_address);
+      // console.log('mainCtrl.js says: Place changed. Place:',place);
       if(main.searchInfo.address.length > 0 || place.formatted_address) {
         main.searchInfo.address = place.formatted_address || main.searchInfo.address;
       }

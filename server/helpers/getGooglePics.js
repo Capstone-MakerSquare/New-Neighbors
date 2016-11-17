@@ -33,15 +33,7 @@ module.exports = function (picRefsArr, neighborhoodName) {
   for(let i=0; i<numPics; i++) {
     let picRef = picRefsArr[i];
     let placePhotoUrl = placePhoto_path + placePhoto_maxHeight + placePhoto_ref + picRef.photo_reference + placePhoto_key;
-
-    //remove
-    console.log('placePhotoUrl:', neighborhoodName, placePhotoUrl);
-    console.log("numEvents === numPics", numEvents, numPics)
-
     numEvents++;
-
-    //   //remove
-    //   console.log('getGooglePic says: Response data fetched: ',results);
 
     imagesArray.push({
       name: neighborhoodName,
@@ -52,7 +44,6 @@ module.exports = function (picRefsArr, neighborhoodName) {
     });
 
     if (numEvents === numPics) {
-      console.log("pics finished")
       deferred.resolve(imagesArray);
     }
 

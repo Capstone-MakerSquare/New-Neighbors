@@ -17,7 +17,7 @@ var getPlaceDetails = require('./helpers/getPlaceDetails.js');
 var getGooglePics = require('./helpers/getGooglePics.js');
 var queryAmenitiesAndAttractions = require('./helpers/queryAmenitiesAndAttractions.js');
 var zilpy = require('./helpers/zilpy.js');
-var zillow = require('./helpers/zillow.js');
+var getDemographics = require('./helpers/getDemographics.js');
 
 app = express();
 middleware(app,express);
@@ -35,7 +35,7 @@ var numNeighborhoods;
 if (process.env.PORT) {
   keys = {
     googleAPIKey: process.env.GOOGLE_KEY,
-    zwsId: process.env.ZILLOW_KEY,
+    // zwsId: process.env.ZILLOW_KEY,
     // instagramAccessToken: process.env.INSTAGRAM_KEY
   }
 } else {
@@ -99,7 +99,7 @@ app.post('/api/getNeighbors', function (req, res) {
             if(neighborhoodObject[neighborhood].country === 'USA') {
               return Q.all([
                 // getRentEstimate(neighborhood),
-                // getDemography(neighborhood)
+                getDemography(neighborhood)
               ]);
             }
             else { return 'Other Country'; }
@@ -150,7 +150,6 @@ app.post('/api/getNeighbors', function (req, res) {
   }
 //-----------------------------------------------------------------------------------
   var getPictures = function (neighborhood) {
-    console.log("getPictures", neighborhood)
     var deferred = Q.defer();
     let maxPicsPerLocation = 6;
     getPlaceDetails(neighborhoodObject[neighborhood].placeId, maxPicsPerLocation)
@@ -182,8 +181,9 @@ app.post('/api/getNeighbors', function (req, res) {
   }
 //-----------------------------------------------------------------------------------
   var getDemography = function (neighborhood) {
+    console.log("getDemography", neighborhoodObject[neighborhood].zip);
     var deferred = Q.defer();
-    zillow(neighborhood, neighborhoodObject[neighborhood].city)
+    getDemographics(neighborhoodObject[neighborhood].zip)
     .then(function (demographyObj) {
       neighborhoodObject[neighborhood].demographics = demographyObj;
       deferred.resolve(neighborhood + ':Demography info fetched.');

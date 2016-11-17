@@ -13,7 +13,7 @@ if (process.env.PORT) {
 
 
 //-----------------------------------------------------------------------------------
-//GET Google picture ids that are for given places
+//GET Google picture ids for given places
 /*Input: Place IDs and max number of pics for the location
   Output: Picture ID array
 */
@@ -27,19 +27,16 @@ module.exports = function (placeId, maxPics) {
   let placeDetail_key = '&key=' + keys.googleAPIKey;
 
   let placeDetailUrl = placeDetail_path + placeDetail_id + placeDetail_key;
-
   //remove
   // console.log('placeDetailUrl:', placeDetailUrl);
 
   getRequest(placeDetailUrl)
   .then(function (responseObj) {
-    //remove
     let picRefsArr = responseObj.result.photos;
+    //remove
     // console.log('getPlaceDetail says: Response data fetched: ',picRefsArr);
     
     deferred.resolve(picRefsArr.slice(0,maxPics))
-
-
   }, function (errorMessage) {
     deferred.resolve(errorMessage);
   });
