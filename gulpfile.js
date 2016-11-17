@@ -139,7 +139,7 @@ gulp.task('services',['clean'], function() {
 gulp.task('minjs', ['clean'], function() {
   return gulp.src(paths.scripts.clientdist)
     .pipe(concat('app.min.js'))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(gulp.dest(paths.scripts.dist));
 });
 

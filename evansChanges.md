@@ -13,3 +13,4 @@ Todos:  Fix demography by using http://geodataservice.net/DemographicsAPI.aspx
         Fix Pictures  (google places pictures have replaced the no longer available instagram ones, but they need size adjustment)
         Fix "BUY" neighborhood listing
         Fix rental / purchase estimates (via Quandl)
+        Prices from Quandl are not useful for rental size.  use small/medium/large estimates with their $/sqft, and throw in like 650/750/1000 to get usable numbers.

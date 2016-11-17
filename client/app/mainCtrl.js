@@ -43,7 +43,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   // Input: neighborhoodsObj
   // Output: flattened array of objects
   main.getPriceString = function (neighborhood) {
-    var obj = {}
+    var obj = {};
     if(main.searchInfo.buyOrRent === 'rent') {
       if(!neighborhood.rentEstimate) {
         obj.title = 'Rent Estimate';
@@ -60,16 +60,16 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
         }
         obj.title = main.buyPrice[neighborhood.name].housetype;
         obj.price = main.buyPrice[neighborhood.name].priceStr;
-      };
+      }
     return obj;
-   }
+  };
 
   main.orderPrice = function(obj) {
     if(main.searchInfo.buyOrRent === 'rent') {
       if (obj.rentEstimate) {
         return obj.rentEstimate.estimateLow;
       } else {
-      return "Price Not Available"
+        return "Price Not Available";
       }
     } else {
       return main.buyPrice[obj.name].priceNum;
@@ -396,7 +396,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     hood.googlePics.forEach(function (obj) {
       main.picturesArr.push([obj.image, obj.userLink]);
     });
-    console.log('detailsController says: picturesArr:', main.picturesArr);
+    // console.log('detailsController says: picturesArr:', main.picturesArr);
   }
 
 
