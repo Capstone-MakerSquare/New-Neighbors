@@ -378,7 +378,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     setTimeout(function() {
       $state.go('main.details.services');
 
-      Charts.barChartData(neighborhood);
+      Charts.chartData(neighborhood);
       Charts.pieChartData(neighborhood);
       Charts.createStrings(neighborhood);
       Map.panAndFocus(neighborhood.coordinates, 13);

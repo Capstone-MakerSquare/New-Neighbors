@@ -55,9 +55,13 @@ var paths = {
     main: ['client/lib/foundation-icons/**/*'],
     dist: 'dist/lib'
   },
+  marker: {
+    main: 'client/lib/markerWithLabel.min.js',
+    dist: 'dist/lib'
+  },  
   slick: {
     main: 'client/lib/slick-carousel/**/*',
-    dist:'dist/assets/slick-carousel'
+    dist: 'dist/assets/slick-carousel'
   },
   services: {
     main: ['client/app/app.js', 'client/app/service.js','client/app/map/mapService.js', 'client/app/details/detailsService.js'],
@@ -129,6 +133,12 @@ gulp.task('slick',['clean'], function() {
     .pipe(gulp.dest(paths.slick.dist));
 });
 
+// move markerWithLabel.min.js to dist
+gulp.task('marker',['clean'], function() {
+    return gulp.src(paths.marker.main)
+    .pipe(gulp.dest(paths.marker.dist));
+});
+
 // moves services.js files
 gulp.task('services',['clean'], function() {
     return gulp.src(paths.services.main)
@@ -196,7 +206,7 @@ gulp.task('serve', function() {
 gulp.task('htmlTasks', ['html', 'replacescripts']);
 gulp.task('cssTasks', ['css', 'libcss']);
 gulp.task('jsTasks', ['minjs', 'libjs', 'services']);
-gulp.task('assetsTasks', ['slick', 'font', 'icons', 'images']);
+gulp.task('assetsTasks', ['slick', 'marker', 'font', 'icons', 'images']);
 
 // run tasks
 gulp.task('default', ['watch','serve']);

@@ -34,9 +34,7 @@ var numNeighborhoods;
 
 if (process.env.PORT) {
   keys = {
-    googleAPIKey: process.env.GOOGLE_KEY,
-    // zwsId: process.env.ZILLOW_KEY,
-    // instagramAccessToken: process.env.INSTAGRAM_KEY
+    googleAPIKey: process.env.GOOGLE_KEY
   }
 } else {
   keys = require('./config/keys.js');
@@ -54,6 +52,7 @@ app.post('/api/getNeighbors', function (req, res) {
 	var checkAndRespond = function (neighborhoodObj, force) {
     eventNumber++;
     if(eventNumber === 2 || force) {
+      console.log("Server tasks completed.");
       res.status(200).send(neighborhoodObj);
     }
 	}
@@ -84,7 +83,7 @@ app.post('/api/getNeighbors', function (req, res) {
     //Async sequence 1
     getDistances(neighborhoodObject, 'driving', userDestination)
     .then(function (commuteObj) {
-      console.log('Distances fetched.');
+      // console.log('Distances fetched.');
       _.each(commuteObj, function (commuteInfo, neighborhood) {
         neighborhoodObject[neighborhood].commuteInfo = commuteInfo;
       });
@@ -110,9 +109,11 @@ app.post('/api/getNeighbors', function (req, res) {
         ])
       .then(function (resultArray) {
         numNeighborhoodsCompleted++;
-        console.log('numNeighborhoodsCompleted:',numNeighborhoodsCompleted);
-        console.log(resultArray);
-        if(numNeighborhoodsCompleted >= 0.8 * numNeighborhoods) { checkAndRespond(neighborhoodObject, false); }
+        if(numNeighborhoodsCompleted >= 0.8 * numNeighborhoods) { 
+          console.log('numNeighborhoodsCompleted:',numNeighborhoodsCompleted);
+          // console.log(resultArray);
+          checkAndRespond(neighborhoodObject, false); 
+        }
       });
     } //end of for loop
 
@@ -129,7 +130,6 @@ app.post('/api/getNeighbors', function (req, res) {
     .then(function (addressObj) {
       neighborhoodObject[neighborhood].streetAddress = addressObj.formatted_address;
       if(addressObj.country === 'USA') { _.extend(neighborhoodObject[neighborhood], addressObj); }
-      // console.log(neighborhood + ':Street address fetched.');
       deferred.resolve(neighborhood);
     });
     return deferred.promise;
@@ -181,7 +181,6 @@ app.post('/api/getNeighbors', function (req, res) {
   }
 //-----------------------------------------------------------------------------------
   var getDemography = function (neighborhood) {
-    console.log("getDemography", neighborhoodObject[neighborhood].zip);
     var deferred = Q.defer();
     getDemographics(neighborhoodObject[neighborhood].zip)
     .then(function (demographyObj) {
@@ -219,14 +218,12 @@ var findNeighborhoods = function (geoCode) {
 										 gPlacesUrl_types + types +
 										 gPlacesUrl_key + key;
 
-    //remove
     // console.log('gPlaces:', gPlacesUrl);
 
 		getRequest(gPlacesUrl)
 		.then(function (responseObj) {
 			var results = responseObj.results;
 
-      //remove
       // console.log('Neighborhood object:', results);
 
 			_.each(results, function (result) {
@@ -239,16 +236,13 @@ var findNeighborhoods = function (geoCode) {
 				};
 			});
 
-			//remove
-			// console.log('Neighborhoods fetched:',numResponses);
-
 			if(numResponses === 39) { deferred.resolve(neighborhoodObj); }
 			else { numResponses++; }
 		},
 
     function (errorMessage) {
-      // console.log('Error/server not responding.');
-      // console.log('errorMessage:', errorMessage);
+      console.log('Error/server not responding.');
+      console.log('errorMessage:', errorMessage);
 
       if(numResponses === 39) { deferred.resolve(neighborhoodObj); }
       else { numResponses++; }

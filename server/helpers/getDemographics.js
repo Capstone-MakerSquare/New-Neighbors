@@ -23,13 +23,13 @@ module.exports = function (zipCode) {
   let geoDataUrl = geoData_path + zipCode;
 
   //remove
-  console.log('geoDataUrl:', geoDataUrl);
+  // console.log('geoDataUrl:', geoDataUrl);
 
   getRequest(geoDataUrl)
   .then(function (responseObj) {
     let demogObj = responseObj.d[0];
     //remove
-    console.log('getDemographics says: Response data fetched: ',demogObj);
+    // console.log('getDemographics says: Response data fetched: ',demogObj);
     
     deferred.resolve(demogObj)
 
