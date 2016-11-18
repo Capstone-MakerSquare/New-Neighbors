@@ -98,7 +98,7 @@ app.post('/api/getNeighbors', function (req, res) {
             if(neighborhoodObject[neighborhood].country === 'USA') {
               return Q.all([
                 // getRentEstimate(neighborhood),
-                getDemography(neighborhood)
+                // getDemography(neighborhood)  Turned off for testing  // Todo: turn back on!
               ]);
             }
             else { return 'Other Country'; }
@@ -151,7 +151,7 @@ app.post('/api/getNeighbors', function (req, res) {
   //-----------------------------------------------------------------------------------
   var getPictures = function (neighborhood) {
     var deferred = Q.defer();
-    let maxPicsPerLocation = 6;
+    let maxPicsPerLocation = 7;
     getPlaceDetails(neighborhoodObject[neighborhood].placeId, maxPicsPerLocation)
     .then(function(picRefsArr){
       getGooglePics(picRefsArr, neighborhood)

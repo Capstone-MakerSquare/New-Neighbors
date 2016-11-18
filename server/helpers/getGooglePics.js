@@ -19,20 +19,20 @@ if (process.env.PORT) {
 module.exports = function (picRefsArr, neighborhoodName) {
   var deferred = Q.defer();
   let photoMaxWidth = 150;
-  let photoMaxHeight = 160;  // use this or maxWidth, not both
+  let photoMaxHeight = 400;  // use this or maxWidth, not both
   let numPics = picRefsArr.length
   let imagesArray = [];
   let numEvents = 0;
 
   let placePhoto_path = 'https://maps.googleapis.com/maps/api/place/photo?';
-  let placePhoto_maxWidth = 'maxwidth=' + photoMaxWidth;
-  let placePhoto_maxHeight = 'maxheight=' + photoMaxHeight; // use this or maxWidth, not both
-  let placePhoto_ref = '&photoreference=';
+  let placePhoto_ref = 'photoreference=';
+  let placePhoto_maxWidth = '&maxwidth=' + photoMaxWidth;
+  let placePhoto_maxHeight = '&maxheight=' + photoMaxHeight; // use this or maxWidth, not both
   let placePhoto_key = '&key=' + keys.googleAPIKey;
 
   for(let i=0; i<numPics; i++) {
     let picRef = picRefsArr[i];
-    let placePhotoUrl = placePhoto_path + placePhoto_maxHeight + placePhoto_ref + picRef.photo_reference + placePhoto_key;
+    let placePhotoUrl = placePhoto_path + placePhoto_ref + picRef.photo_reference + placePhoto_key + placePhoto_maxHeight;
     numEvents++;
 
     imagesArray.push({
