@@ -219,7 +219,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //----------------------------------------------------------------------------------
   // Function to make an API request for neighborhoods
   var requestNeighborhoods = function() {
-    ServerApi.submit(main.searchInfo)
+    ServerApi.submit(main.searchInfo, "Neighbors")
     .then(function(data) {
       main.loading = false;
       main.serverResponse = data;
@@ -239,6 +239,9 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       main.filterNeighborhoods();
 
       main.markNeighborhoods();
+
+      let zipArr = Details.createZipArray(main.neighborhoodArray)
+      main.getDemography(zipArr);
 
     });
   };
@@ -289,6 +292,31 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     return marker;
   };
 
+
+  //----------------------------------------------------------------------------------
+  // Function to get slow-responding Demography data from the server-->API
+  main.getDemography = function(zipArr) {
+    ServerApi.submit(zipArr, "Demography")
+    .then(function(data) {
+      main.mapDemography(data);
+    }
+  };
+
+
+  //----------------------------------------------------------------------------------
+  // Function to add Demography information back to the neighborhood Array
+  main.mapDemography = function(demogArr) {
+    // mark all in main
+    for (let i=0;i<main.neighborhoodArray.length;i++) {
+      for (let j=0;j<demogArr.length;j++) {
+        if (demogArr[j].ZipCode == main.neighborhoodArray[i].zip) {
+          main.neighborhoodArray[i].demography = demogArr[j];
+        }
+      }
+    }
+    //mark current
+    Details.setDemography(demogArr)
+  };
 
 
   //----------------------------------------------------------------------------------
@@ -372,15 +400,17 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     //remove
     // console.log('selectNeighborhood says: main.serverResponse:',main.serverResponse);
     // console.log('selectNeighborhood', Details.currentNeighborhood);
+    Charts.runData(neighborhood);
+    // Charts.chartData(neighborhood);
+    // Charts.pieChartData(neighborhood);
+    // Charts.createStrings(neighborhood);
+
     // Todo: remove setTimeout.  Seriously, it's not even $Timeout.
 
     $state.go('main.results');
     setTimeout(function() {
       $state.go('main.details.services');
 
-      Charts.chartData(neighborhood);
-      Charts.pieChartData(neighborhood);
-      Charts.createStrings(neighborhood);
       Map.panAndFocus(neighborhood.coordinates, 13);
       Map.drawCircle(neighborhood.coordinates, 2000);
     }, 200)

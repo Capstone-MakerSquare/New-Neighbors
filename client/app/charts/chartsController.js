@@ -88,6 +88,12 @@ angular.module('myApp.charts', [])
     barChartArr = [[],[]];
   }
 
+  Charts.runData = function(neighborhood){
+    chartData(neighborhood);
+    pieChartData(neighborhood);
+    createStrings(neighborhood);
+  }
+
   //----------------------------------------------------------------------------------
   // Compiles, validates, and maps data for a bar graph from the GeoData Demography data
   // Includes data for % of homes with children
@@ -410,12 +416,13 @@ angular.module('myApp.charts', [])
   return {
     drawBar: drawBar,
     drawPie: drawPie,
-    chartData: chartData,
-    pieChartData: pieChartData,
+    runData: runData,
+    // chartData: chartData,
+    // pieChartData: pieChartData,
+    // createStrings: createStrings,
     getDemographicsObj: getDemographicsObj,
     demographicsObj: demographicsObj,
     clearCharts: clearCharts,
-    createStrings: createStrings,
     getFlags: getFlags
   };
 

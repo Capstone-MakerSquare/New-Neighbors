@@ -119,7 +119,7 @@ app.post('/api/getNeighbors', function (req, res) {
 
   });
 
-//-----------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------
   var getStreetAddress = function (neighborhood) {
     var deferred = Q.defer();
     var coordinates = {
@@ -134,7 +134,7 @@ app.post('/api/getNeighbors', function (req, res) {
     });
     return deferred.promise;
   }
-//-----------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------
   var getAmenitiesAndAttractions = function (neighborhood) {
     var deferred = Q.defer();
     var coordinates = {
@@ -148,7 +148,7 @@ app.post('/api/getNeighbors', function (req, res) {
     });
     return deferred.promise;
   }
-//-----------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------
   var getPictures = function (neighborhood) {
     var deferred = Q.defer();
     let maxPicsPerLocation = 6;
@@ -162,7 +162,7 @@ app.post('/api/getNeighbors', function (req, res) {
     })
     return deferred.promise;
   }
-//-----------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------
   var getRentEstimate = function (neighborhood) {
     var deferred = Q.defer();
     var zilpySearchInfo = {
@@ -179,7 +179,8 @@ app.post('/api/getNeighbors', function (req, res) {
     });
     return deferred.promise;
   }
-//-----------------------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------------------
   var getDemography = function (neighborhood) {
     var deferred = Q.defer();
     getDemographics(neighborhoodObject[neighborhood].zip)
@@ -190,7 +191,23 @@ app.post('/api/getNeighbors', function (req, res) {
     return deferred.promise;
   }
 
-});	//end of POST request handler
+}); //end of POST request handler
+
+
+
+app.get('/api/getDemography', function (req, res) {
+  console.log('server.js says: GET request received! Data:', req.body);
+
+  let zipArr = req.body;
+
+  Q.all(zipArr.map(getDemographics))
+  .then(function(demoArr) {
+    res.status(200).send(demoArr);
+  }, function(error) {
+    res.status(501).send(error);
+  });
+
+});
 
 //-----------------------------------------------------------------------------------
 //GET list of neighborhood localities for a pair of coordinates (corresponding to the given street address)
