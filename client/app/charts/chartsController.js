@@ -447,56 +447,84 @@ angular.module('myApp.charts', [])
   // Compiles, validates, and maps data for a pie chart of age distributions in each neighborhood from the Zillow Demography data
 
   var pieChartData = function(obj) {
+
     pieChartObj = {};
     runDrawPie = false;
-    //verifying information is coming in from zillow
-    if (obj &&
-        obj.demography &&
-        obj.demography.pages &&
-        obj.demography.pages[0] &&
-        obj.demography.pages[0].page &&
-        obj.demography.pages[0].page[2] &&
-        obj.demography.pages[0].page[2].tables &&
-        obj.demography.pages[0].page[2].tables[0] &&
-        obj.demography.pages[0].page[2].tables[0].table &&
-        obj.demography.pages[0].page[2].tables[0].table[1] &&
-        obj.demography.pages[0].page[2].tables[0].table[1].data &&
-        obj.demography.pages[0].page[2].tables[0].table[1].data[0] &&
-        obj.demography.pages[0].page[2].tables[0].table[1].data[0].attribute)
-    {
-      var agePath = obj.demography.pages[0].page[2].tables[0].table[1].data[0].attribute
 
-      //checks each age range for data from zillow
-      if (agePath[0] && agePath[0].value && agePath[0].value[0] && agePath[0].value[0]._) {
-        pieChartObj['70+ years'] = Math.round(100 * parseFloat(agePath[0].value[0]._));
-      }
-      if (agePath[7] && agePath[7].value && agePath[7].value[0] && agePath[7].value[0]._) {
-        pieChartObj['60-70 years'] = Math.round(100 * parseFloat(agePath[7].value[0]._));
-      }
-      if (agePath[6] && agePath[6].value && agePath[6].value[0] && agePath[6].value[0]._) {
-        pieChartObj['50-60 years'] = Math.round(100 * parseFloat(agePath[6].value[0]._));
-      }
-      if (agePath[5] && agePath[5].value && agePath[5].value[0] && agePath[5].value[0]._) {
-        pieChartObj['40-50 years'] = Math.round(100 * parseFloat(agePath[5].value[0]._));
-      }
-      if (agePath[4] && agePath[4].value && agePath[4].value[0] && agePath[4].value[0]._) {
-        pieChartObj['30-40 years'] = Math.round(100 * parseFloat(agePath[4].value[0]._));
-      }
-      if (agePath[3] && agePath[3].value && agePath[3].value[0] && agePath[3].value[0]._) {
-        pieChartObj['20-30 years'] = Math.round(100 * parseFloat(agePath[3].value[0]._));
-      }
-      if (agePath[2] && agePath[2].value && agePath[2].value[0] && agePath[2].value[0]._) {
-        pieChartObj['10-20 years'] = Math.round(100 * parseFloat(agePath[2].value[0]._));
-      }
-      if (agePath[1] && agePath[1].value && agePath[1].value[0] && agePath[1].value[0]._) {
-        pieChartObj['0-10 years'] = Math.round(100 * parseFloat(agePath[1].value[0]._));
-      }
-    }
+    let demo = obj.demography;
+    let totalPopulation = demo.Population;
+
+    /*
+
+    "PopulationUnder5": 1961,
+    "Population5to9": 1285,
+    "Population10to14": 1041,
+
+    */
+
+    // doesn't really help
+    // let partToPercent = function(parts) {
+    //   return Math.round(100 / totalPopulation * parts.reduce(function(a,b) { return a+b; }));
+    // }
+
+
+    pieChartObj['10-19 years'] = Math.round(100 * (demo.Population10to14 + demo.Population15to19)/totalPopulation);
+    pieChartObj['20-29 years'] = Math.round(100 * (demo.Population20to24 + demo.Population25to29)/totalPopulation);
+    pieChartObj['30-39 years'] = Math.round(100 * (demo.Population30to34 + demo.Population35to39)/totalPopulation);
+    pieChartObj['40-54 years'] = Math.round(100 * (demo.Population40to44 + demo.Population45to49 + demo.Population50to54)/totalPopulation);
+    pieChartObj['55-69 years'] = Math.round(100 * (demo.Population55to59 + demo.Population60to64 + demo.Population65to69)/totalPopulation);
+    pieChartObj['70+ years'] =  Math.round(100 * (demo.Population70to74 + demo.Population75to79 + demo.Population80to84 + demo.Population85Plus)/totalPopulation);
+    pieChartObj['0-9 years'] = 100 - (pieChartObj['10-19 years'] + pieChartObj['20-29 years'] + pieChartObj['30-39 years'] + pieChartObj['40-54 years'] + pieChartObj['55-69 years'] + pieChartObj['70+ years'])
+
     //only draws the pie chart if each age range has a value
-    if (pieChartObj['0-10 years'] && pieChartObj['10-20 years'] && pieChartObj['20-30 years'] && pieChartObj['30-40 years'] &&
-        pieChartObj['40-50 years'] && pieChartObj['50-60 years'] && pieChartObj['60-70 years'] && pieChartObj['70+ years']) {
+    if (pieChartObj['0-9 years'] && pieChartObj['10-19 years'] && pieChartObj['20-29 years'] && pieChartObj['30-39 years'] &&
+          pieChartObj['40-54 years'] && pieChartObj['55-69 years'] && pieChartObj['60-69 years'] && pieChartObj['70+ years']) {
         runDrawPie = true;
     }
+
+    //verifying information is coming in from zillow
+    // if (obj &&
+    //     obj.demography &&
+    //     obj.demography.pages &&
+    //     obj.demography.pages[0] &&
+    //     obj.demography.pages[0].page &&
+    //     obj.demography.pages[0].page[2] &&
+    //     obj.demography.pages[0].page[2].tables &&
+    //     obj.demography.pages[0].page[2].tables[0] &&
+    //     obj.demography.pages[0].page[2].tables[0].table &&
+    //     obj.demography.pages[0].page[2].tables[0].table[1] &&
+    //     obj.demography.pages[0].page[2].tables[0].table[1].data &&
+    //     obj.demography.pages[0].page[2].tables[0].table[1].data[0] &&
+    //     obj.demography.pages[0].page[2].tables[0].table[1].data[0].attribute)
+    // {
+    //   var agePath = obj.demography.pages[0].page[2].tables[0].table[1].data[0].attribute
+
+    //   //checks each age range for data from zillow
+    //   if (agePath[0] && agePath[0].value && agePath[0].value[0] && agePath[0].value[0]._) {
+    //     pieChartObj['70+ years'] = Math.round(100 * parseFloat(agePath[0].value[0]._));
+    //   }
+    //   if (agePath[7] && agePath[7].value && agePath[7].value[0] && agePath[7].value[0]._) {
+    //     pieChartObj['60-70 years'] = Math.round(100 * parseFloat(agePath[7].value[0]._));
+    //   }
+    //   if (agePath[6] && agePath[6].value && agePath[6].value[0] && agePath[6].value[0]._) {
+    //     pieChartObj['50-60 years'] = Math.round(100 * parseFloat(agePath[6].value[0]._));
+    //   }
+    //   if (agePath[5] && agePath[5].value && agePath[5].value[0] && agePath[5].value[0]._) {
+    //     pieChartObj['40-50 years'] = Math.round(100 * parseFloat(agePath[5].value[0]._));
+    //   }
+    //   if (agePath[4] && agePath[4].value && agePath[4].value[0] && agePath[4].value[0]._) {
+    //     pieChartObj['30-40 years'] = Math.round(100 * parseFloat(agePath[4].value[0]._));
+    //   }
+    //   if (agePath[3] && agePath[3].value && agePath[3].value[0] && agePath[3].value[0]._) {
+    //     pieChartObj['20-30 years'] = Math.round(100 * parseFloat(agePath[3].value[0]._));
+    //   }
+    //   if (agePath[2] && agePath[2].value && agePath[2].value[0] && agePath[2].value[0]._) {
+    //     pieChartObj['10-20 years'] = Math.round(100 * parseFloat(agePath[2].value[0]._));
+    //   }
+    //   if (agePath[1] && agePath[1].value && agePath[1].value[0] && agePath[1].value[0]._) {
+    //     pieChartObj['0-10 years'] = Math.round(100 * parseFloat(agePath[1].value[0]._));
+    //   }
+    // }
   };
 
   //----------------------------------------------------------------------------------
@@ -537,24 +565,13 @@ angular.module('myApp.charts', [])
           },
           series: [{
             data: [
-              ['0-10 years old',    pieChartObj['0-10 years']],
-              ['10-20 years old',    pieChartObj['10-20 years']],
-              ['20-30 years old',    pieChartObj['20-30 years']],
-              ['30-40 years old',    pieChartObj['30-40 years']],
-              ['40-50 years old',    pieChartObj['40-50 years']],
-              ['50-60 years old',    pieChartObj['50-60 years']],
-              ['60-70 years old',    pieChartObj['60-70 years']],
+              ['0-9 years old',    pieChartObj['0-9 years']],
+              ['10-19 years old',    pieChartObj['10-19 years']],
+              ['20-29 years old',    pieChartObj['20-29 years']],
+              ['30-39 years old',    pieChartObj['30-39 years']],
+              ['40-54 years old',    pieChartObj['40-54 years']],
+              ['55-69 years old',    pieChartObj['55-69 years']],
               ['70+ years old',    pieChartObj['70+ years']]
-
-              //**test data comment back in and remove preceeding section
-              // ['0-10 years old', 5],
-              // ['10-20 years old', 10],
-              // ['20-30 years old', 15],
-              // ['30-40 years old', 32],
-              // ['40-50 years old', 32],
-              // ['50-60 years old', 32],
-              // ['60-70 years old', 32],
-              // ['70+ years old', 32]
             ]
           }]
       });
