@@ -113,7 +113,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       temp = {
         housetype: 'House Purchase Estimate',
         priceStr: 'Data Not Available',
-        priceNum: 100000000
+        priceNum: 4000000
         };
       if (main.searchInfo.buyOrRent === 'rent') {
         temp.housetype = 'rent selected';
@@ -240,8 +240,9 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
       main.markNeighborhoods();
 
-      let zipArr = Details.createZipArray(main.neighborhoodArray)
-      main.getDemography(zipArr);
+      // turned off until fully implemented
+      // let zipArr = Details.createZipArray(main.neighborhoodArray)
+      // main.getDemography(zipArr);
 
     });
   };
@@ -299,7 +300,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     ServerApi.submit(zipArr, "Demography")
     .then(function(data) {
       main.mapDemography(data);
-    }
+    });
   };
 
 

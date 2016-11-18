@@ -195,7 +195,7 @@ app.post('/api/getNeighbors', function (req, res) {
 
 
 
-app.get('/api/getDemography', function (req, res) {
+app.post('/api/getDemography', function (req, res) {
   console.log('server.js says: GET request received! Data:', req.body);
 
   let zipArr = req.body;

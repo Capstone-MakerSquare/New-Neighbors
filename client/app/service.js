@@ -4,7 +4,6 @@ angular.module('myApp.requestHoodServices',[])
   var submit = function (searchInfo, searchType) {
     console.log('requestHoodServices.js says: POST request:', searchInfo);
     let searchUrl = 'api/get' + searchType; // 'Neighbors'  or  'Demography'
-    let searchMethod = searchType === 'Neighbors' ? 'POST' : 'GET';
 
     return $http({
       method: 'POST',
