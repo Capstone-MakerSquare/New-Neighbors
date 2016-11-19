@@ -15,6 +15,7 @@ var reverseGeocode = require('./helpers/reverseGeocode.js');
 var getDistances = require('./helpers/getDistances.js');
 var getPlaceDetails = require('./helpers/getPlaceDetails.js');
 var getGooglePics = require('./helpers/getGooglePics.js');
+var getPrice = require('./helpers/getPrice.js');
 var queryAmenitiesAndAttractions = require('./helpers/queryAmenitiesAndAttractions.js');
 var zilpy = require('./helpers/zilpy.js');
 var getDemographics = require('./helpers/getDemographics.js');
@@ -48,6 +49,7 @@ app.post('/api/getNeighbors', function (req, res) {
 	searchInfo = req.body;
 	var glanceCards = [];
 	var eventNumber = 0;
+  var completedFudgeFactor = 0.8;
 
 	var checkAndRespond = function (neighborhoodObj, force) {
     eventNumber++;
@@ -97,7 +99,7 @@ app.post('/api/getNeighbors', function (req, res) {
           .then(function (neighborhood) {
             if(neighborhoodObject[neighborhood].country === 'USA') {
               return Q.all([
-                // getRentEstimate(neighborhood),
+                getPriceEstimate(neighborhood, searchInfo),
                 // getDemography(neighborhood)  Turned off for testing  // Todo: turn back on!
               ]);
             }
@@ -109,7 +111,7 @@ app.post('/api/getNeighbors', function (req, res) {
         ])
       .then(function (resultArray) {
         numNeighborhoodsCompleted++;
-        if(numNeighborhoodsCompleted >= 0.8 * numNeighborhoods) { 
+        if(numNeighborhoodsCompleted >= completedFudgeFactor * numNeighborhoods) { 
           console.log('numNeighborhoodsCompleted:',numNeighborhoodsCompleted);
           // console.log(resultArray);
           checkAndRespond(neighborhoodObject, false); 
@@ -163,19 +165,35 @@ app.post('/api/getNeighbors', function (req, res) {
     return deferred.promise;
   }
   //-----------------------------------------------------------------------------------
-  var getRentEstimate = function (neighborhood) {
+  // var getRentEstimate = function (neighborhood) {
+  //   var deferred = Q.defer();
+  //   var zilpySearchInfo = {
+  //     address : neighborhoodObject[neighborhood].streetAddress,
+  //     bedrooms : searchInfo.bedrooms,
+  //     bathrooms : searchInfo.bathrooms
+  //   }
+  //   zilpy(zilpySearchInfo)
+  //   .then(function (tuple) {
+  //     //estimate, property_type
+  //     neighborhoodObject[neighborhood].rentEstimate = tuple[0];
+  //     neighborhoodObject[neighborhood].propertyType = tuple[1];
+  //     deferred.resolve(neighborhood + ':Rent Estimate fetched.');
+  //   });
+  //   return deferred.promise;
+  // }
+
+  //-----------------------------------------------------------------------------------
+  var getPriceEstimate = function (neighborhood, priceSearchInfo) {
     var deferred = Q.defer();
-    var zilpySearchInfo = {
-      address : neighborhoodObject[neighborhood].streetAddress,
-      bedrooms : searchInfo.bedrooms,
-      bathrooms : searchInfo.bathrooms
-    }
-    zilpy(zilpySearchInfo)
-    .then(function (tuple) {
+
+    console.log("getPriceEstimate", neighborhoodObject[neighborhood].zip, priceSearchInfo)
+    getPrice(neighborhoodObject[neighborhood].zip, priceSearchInfo)
+    .then(function (price) {
       //estimate, property_type
-      neighborhoodObject[neighborhood].rentEstimate = tuple[0];
-      neighborhoodObject[neighborhood].propertyType = tuple[1];
-      deferred.resolve(neighborhood + ':Rent Estimate fetched.');
+      neighborhoodObject[neighborhood].priceEstimate = price;
+      neighborhoodObject[neighborhood].homeSize = priceSearchInfo.bedrooms;
+      neighborhoodObject[neighborhood].propertyType = priceSearchInfo.buyOrRent === "rent" ? "apartment" : "house";
+      deferred.resolve(neighborhood + ': Price Estimate fetched.');
     });
     return deferred.promise;
   }

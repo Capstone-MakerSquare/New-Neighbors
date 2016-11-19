@@ -98,7 +98,15 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     return arr;
   };
 
-//Function to get the purchase prices for homes
+  //Function to format the purchase prices for homes
+  main.formatPrice  = function(hoodArr) {
+    hoodArr.forEach(function() {
+      
+    })
+
+  }
+
+//Function to format the purchase prices for homes
   main.getBuyPrice  = function(arr) {
     var priceData;
     var dataInfo;
