@@ -16,8 +16,8 @@ angular.module('myApp.charts', [])
     var demographicsObj = Charts.getDemographicsObj();
     if(Object.keys(demographicsObj).length > 0) {
       chart.incomeString = demographicsObj.incomeString || chart.incomeString;
-      chart.sqftString = demographicsObj.sqftString || chart.sqftString;
-      chart.yearBuiltString = demographicsObj.yearBuiltString || chart.yearBuiltString;
+      chart.ageString = demographicsObj.ageString || chart.ageString;
+      chart.householdPopString = demographicsObj.householdPopString || chart.householdPopString;
     }
   };
 
@@ -63,6 +63,10 @@ angular.module('myApp.charts', [])
 
 }])
 
+// ********************************************************************************  //
+// ********************************************************************************  //
+
+
 .factory('Charts', function () {
 
   var runDrawBar = false;
@@ -84,177 +88,140 @@ angular.module('myApp.charts', [])
     barChartArr = [[],[]];
   }
 
+  let runData = function(neighborhood){
+    chartData(neighborhood);
+    pieChartData(neighborhood);
+    createStrings(neighborhood);
+  }
+
+  //----------------------------------------------------------------------------------
+  // Compiles, validates, and maps data for a bar graph from the GeoData Demography data
+  // Includes data for % of homes with children
+  let childData = function(demogObj, name) {
+
+    if (!demogObj.OccupiedHousingUnits || !demogObj.HouseholdsWithIndividualsUnder18) {
+      consle.log("No child data in ", name);
+      return;
+    }
+
+    barChartObj.nationalHomesWithKids = 31;  // U.S. national data, 2010
+
+    barChartObj.homesWithKids = Math.round(100 * demogObj.HouseholdsWithIndividualsUnder18 / demogObj.OccupiedHousingUnits); 
+
+    barChartArr[0].push(barChartObj.nationalHomesWithKids);
+    barChartArr[1].push(barChartObj.homesWithKids);
+
+    runDrawBar = true;
+    // console.log("kid ratio:", barChartObj.homesWithKids);
+
+  }
+
+  //----------------------------------------------------------------------------------
+  // Compiles, validates, and maps data for a bar graph from the GeoData Demography data
+  // Includes data for median household income;
+  let incomeData = function(demogObj, name) {
+
+    if (!demogObj.IncomePerHousehold) {
+      consle.log("No median age data in ", name);
+      return;
+    }
+
+    demographicsObj.income = demogObj.IncomePerHousehold
+  }
+
+
+  //----------------------------------------------------------------------------------
+  // Compiles, validates, and maps data for a bar graph from the GeoData Demography data
+  // Includes data for median age;
+  let ageData = function(demogObj, name) {
+
+    if (!demogObj.MedianAge) {
+      consle.log("No median age data in ", name);
+      return;
+    }
+
+    demographicsObj.age = demogObj.MedianAge;
+  }
+
+  //----------------------------------------------------------------------------------
+  // Compiles, validates, and maps data for a bar graph from the GeoData Demography data
+  // Includes data for median age;
+  let housePopulationData = function(demogObj, name) {
+
+    if (!demogObj.PersonsPerHousehold) {
+      consle.log("No household population data in ", name);
+      return;
+    }
+
+    demographicsObj.householdPop = demogObj.PersonsPerHousehold;
+  }
+
+  //----------------------------------------------------------------------------------
+  // Compiles, validates, and maps data for a bar graph from the GeoData Demography data
+  // Includes data for college graduation;
+  let bachelorData = function(demogObj, name) {
+
+    if (!demogObj.EducationBachelorOrGreater) {
+      consle.log("No Education data in ", name);
+      return;
+    }
+
+    barChartObj.bachelorDegree = Math.round(100 * demogObj.EducationBachelorOrGreater);
+
+    barChartArr[0].push(barChartObj.nationalBachelorDegree);
+    barChartArr[1].push(barChartObj.bachelorDegree);
+
+    runDrawBar = true;
+  }
+
+  //----------------------------------------------------------------------------------
+  // Compiles, validates, and maps data for a bar graph from the GeoData Demography data
+  // Includes data for household family composition;
+  let nonFamilyData = function(demogObj, name) {
+
+    if (!demogObj.NonFamilyHouseholds || !demogObj.OccupiedHousingUnits) {
+      consle.log("No household data in ", name);
+      return;
+    }
+
+    barChartObj.nonFamilyHouseholds = Math.round(100 * demogObj.NonFamilyHouseholds / demogObj.OccupiedHousingUnits);
+
+    barChartArr[0].push(barChartObj.nationalNonFamilyHouseholds);
+    barChartArr[1].push(barChartObj.nonFamilyHouseholds);
+
+    runDrawBar = true;
+
+  }
+
   //----------------------------------------------------------------------------------
   // Compiles, validates, and maps data for a bar graph from the Zillow Demography data
   // Includes data for % of homes with children, % of owners (vs renters) and % of single people in each neighborhood
 
-  var barChartData = function(obj) {
-    //initializing data that is constant for all neighborhoods
-    barChartObj = {nationalHomesWithKids: 31, nationalMedianHouseholdIncome: 44512, nationalOwners: 66, nationalSingles: 27};
-    barChartArr = [[],[]];
-    var runOwn = true;
-    var runKids = true;
-    var runSingles = true;
+  var chartData = function(obj) {
     runDrawBar = false;
-    barChartObj.name = obj.name;
+    barChartArr = [[],[]];
 
-    //verifing data is coming from zillow setting up basePath
-    if (obj &&
-    obj.demography &&
-    obj.demography.pages &&
-    obj.demography.pages[0] &&
-    obj.demography.pages[0].page) {
-      var basePath = obj.demography.pages[0].page;
+    //initializing data that is constant for all neighborhoods
+    barChartObj = {
+      name: obj.name,
+      nationalHomesWithKids: 31, // %
+      nationalMedianHouseholdIncome: 44512,  //$
+      natinalPersonsPerHousehold: 2.58,  //people
+      nationalMedianAge: 37.2,  // years
+      nationalBachelorDegree: 33, // %
+      nationalNonFamilyHouseholds: 34// %, 39,177,996/116,716,292
+    };  // U.S. national data, 2010
 
-      //-----------------------------------------------------------------------------------------------
-      //verifying data for homes with kids
-      if (basePath[2] &&
-      basePath[2].tables &&
-      basePath[2].tables[0] &&
-      basePath[2].tables[0].table &&
-      basePath[2].tables[0].table[0] &&
-      basePath[2].tables[0].table[0].data &&
-      basePath[2].tables[0].table[0].data[0] &&
-      basePath[2].tables[0].table[0].data[0].attribute &&
-      basePath[2].tables[0].table[0].data[0].attribute[4] &&
-      basePath[2].tables[0].table[0].data[0].attribute[4].values &&
-      basePath[2].tables[0].table[0].data[0].attribute[4].values[0]) {
-        var kidPath = basePath[2].tables[0].table[0].data[0].attribute[4].values[0];
-        //if there is neighborhood specific data from zillow for that neighborhood
-        if (kidPath.neighborhood && kidPath.neighborhood[0] && kidPath.neighborhood[0].value && kidPath.neighborhood[0].value[0]) {
-          barChartObj.homesWithKidsTurf = Math.round(100*parseFloat(kidPath.neighborhood[0].value[0]._));
-        //if not use that city data from zillow for that neighborhood
-        } else if (kidPath.city && kidPath.city[0] && kidPath.city[0].value && kidPath.city[0].value[0]) {
-          barChartObj.homesWithKidsTurf = Math.round(100*parseFloat(kidPath.city[0].value[0]._));
-        } else {
-        //if neither is available don't run that portion of the bar chart
-          runKids = false;
-        }
-      }
-
-      //-----------------------------------------------------------------------------------------------
-      //verifying data for home owners
-      if (basePath[1] &&
-      basePath[1].tables &&
-      basePath[1].tables[0] &&
-      basePath[1].tables[0].table &&
-      basePath[1].tables[0].table[0] &&
-      basePath[1].tables[0].table[0].data &&
-      basePath[1].tables[0].table[0].data[0] &&
-      basePath[1].tables[0].table[0].data[0].attribute &&
-      basePath[1].tables[0].table[0].data[0].attribute[0] &&
-      basePath[1].tables[0].table[0].data[0].attribute[0].values &&
-      basePath[1].tables[0].table[0].data[0].attribute[0].values[0]) {
-        var ownPath = basePath[1].tables[0].table[0].data[0].attribute[0].values[0];
-        //percentage of property owners (vs. renters)
-        //if there is neighborhood specific data from zillow for that neighborhood, if not use city data
-        if (ownPath.neighborhood && ownPath.neighborhood[0] && ownPath.neighborhood[0].value && ownPath.neighborhood[0].value[0] && ownPath.neighborhood[0].value[0]._) {
-          barChartObj.ownersTurf = Math.round(100*parseFloat(ownPath.neighborhood[0].value[0]._));
-        } else if (ownPath.city && ownPath.city[0] && ownPath.city[0].value && ownPath.city[0].value[0] && ownPath.city[0].value[0]._) {
-          barChartObj.ownersTurf = Math.round(100*parseFloat(ownPath.city[0].value[0]._));
-        } else {
-          runOwn = false;
-        }
-      }
-
-      //-----------------------------------------------------------------------------------------------
-      // verifying data for singles
-      // men
-      if (basePath[2].tables[0].table[0].data[0].attribute[1] &&
-      basePath[2].tables[0].table[0].data[0].attribute[1].values &&
-      basePath[2].tables[0].table[0].data[0].attribute[1].values[0] &&
-      //women
-      basePath[2].tables[0].table[0].data[0].attribute[2] &&
-      basePath[2].tables[0].table[0].data[0].attribute[2].values &&
-      basePath[2].tables[0].table[0].data[0].attribute[2].values[0]) {
-
-        var menPath = basePath[2].tables[0].table[0].data[0].attribute[1].values[0];
-        var womenPath = basePath[2].tables[0].table[0].data[0].attribute[2].values[0];
-
-        //if there is neighborhood specific data from zillow for that neighborhood, if not use city data
-        if (menPath.neighborhood && menPath.neighborhood[0] && menPath.neighborhood[0].value && menPath.neighborhood[0].value[0] && menPath.neighborhood[0].value[0]._ &&
-        womenPath.neighborhood && womenPath.neighborhood[0] && womenPath.neighborhood[0].value && womenPath.neighborhood[0].value[0] && womenPath.neighborhood[0].value[0]._) {
-          barChartObj.singlesTurf = Math.round(100*(parseFloat(menPath.neighborhood[0].value[0]._) + parseFloat(womenPath.neighborhood[0].value[0]._)));
-        } else if (menPath.city && menPath.city[0] && menPath.city[0].value && menPath.city[0].value[0] && menPath.city[0].value[0]._ &&
-        womenPath.city && womenPath.city[0] && womenPath.city[0].value && womenPath.city[0].value[0] && womenPath.city[0].value[0]._) {
-          barChartObj.singlesTurf = Math.round(100*(parseFloat(menPath.city[0].value[0]._) + parseFloat(womenPath.city[0].value[0]._)));
-        } else {
-          runSingles = false;
-        }
-      }
-
-      //----------------------------------------------------------------------------------------------
-      // populating demographicsObj.income with median household income from zillow
-
-      if (basePath[2].tables[0].table[0].data[0].attribute[0] &&
-      basePath[2].tables[0].table[0].data[0].attribute[0].values &&
-      basePath[2].tables[0].table[0].data[0].attribute[0].values[0]) {
-        var incomePath = basePath[2].tables[0].table[0].data[0].attribute[0].values[0];
-
-      //if there is neighborhood specific data from zillow for that neighborhood, if not use city data
-        if (incomePath.neighborhood && incomePath.neighborhood[0].value && incomePath.neighborhood[0].value[0]) {
-          demographicsObj.income = incomePath.neighborhood[0].value[0]._;
-        } else if (incomePath.city && incomePath.city[0].value && incomePath.city[0].value[0]) {
-          demographicsObj.income = incomePath.city[0].value[0]._;
-        }
-      }
-
-      //----------------------------------------------------------------------------------------------
-      // populating demographicsObj.income with ave square foot size of houses for the neighborhood or city
-
-      if (basePath[1].tables[0].table[0].data[0].attribute[2] &&
-      basePath[1].tables[0].table[0].data[0].attribute[2].values &&
-      basePath[1].tables[0].table[0].data[0].attribute[2].values[0] ){
-        var sqftPath = basePath[1].tables[0].table[0].data[0].attribute[2].values[0];
-        //if there is neighborhood specific data from zillow for that neighborhood, if not use city data
-        if (sqftPath.neighborhood && sqftPath.neighborhood[0].value[0]) {
-          demographicsObj.sqft = sqftPath.neighborhood[0].value[0];
-        } else if (sqftPath.city && sqftPath.city[0].value[0]) {
-          demographicsObj.sqft = sqftPath.city[0].value[0];
-        }
-      }
-
-      //----------------------------------------------------------------------------------------------
-      // populating demographicsObj.income with ave year built for the neighborhood or city
-
-      if (basePath[1].tables[0].table[0].data[0].attribute[3] &&
-      basePath[1].tables[0].table[0].data[0].attribute[3].values &&
-      basePath[1].tables[0].table[0].data[0].attribute[3].values[0]){
-        var yearBuiltPath = basePath[1].tables[0].table[0].data[0].attribute[3].values[0];
-        //if there is neighborhood specific data from zillow for that neighborhood, if not use city data
-        if (yearBuiltPath.neighborhood && yearBuiltPath.neighborhood[0].value[0]) {
-          demographicsObj.yearBuilt = yearBuiltPath.neighborhood[0].value[0];
-        } else if (yearBuiltPath.city && yearBuiltPath.city[0].value[0]) {
-          demographicsObj.yearBuilt = yearBuiltPath.city[0].value[0];
-        }
-      }
-
-    //if none of the basePath is coming in, none of the bar charts should run
-    } else {
-      runKids = false;
-      runOwn = false;
-      runSingles = false;
+    if (obj.demography) {
+      childData(obj.demography, obj.name);
+      ageData(obj.demography, obj.name);
+      bachelorData(obj.demography, obj.name);
+      incomeData(obj.demography, obj.name);
+      housePopulationData(obj.demography, obj.name);
+      nonFamilyData(obj.demography, obj.name)
+      // console.log("Finished data mapping")
     }
-    //if at least one of the charts has the information to run, run the chart
-    if (runOwn || runKids || runSingles) {
-      runDrawBar = true;
-    }
-
-    //sets up the bar chart data in the array format that draws the bar chart
-    if (runKids) {
-      barChartArr[0].push(barChartObj.nationalHomesWithKids);
-      barChartArr[1].push(barChartObj.homesWithKidsTurf);
-    }
-
-    if (runOwn) {
-      barChartArr[0].push(barChartObj.nationalOwners);
-      barChartArr[1].push(barChartObj.ownersTurf);
-    }
-
-    if (runSingles) {
-      barChartArr[0].push(barChartObj.nationalSingles);
-      barChartArr[1].push(barChartObj.singlesTurf);
-    }
+    return; 
   };
 
   //----------------------------------------------------------------------------------
@@ -262,6 +229,8 @@ angular.module('myApp.charts', [])
 
   var drawBar = function() {
     // runDrawBar = true; //remove this line when doing the API calls see **
+    // console.log("barChartArr", barChartArr)
+    // console.log("barChartObj", barChartObj)
     if (runDrawBar){
       $('#percentage-chart').highcharts({
         chart: {
@@ -274,8 +243,8 @@ angular.module('myApp.charts', [])
         xAxis: {
             categories: [
                 'Households with Kids',
-                'Property Owners (vs. Renters)',
-                'Singles'
+                "Adults with Bachelor's Degrees",
+                'Non-Family Households'
             ]
         },
         yAxis: [{
@@ -306,7 +275,7 @@ angular.module('myApp.charts', [])
             pointPadding: 0,
             pointPlacement: 0
         }, {
-            name: 'Neighborhood',
+            name: barChartObj.name,
             color: '#3878C7',
             data: barChartArr[1],
             // data: [40, 20, 30], //**comment this in and uncomment the previous line to not do API calls
@@ -321,56 +290,46 @@ angular.module('myApp.charts', [])
   // Compiles, validates, and maps data for a pie chart of age distributions in each neighborhood from the Zillow Demography data
 
   var pieChartData = function(obj) {
+
     pieChartObj = {};
     runDrawPie = false;
-    //verifying information is coming in from zillow
-    if (obj &&
-        obj.demography &&
-        obj.demography.pages &&
-        obj.demography.pages[0] &&
-        obj.demography.pages[0].page &&
-        obj.demography.pages[0].page[2] &&
-        obj.demography.pages[0].page[2].tables &&
-        obj.demography.pages[0].page[2].tables[0] &&
-        obj.demography.pages[0].page[2].tables[0].table &&
-        obj.demography.pages[0].page[2].tables[0].table[1] &&
-        obj.demography.pages[0].page[2].tables[0].table[1].data &&
-        obj.demography.pages[0].page[2].tables[0].table[1].data[0] &&
-        obj.demography.pages[0].page[2].tables[0].table[1].data[0].attribute)
-    {
-      var agePath = obj.demography.pages[0].page[2].tables[0].table[1].data[0].attribute
 
-      //checks each age range for data from zillow
-      if (agePath[0] && agePath[0].value && agePath[0].value[0] && agePath[0].value[0]._) {
-        pieChartObj['70+ years'] = Math.round(100 * parseFloat(agePath[0].value[0]._));
-      }
-      if (agePath[7] && agePath[7].value && agePath[7].value[0] && agePath[7].value[0]._) {
-        pieChartObj['60-70 years'] = Math.round(100 * parseFloat(agePath[7].value[0]._));
-      }
-      if (agePath[6] && agePath[6].value && agePath[6].value[0] && agePath[6].value[0]._) {
-        pieChartObj['50-60 years'] = Math.round(100 * parseFloat(agePath[6].value[0]._));
-      }
-      if (agePath[5] && agePath[5].value && agePath[5].value[0] && agePath[5].value[0]._) {
-        pieChartObj['40-50 years'] = Math.round(100 * parseFloat(agePath[5].value[0]._));
-      }
-      if (agePath[4] && agePath[4].value && agePath[4].value[0] && agePath[4].value[0]._) {
-        pieChartObj['30-40 years'] = Math.round(100 * parseFloat(agePath[4].value[0]._));
-      }
-      if (agePath[3] && agePath[3].value && agePath[3].value[0] && agePath[3].value[0]._) {
-        pieChartObj['20-30 years'] = Math.round(100 * parseFloat(agePath[3].value[0]._));
-      }
-      if (agePath[2] && agePath[2].value && agePath[2].value[0] && agePath[2].value[0]._) {
-        pieChartObj['10-20 years'] = Math.round(100 * parseFloat(agePath[2].value[0]._));
-      }
-      if (agePath[1] && agePath[1].value && agePath[1].value[0] && agePath[1].value[0]._) {
-        pieChartObj['0-10 years'] = Math.round(100 * parseFloat(agePath[1].value[0]._));
-      }
+    if (!obj.demography) {
+      console.log("no Demography for", obj.name);
+      return;
     }
-    //only draws the pie chart if each age range has a value
-    if (pieChartObj['0-10 years'] && pieChartObj['10-20 years'] && pieChartObj['20-30 years'] && pieChartObj['30-40 years'] &&
-        pieChartObj['40-50 years'] && pieChartObj['50-60 years'] && pieChartObj['60-70 years'] && pieChartObj['70+ years']) {
-        runDrawPie = true;
+
+    let demo = obj.demography;
+    let totalPopulation = demo.Population;
+
+    // doesn't really help
+    // let partToPercent = function(parts) {
+    //   return Math.round(100 / totalPopulation * parts.reduce(function(a,b) { return a+b; }));
+    // }
+
+
+    pieChartObj['10-19 years'] = Math.round(100 * (demo.Population10to14 + demo.Population15to19)/totalPopulation);
+    pieChartObj['20-29 years'] = Math.round(100 * (demo.Population20to24 + demo.Population25to29)/totalPopulation);
+    pieChartObj['30-39 years'] = Math.round(100 * (demo.Population30to34 + demo.Population35to39)/totalPopulation);
+    pieChartObj['40-54 years'] = Math.round(100 * (demo.Population40to44 + demo.Population45to49 + demo.Population50to54)/totalPopulation);
+    pieChartObj['55-69 years'] = Math.round(100 * (demo.Population55to59 + demo.Population60to64 + demo.Population65to69)/totalPopulation);
+    pieChartObj['70+ years'] =  Math.round(100 * (demo.Population70to74 + demo.Population75to79 + demo.Population80to84 + demo.Population85Plus)/totalPopulation);
+    pieChartObj['0-9 years'] = 100 - (pieChartObj['10-19 years'] + pieChartObj['20-29 years'] + pieChartObj['30-39 years'] + pieChartObj['40-54 years'] + pieChartObj['55-69 years'] + pieChartObj['70+ years'])
+
+
+    //basic test to throw out chart if something went horribly wrong with the data set; cannot be true anywhere real
+    if (pieChartObj['0-9 years'] < 50) {
+      runDrawPie = true;
     }
+
+    //only draws the pie chart if each age range has a value, but not a great test if one data point is bad.
+    // if (pieChartObj['0-9 years'] && pieChartObj['10-19 years'] && pieChartObj['20-29 years'] && pieChartObj['30-39 years'] &&
+    //       pieChartObj['40-54 years'] && pieChartObj['55-69 years'] && pieChartObj['70+ years']) {
+    //     runDrawPie = true;
+    // }
+
+    // console.log(runDrawPie, "pieChartObj", pieChartObj);
+
   };
 
   //----------------------------------------------------------------------------------
@@ -392,15 +351,24 @@ angular.module('myApp.charts', [])
 
       $('#pie-chart').highcharts({
           chart: {
-              type: 'pie'
+              type: 'pie',
+              spacingTop: 0
           },
           title: {
             text:   "Resident Age Distribution"
           },
           exporting: { enabled: false },
+          tooltip: {
+            pointFormat: '<b>{point.percentage:.0f}%</b>'
+          },
           plotOptions: {
               pie: {
                   borderWidth: 2,
+                  dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.0f}%'
+                  }
+
                   //uncomment to remove the line labels and just use the pie chart legend
                   // showInLegend: true,
                   // dataLabels: {
@@ -410,25 +378,15 @@ angular.module('myApp.charts', [])
 
           },
           series: [{
+            name: 'Distribution',
             data: [
-              ['0-10 years old',    pieChartObj['0-10 years']],
-              ['10-20 years old',    pieChartObj['10-20 years']],
-              ['20-30 years old',    pieChartObj['20-30 years']],
-              ['30-40 years old',    pieChartObj['30-40 years']],
-              ['40-50 years old',    pieChartObj['40-50 years']],
-              ['50-60 years old',    pieChartObj['50-60 years']],
-              ['60-70 years old',    pieChartObj['60-70 years']],
+              ['0-9 years old',    pieChartObj['0-9 years']],
+              ['10-19 years old',    pieChartObj['10-19 years']],
+              ['20-29 years old',    pieChartObj['20-29 years']],
+              ['30-39 years old',    pieChartObj['30-39 years']],
+              ['40-54 years old',    pieChartObj['40-54 years']],
+              ['55-69 years old',    pieChartObj['55-69 years']],
               ['70+ years old',    pieChartObj['70+ years']]
-
-              //**test data comment back in and remove preceeding section
-              // ['0-10 years old', 5],
-              // ['10-20 years old', 10],
-              // ['20-30 years old', 15],
-              // ['30-40 years old', 32],
-              // ['40-50 years old', 32],
-              // ['50-60 years old', 32],
-              // ['60-70 years old', 32],
-              // ['70+ years old', 32]
             ]
           }]
       });
@@ -439,11 +397,11 @@ angular.module('myApp.charts', [])
     if (!!demographicsObj.income) {
       demographicsObj.incomeString = parseInt(demographicsObj.income);
     }
-    if (!!demographicsObj.sqft) {
-      demographicsObj.sqftString = parseInt(demographicsObj.sqft);
+    if (!!demographicsObj.age) {
+      demographicsObj.ageString = parseInt(demographicsObj.age);
     }
-    if (!!demographicsObj.yearBuilt) {
-      demographicsObj.yearBuiltString = demographicsObj.yearBuilt;
+    if (!!demographicsObj.householdPop) {
+      demographicsObj.householdPopString = demographicsObj.householdPop.toString();
     }
   };
 
@@ -458,12 +416,13 @@ angular.module('myApp.charts', [])
   return {
     drawBar: drawBar,
     drawPie: drawPie,
-    barChartData: barChartData,
-    pieChartData: pieChartData,
+    runData: runData,
+    // chartData: chartData,
+    // pieChartData: pieChartData,
+    // createStrings: createStrings,
     getDemographicsObj: getDemographicsObj,
     demographicsObj: demographicsObj,
     clearCharts: clearCharts,
-    createStrings: createStrings,
     getFlags: getFlags
   };
 

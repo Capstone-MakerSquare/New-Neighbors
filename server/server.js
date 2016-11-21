@@ -13,10 +13,12 @@ var getXmlRequest = require('./helpers/getXmlRequest.js');
 var geoCode = require('./helpers/geoCode.js');
 var reverseGeocode = require('./helpers/reverseGeocode.js');
 var getDistances = require('./helpers/getDistances.js');
-var getInstagram = require('./helpers/getInstagram.js');
+var getPlaceDetails = require('./helpers/getPlaceDetails.js');
+var getGooglePics = require('./helpers/getGooglePics.js');
+var getPrice = require('./helpers/getPrice.js');
 var queryAmenitiesAndAttractions = require('./helpers/queryAmenitiesAndAttractions.js');
 var zilpy = require('./helpers/zilpy.js');
-var zillow = require('./helpers/zillow.js');
+var getDemographics = require('./helpers/getDemographics.js');
 
 app = express();
 middleware(app,express);
@@ -33,9 +35,7 @@ var numNeighborhoods;
 
 if (process.env.PORT) {
   keys = {
-    googleAPIKey: process.env.GOOGLE_KEY,
-    zwsId: process.env.ZILLOW_KEY,
-    instagramAccessToken: process.env.INSTAGRAM_KEY
+    googleAPIKey: process.env.GOOGLE_KEY
   }
 } else {
   keys = require('./config/keys.js');
@@ -49,11 +49,15 @@ app.post('/api/getNeighbors', function (req, res) {
 	searchInfo = req.body;
 	var glanceCards = [];
 	var eventNumber = 0;
+  var completedFudgeFactor = 0.8;
 
 	var checkAndRespond = function (neighborhoodObj, force) {
     eventNumber++;
     if(eventNumber === 2 || force) {
-      res.status(200).send(neighborhoodObj);
+      setTimeout(function() {
+        console.log("Server tasks completed.");
+        res.status(200).send(neighborhoodObj);
+      }, 500)
     }
 	}
 
@@ -83,7 +87,7 @@ app.post('/api/getNeighbors', function (req, res) {
     //Async sequence 1
     getDistances(neighborhoodObject, 'driving', userDestination)
     .then(function (commuteObj) {
-      console.log('Distances fetched.');
+      // console.log('Distances fetched.');
       _.each(commuteObj, function (commuteInfo, neighborhood) {
         neighborhoodObject[neighborhood].commuteInfo = commuteInfo;
       });
@@ -97,27 +101,29 @@ app.post('/api/getNeighbors', function (req, res) {
           .then(function (neighborhood) {
             if(neighborhoodObject[neighborhood].country === 'USA') {
               return Q.all([
-                getRentEstimate(neighborhood),
-                getDemography(neighborhood)
+                getPriceEstimate(neighborhood, searchInfo),
+                getDemography(neighborhood) //  Turned off for testing  // Todo: turn back on!
               ]);
             }
             else { return 'Other Country'; }
           })
           ,
           getAmenitiesAndAttractions(neighborhood),
-          getPictures(neighborhood)
+          getPictures(neighborhood)  //change since instagram changed api rules
         ])
       .then(function (resultArray) {
         numNeighborhoodsCompleted++;
-        console.log('numNeighborhoodsCompleted:',numNeighborhoodsCompleted);
-        console.log(resultArray);
-        if(numNeighborhoodsCompleted >= 0.8 * numNeighborhoods) { checkAndRespond(neighborhoodObject, false); }
+        if(numNeighborhoodsCompleted >= completedFudgeFactor * numNeighborhoods) { 
+          console.log('numNeighborhoodsCompleted:',numNeighborhoodsCompleted);
+          // console.log(resultArray);
+          checkAndRespond(neighborhoodObject, false); 
+        }
       });
     } //end of for loop
 
   });
 
-//-----------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------
   var getStreetAddress = function (neighborhood) {
     var deferred = Q.defer();
     var coordinates = {
@@ -128,12 +134,11 @@ app.post('/api/getNeighbors', function (req, res) {
     .then(function (addressObj) {
       neighborhoodObject[neighborhood].streetAddress = addressObj.formatted_address;
       if(addressObj.country === 'USA') { _.extend(neighborhoodObject[neighborhood], addressObj); }
-      // console.log(neighborhood + ':Street address fetched.');
       deferred.resolve(neighborhood);
     });
     return deferred.promise;
   }
-//-----------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------
   var getAmenitiesAndAttractions = function (neighborhood) {
     var deferred = Q.defer();
     var coordinates = {
@@ -147,41 +152,58 @@ app.post('/api/getNeighbors', function (req, res) {
     });
     return deferred.promise;
   }
-//-----------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------
   var getPictures = function (neighborhood) {
     var deferred = Q.defer();
-    var coordinates = {
-      latitude : neighborhoodObject[neighborhood].latitude,
-      longitude : neighborhoodObject[neighborhood].longitude
-    };
-    getInstagram(coordinates)
-    .then(function (imagesArray) {
-      neighborhoodObject[neighborhood].instagram = imagesArray;
-      deferred.resolve(neighborhood + ':Instagram pictures fetched.');
-    });
+    let maxPicsPerLocation = 7;
+    getPlaceDetails(neighborhoodObject[neighborhood].placeId, maxPicsPerLocation)
+    .then(function(picRefsArr){
+      getGooglePics(picRefsArr, neighborhood)
+      .then(function(imagesArray) {
+        neighborhoodObject[neighborhood].googlePics = imagesArray;
+        deferred.resolve(neighborhood + ': GooglePics fetched.');
+      });
+    })
     return deferred.promise;
   }
-//-----------------------------------------------------------------------------------
-  var getRentEstimate = function (neighborhood) {
+  //-----------------------------------------------------------------------------------
+  // var getRentEstimate = function (neighborhood) {
+  //   var deferred = Q.defer();
+  //   var zilpySearchInfo = {
+  //     address : neighborhoodObject[neighborhood].streetAddress,
+  //     bedrooms : searchInfo.bedrooms,
+  //     bathrooms : searchInfo.bathrooms
+  //   }
+  //   zilpy(zilpySearchInfo)
+  //   .then(function (tuple) {
+  //     //estimate, property_type
+  //     neighborhoodObject[neighborhood].rentEstimate = tuple[0];
+  //     neighborhoodObject[neighborhood].propertyType = tuple[1];
+  //     deferred.resolve(neighborhood + ':Rent Estimate fetched.');
+  //   });
+  //   return deferred.promise;
+  // }
+
+  //-----------------------------------------------------------------------------------
+  var getPriceEstimate = function (neighborhood, priceSearchInfo) {
     var deferred = Q.defer();
-    var zilpySearchInfo = {
-      address : neighborhoodObject[neighborhood].streetAddress,
-      bedrooms : searchInfo.bedrooms,
-      bathrooms : searchInfo.bathrooms
-    }
-    zilpy(zilpySearchInfo)
-    .then(function (tuple) {
+
+    console.log("getPriceEstimate", neighborhoodObject[neighborhood].zip, priceSearchInfo)
+    getPrice(neighborhoodObject[neighborhood].zip, priceSearchInfo)
+    .then(function (price) {
       //estimate, property_type
-      neighborhoodObject[neighborhood].rentEstimate = tuple[0];
-      neighborhoodObject[neighborhood].propertyType = tuple[1];
-      deferred.resolve(neighborhood + ':Rent Estimate fetched.');
+      neighborhoodObject[neighborhood].priceEstimate = price;
+      neighborhoodObject[neighborhood].homeSize = priceSearchInfo.bedrooms;
+      neighborhoodObject[neighborhood].propertyType = priceSearchInfo.buyOrRent === "rent" ? "apartment" : "house";
+      deferred.resolve(neighborhood + ': Price Estimate fetched.');
     });
     return deferred.promise;
   }
-//-----------------------------------------------------------------------------------
+
+  //-----------------------------------------------------------------------------------
   var getDemography = function (neighborhood) {
     var deferred = Q.defer();
-    zillow(neighborhood, neighborhoodObject[neighborhood].city)
+    getDemographics(neighborhoodObject[neighborhood].zip)
     .then(function (demographyObj) {
       neighborhoodObject[neighborhood].demographics = demographyObj;
       deferred.resolve(neighborhood + ':Demography info fetched.');
@@ -189,7 +211,23 @@ app.post('/api/getNeighbors', function (req, res) {
     return deferred.promise;
   }
 
-});	//end of POST request handler
+}); //end of POST request handler
+
+
+
+app.post('/api/getDemography', function (req, res) {
+  console.log('server.js says: GET request received! Data:', req.body);
+
+  let zipArr = req.body;
+
+  Q.all(zipArr.map(getDemographics))
+  .then(function(demoArr) {
+    res.status(200).send(demoArr);
+  }, function(error) {
+    res.status(501).send(error);
+  });
+
+});
 
 //-----------------------------------------------------------------------------------
 //GET list of neighborhood localities for a pair of coordinates (corresponding to the given street address)
@@ -217,14 +255,12 @@ var findNeighborhoods = function (geoCode) {
 										 gPlacesUrl_types + types +
 										 gPlacesUrl_key + key;
 
-    //remove
     // console.log('gPlaces:', gPlacesUrl);
 
 		getRequest(gPlacesUrl)
 		.then(function (responseObj) {
 			var results = responseObj.results;
 
-      //remove
       // console.log('Neighborhood object:', results);
 
 			_.each(results, function (result) {
@@ -237,16 +273,13 @@ var findNeighborhoods = function (geoCode) {
 				};
 			});
 
-			//remove
-			// console.log('Neighborhoods fetched:',numResponses);
-
 			if(numResponses === 39) { deferred.resolve(neighborhoodObj); }
 			else { numResponses++; }
 		},
 
     function (errorMessage) {
-      // console.log('Error/server not responding.');
-      // console.log('errorMessage:', errorMessage);
+      console.log('Error/server not responding.');
+      console.log('errorMessage:', errorMessage);
 
       if(numResponses === 39) { deferred.resolve(neighborhoodObj); }
       else { numResponses++; }

@@ -27,11 +27,11 @@ module.exports = function (neighborhood, city) {
   var zillowUrl = zillowUrl_zwsId + zwsId + zillowUrl_neighborhood + neighborhood + zillowUrl_city + city;
 
   //remove
-  // console.log('ZillowUrl:', zillowUrl);
+  console.log('ZillowUrl:', zillowUrl);
 
   getXmlRequest(zillowUrl)
   .then(function (responseObj) {
-    // console.log('Response Object:', responseObj);
+    console.log('Response Object:', responseObj);
     if(responseObj['Demographics:demographics'].response) { deferred.resolve(responseObj['Demographics:demographics'].response[0]); }
     else { deferred.resolve({ message: 'Call Limits Exceeded for the day :/'}); }
   });
