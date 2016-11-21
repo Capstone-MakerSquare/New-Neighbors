@@ -12,7 +12,7 @@
 }
 
 .nav-container a:hover {
-  color:#5F327C;
+  font-weight: bold;
 }
 
 .nav-button-default {

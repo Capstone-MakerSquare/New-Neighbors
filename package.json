@@ -6,7 +6,8 @@
     "start": "nodemon index.js"
   },
   "engines": {
-    "node": "4.1.x"
+    "node": "6.9.x",
+    "npm": "2.14.x"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

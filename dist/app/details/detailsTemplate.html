@@ -4,11 +4,11 @@
    <!-- neighborhood header -->
     <span class="profile-buttons neighborhood-name">{{main.currentNeighborhood.name}}</span>
     <span class="profile-buttons back-button"><a style="color:#fff" ui-sref="main.results"> Back </a></span>
-    <slick dots=false infinite=true speed=300 autoplaySpeed=3000 pauseOnHover=true swipe=true variableWidth=true slides-to-show=4 autoplay=true touch-move=true slides-to-scroll=4 arrows=true>
+    <slick dots=false infinite=true speed=500 autoplay-speed=5000 pause-on-hover=true swipe=true variable-width=true slides-to-show=3 autoplay=true touch-move=true slides-to-scroll=1 arrows=true>
       <!-- <div ng-if="details.picturesArr.length === 0" class="instagram-default-background">&nbsp; -->
         <div ng-repeat="pic in main.picturesArr">
           <div class="picture-container">
-            <img ng-src="{{pic[0]}}"/>
+            <img style="max-height: 200px; margin: 6px;" ng-src="{{pic[0]}}"/>
             <!-- <span class="instagram-username">{{pic[1]}}</span> -->   <!-- uncomment to display user name -->
           </div>
         </div>

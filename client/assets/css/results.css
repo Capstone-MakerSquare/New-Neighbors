@@ -27,3 +27,10 @@
   top:60%;
   right:28%;
 }
+
+/* Fixes autoscroll for map infowindow */
+.scrollFix {
+    line-height: 1.35;
+    overflow: hidden;
+    white-space: nowrap;
+}

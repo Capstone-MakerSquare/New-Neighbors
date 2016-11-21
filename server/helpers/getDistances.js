@@ -57,8 +57,6 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
   .then(function (distancesObj) {
     var distances = distancesObj.rows;
     var commuteObj = {};
-    //remove
-    // console.log('Number of rows:',distances.length);
 
     for(var neighborhood in neighborhoodObj) {
 
@@ -67,10 +65,6 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
 
       distance = +distance.split(' ')[0];
       time = +time.split(' ')[0];
-
-      //remove
-      // console.log('Distance:',distance);
-      // console.log('Time:',time);
 
       commuteObj[neighborhood] = {
         commuteDistance : distance,

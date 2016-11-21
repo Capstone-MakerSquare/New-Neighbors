@@ -75,7 +75,7 @@ details
     subway_station: [],
     train_station: [],
     veterinary_care: []
-  }
+  };
 
   // var getAmenitiesIcon = function(amenity) {
   //   return './assets/images/Amenities/'+amenity.displayName+'.png';
@@ -105,10 +105,10 @@ details
             if (dictionary[thisType]) {
 
               if (!thisHoodObj[thisType]) {
-                thisHoodObj[thisType] = []
+                thisHoodObj[thisType] = [];
               }
               thisHoodObj[thisType].push(JSON.parse(JSON.stringify(spots[place])));
-              thisHoodObj[thisType][0].type = thisType
+              thisHoodObj[thisType][0].type = thisType;
             }
           }
         }
@@ -126,6 +126,26 @@ details
     return results;
   };
 
+  var createZipArray = function(hoodArr) {
+    let arr = [];
+    for (let i=0;i<hoodArr.length;i++) {
+      arr.push(hoodArr.zip);
+    }
+    return arr;
+  }
+
+  var setDemography = function(demogArr) {
+    for (let i=0;i<demogArr.length;i++) {
+      if (demogArr[i].ZipCode == currentNeighborhood.zip) {
+        currentNeighborhood.demography = demogArr[i];
+      }
+    }
+  }
+
+  var checkDemography = function() {
+    return currentNeighborhood.demography;
+  }
+
 
 
   return {
@@ -134,8 +154,10 @@ details
     currentNeighborhood: currentNeighborhood,
     currentMarkers: currentMarkers,
     neighborhoodDetailsObj: neighborhoodDetailsObj,
-    createPlacesObj : createPlacesObj,
-    neighborhoodMarkers: neighborhoodMarkers
+    createPlacesObj: createPlacesObj,
+    neighborhoodMarkers: neighborhoodMarkers,
+    createZipArray: createZipArray,
+    setDemography: setDemography 
     // mapCurrentNeighborhood:mapCurrentNeighborhood
   };
 });
