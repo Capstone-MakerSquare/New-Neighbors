@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var middleware = require('./config/middleware.js');
 var http = require('http');
@@ -20,7 +22,7 @@ var queryAmenitiesAndAttractions = require('./helpers/queryAmenitiesAndAttractio
 var zilpy = require('./helpers/zilpy.js');
 var getDemographics = require('./helpers/getDemographics.js');
 
-app = express();
+var app = express();
 middleware(app,express);
 
 //Global Variables
