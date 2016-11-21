@@ -1,3 +1,5 @@
+'use strict';
+
 var Q = require('q');
 var getRequest = require('./getRequest.js');
 var _ = require('underscore');
