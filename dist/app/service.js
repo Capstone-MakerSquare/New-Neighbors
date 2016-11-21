@@ -1,19 +1,21 @@
 angular.module('myApp.requestHoodServices',[])
 .factory('ServerApi', function ($http) {
 
-  var submit = function (searchInfo) {
-    console.log('requestHoodServices.js says: Info submitted:', searchInfo);
+  var submit = function (searchInfo, searchType) {
+    console.log('requestHoodServices.js says: POST request:', searchInfo);
+    let searchUrl = 'api/get' + searchType; // 'Neighbors'  or  'Demography'
 
-    console.log('requestHoodServices.js says: POST request initiated.');
     return $http({
       method: 'POST',
-      url: '/api/getNeighbors',
+      url: searchUrl,
       data: searchInfo
     })
-    .then(function(resp) {
-      console.log('requestHoodServices.js says: POST request complete.');
-      console.log('response data:',resp.data);
+    .then(function submitSuccess(resp) {
+      console.log('requestHoodServices.js says: POST request complete. Response data:', resp.data);
       return resp.data;
+    }, function submitError(error) {
+      console.log(error);
+      return({error});
     });
   };
 

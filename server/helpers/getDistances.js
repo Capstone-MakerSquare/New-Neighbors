@@ -51,7 +51,7 @@ module.exports = function (neighborhoodObj, transitMode, userDestination) {
                     gDrivingUrl_key + keys.googleAPIKey;
 
   // remove
-  console.log('gDrivingUrl:', gDrivingUrl);
+  // console.log('gDrivingUrl:', gDrivingUrl);
 
   getRequest(gDrivingUrl)
   .then(function (distancesObj) {

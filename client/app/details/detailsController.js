@@ -58,10 +58,12 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
 
   //----------------------------------------------------------------------------------
   // populates slideshow with Instagram photos
+  // Todo: dupe of main.populatePictures in mainCtrl.js?
+  // Todo: Check sizes?
   detail.populatePictures = function(){
     var pictures = [];
     detail.currentNeighborhood.instagram.forEach(function (obj) {
-      pictures.push([obj.images.low_resolution.url, obj.user.full_name]);
+      pictures.push([obj.image, obj.userLink]);
     });
     return pictures;
   };
@@ -114,6 +116,7 @@ details.controller('detailsController', ['Details', 'Map', function (Details, Ma
   //----------------------------------------------------------------------------------
    // State flags to determine active tab on click
     detail.stateSwitch = function(currState) {
+      // detail.currentNeighborhood.demography = detail.currentNeighborhood.demography || Details.checkDemography();
       switch(currState) {
         case 'amenities': detail.tabs = [1,0,0];
                           break;
