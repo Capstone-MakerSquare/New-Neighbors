@@ -32,150 +32,194 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       longitude: -98.5
   };
 
+  let apprxApartmentSqft = {  // http://www.rentcafe.com/blog/rental-market/us-average-apartment-size-trends-downward/ , etc.
+    1: 750,
+    2: 1100,
+    3: 1300,
+    4: 1500,
+    5: 1700,
+    8: 550,  // stand-in for studio
+  }
+
+  let rentEstimateLowFactor = 0.8;  // seems about right.  If an average 1-bedroom is 1500, a cheap one in the area might be 1200 & a super pricy one 2250
+  let rentEstimateHighFactor = 1.5;
+
   main.priceRange = '';      //stores the current price range for the selected neighborhood
   main.buyPrice = {};
 
   //unscoped local variables
   var autocomplete;
 
+
+  //----------------------------------------------------------------------------------
+  // Function to aquire apartment price estimates by multiplying rent per sqft by typical size of apartments with given # of bedrooms
+  // Input: apartment size, in bedroom # or studio, price to sqft ratio for that locale
+  // Output: flattened array of objects
+  let getApartmentPrice = function(size, PriceRatio) {
+    return apprxApartmentSqft.size * PriceRatio;
+  }
+
   //----------------------------------------------------------------------------------
   // Function to flatten the object so that the array can be sorted by a parameter
   // Input: neighborhoodsObj
   // Output: flattened array of objects
-  main.getPriceString = function (neighborhood) {
-    var obj = {};
-    if(main.searchInfo.buyOrRent === 'rent') {
-      if(!neighborhood.rentEstimate) {
-        obj.title = 'Rent Estimate';
-        obj.price = 'Not Available';
-        return obj;
-      }
-      obj.title = 'Rent Estimate';
-      obj.price = (neighborhood.rentEstimate.estimateLow) ? '$' + neighborhood.rentEstimate.estimateLow.toLocaleString() + ' - ' + '$' + neighborhood.rentEstimate.estimateHigh.toLocaleString() : 'Not Available';
+  main.formatPriceString = function (neighborhood) {
+    let priceTitleObj = {
+      title: main.buyPrice[neighborhood.name].housetype
+    }
+
+    if(main.searchInfo.buyOrRent === 'rent' && neighborhood.estimateLow != 'Not Available') {
+      priceTitleObj.price = '$' + neighborhood.estimateLow.toLocaleString() + ' - ' + '$' + neighborhood.estimateHigh.toLocaleString();
     } else {
-        if(!main.buyPrice[neighborhood.name].priceStr) {
-          obj.title = 'Home Price';
-          obj.price = 'Not Available';
-          return obj;
-        }
-        obj.title = main.buyPrice[neighborhood.name].housetype;
-        obj.price = main.buyPrice[neighborhood.name].priceStr;
-      }
-    return obj;
+      priceTitleObj.price = (main.searchInfo.buyOrRent === 'buy') ? main.buyPrice[neighborhood.name].priceStr : 'Not Available';
+    }
+    return priceTitleObj;
   };
 
-  main.orderPrice = function(obj) {
-    if(main.searchInfo.buyOrRent === 'rent') {
-      if (obj.rentEstimate) {
-        return obj.rentEstimate.estimateLow;
-      } else {
-        return "Price Not Available";
-      }
-    } else {
-      return main.buyPrice[obj.name].priceNum;
+  main.orderPrice = function(hood) {
+    if (hood.priceEstimate) {
+      return main.buyPrice[hood.name].priceNum;
     }
   };
 
   main.orderByArray = function(neighborhoods){
-    var arr = [];
+    let arr = [];
+    let highEst = 'Not Available';
+    let lowEst = 'Not Available';
     for (var i = 0; i < neighborhoods.length; i++) {
+      let hoodObj = {};
       if(neighborhoods[i].name==='Downtown') {
         neighborhoods[i].name = neighborhoods[i].name + ' ' + neighborhoods[i].city;
       }
-      arr.push({
+      if (main.searchInfo.buyOrRent === 'rent' && neighborhoods[i].priceEstimate) {
+        lowEst = neighborhoods[i].priceEstimate * apprxApartmentSqft[main.searchInfo.bedrooms] * rentEstimateLowFactor;
+        highEst = neighborhoods[i].priceEstimate * apprxApartmentSqft[main.searchInfo.bedrooms] * rentEstimateHighFactor;
+      }
+
+      hoodObj = {
           name: neighborhoods[i].name,
           commuteTime: (neighborhoods[i].commuteInfo && neighborhoods[i].commuteInfo.commuteTime) ? neighborhoods[i].commuteInfo.commuteTime : 'Not Available',
           commuteDistance: (neighborhoods[i].commuteInfo && neighborhoods[i].commuteInfo.commuteDistance) ? neighborhoods[i].commuteInfo.commuteDistance : 'Not Available',
-          estimateLow: neighborhoods[i].rentEstimate ? neighborhoods[i].rentEstimate.estimateLow : 'Not Available',
-          estimateHigh: neighborhoods[i].rentEstimate ? neighborhoods[i].rentEstimate.estimateHigh : 'Not Available',
+          estimateLow: lowEst,
+          estimateHigh: highEst,
           googlePics: neighborhoods[i].googlePics,
           coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude},
           demography: neighborhoods[i].demographics,
-          priceString : main.getPriceString(neighborhoods[i]),
-          orderPrice: main.orderPrice(neighborhoods[i])
-      });
+      }
+      hoodObj.priceString = main.formatPriceString(hoodObj);
+      hoodObj.orderPrice = main.orderPrice(neighborhoods[i]);
+
+      arr.push(hoodObj);
     }
     return arr;
   };
 
   //Function to format the purchase prices for homes
-  main.formatPrice  = function(hoodArr) {
-    hoodArr.forEach(function() {
-      
-    })
+  main.formatBuyPrice  = function(hoodArr) {
+    let priceData;
+    let dataInfo;
+    let temp = {};
+    let heading = (main.searchInfo.buyOrRent === 'rent') ? 'Rent Per Month' : 'House Price';
+    let dwelling = (main.searchInfo.buyOrRent === 'rent') ? 'Rental' : 'House';
 
-  }
-
-//Function to format the purchase prices for homes
-  main.getBuyPrice  = function(arr) {
-    var priceData;
-    var dataInfo;
-    var temp = {};
-      temp.priceNum;
-      temp.priceStr;
-            //item.demography.pages[0].page[0].tables[0].table[0].data[0].attribute[3].values[0]
-        ////.city[0].value[0]._
-    arr.forEach( function(item) {
+    hoodArr.forEach(function(hood) {
       priceData = {};
       dataInfo = [,];
       temp = {
-        housetype: 'House Purchase Estimate',
-        priceStr: 'Data Not Available',
-        priceNum: 4000000
-        };
-      if (main.searchInfo.buyOrRent === 'rent') {
-        temp.housetype = 'rent selected';
-        temp.priceStr = 'rent selected';
-      } else if (item.demographics &&
-        item.demographics.pages &&
-        item.demographics.pages[0] &&
-        item.demographics.pages[0].page &&
-        item.demographics.pages[0].page[0] &&
-        item.demographics.pages[0].page[0].tables &&
-        item.demographics.pages[0].page[0].tables[0] &&
-        item.demographics.pages[0].page[0].tables[0].table &&
-        item.demographics.pages[0].page[0].tables[0].table[0] &&
-        item.demographics.pages[0].page[0].tables[0].table[0].data &&
-        item.demographics.pages[0].page[0].tables[0].table[0].data[0] &&
-        item.demographics.pages[0].page[0].tables[0].table[0].data[0].attribute) {
+        housetype: heading + ' Estimate',
+        priceNum: hood.priceEstimate || 4000000,
+        priceStr: hood.priceEstimate ? '$' + hood.priceEstimate.toLocaleString() : 'Data Not Available',
+      };
 
-        priceData = item.demographics.pages[0].page[0].tables[0].table[0].data[0].attribute;
-
-        dataInfo[1] = 'city';
-
-        if (main.searchInfo.bedrooms === '2') {
-          temp.housetype = '2-Bedroom Home';
-          dataInfo[0] = 3
-        } else if (main.searchInfo.bedrooms === '3') {
-          temp.housetype = '3-Bedroom Home';
-          dataInfo[0] = 4;
-        } else if (main.searchInfo.bedrooms === '4') {
-          temp.housetype = '4-Bedroom Home';
-          dataInfo[0] = 5;
-        } else if (main.searchInfo.buyOrRent === 'buy') {
-          temp.housetype = 'Single Family Home';
-          dataInfo[0] = 1;
-        }
-        if (priceData[dataInfo[0]] && priceData[dataInfo[0]].values && priceData[dataInfo[0]].values[0]) {
-          if (priceData[dataInfo[0]].values[0].neighborhood) {
-            dataInfo[1] = 'neighborhood';
-          }
-        }
-        if (priceData[dataInfo[0]] &&
-          priceData[dataInfo[0]].values &&
-          priceData[dataInfo[0]].values[0] &&
-          priceData[dataInfo[0]].values[0][dataInfo[1]] &&
-          priceData[dataInfo[0]].values[0][dataInfo[1]][0] &&
-          priceData[dataInfo[0]].values[0][dataInfo[1]][0].value &&
-          priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0] &&
-          priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._) {
-            temp.priceNum = parseInt(priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._);
-            temp.priceStr = '$' + temp.priceNum.toLocaleString();
-        }
+      if (main.searchInfo.buyOrRent === 'rent' && !hood.priceEstimate) {
+        temp.priceNum = main.filter.maxRent;
       }
-      main.buyPrice[item.name] = temp;
+
+      if (main.searchInfo.bedrooms < 4) {
+        temp.housetype = main.searchInfo.bedrooms + '-Bedroom ' + heading + ' Estimate';
+      } else if (main.searchInfo.bedrooms === '5') {
+        temp.housetype = '5+-Bedroom ' + heading + ' Estimate';
+      } else if (main.searchInfo.bedrooms === '6') {
+        temp.housetype = 'Median Sale Price';
+      } else if (main.searchInfo.bedrooms === '7') {
+        temp.housetype = 'Condominium Estimate';
+      } else if (main.searchInfo.bedrooms === '8') {
+        temp.housetype = 'Studio ' + heading  + ' Estimate';
+      }
+      main.buyPrice[hood.name] = temp;
     });
-  };
+  }
+
+//Function to format the purchase prices for homes
+  // main.getBuyPrice  = function(arr) {
+  //   var priceData;
+  //   var dataInfo;
+  //   var temp = {};
+  //     temp.priceNum;
+  //     temp.priceStr;
+  //           //item.demography.pages[0].page[0].tables[0].table[0].data[0].attribute[3].values[0]
+  //       ////.city[0].value[0]._
+  //   arr.forEach( function(item) {
+  //     priceData = {};
+  //     dataInfo = [,];
+  //     temp = {
+  //       housetype: 'House Purchase Estimate',
+  //       priceStr: 'Data Not Available',
+  //       priceNum: 4000000
+  //       };
+  //     if (main.searchInfo.buyOrRent === 'rent') {
+  //       temp.housetype = 'rent selected';
+  //       temp.priceStr = 'rent selected';
+  //     } else if (item.demographics &&
+  //       item.demographics.pages &&
+  //       item.demographics.pages[0] &&
+  //       item.demographics.pages[0].page &&
+  //       item.demographics.pages[0].page[0] &&
+  //       item.demographics.pages[0].page[0].tables &&
+  //       item.demographics.pages[0].page[0].tables[0] &&
+  //       item.demographics.pages[0].page[0].tables[0].table &&
+  //       item.demographics.pages[0].page[0].tables[0].table[0] &&
+  //       item.demographics.pages[0].page[0].tables[0].table[0].data &&
+  //       item.demographics.pages[0].page[0].tables[0].table[0].data[0] &&
+  //       item.demographics.pages[0].page[0].tables[0].table[0].data[0].attribute) {
+
+  //       priceData = item.demographics.pages[0].page[0].tables[0].table[0].data[0].attribute;
+
+  //       dataInfo[1] = 'city';
+
+  //       if (main.searchInfo.bedrooms === '2') {
+  //         temp.housetype = '2-Bedroom Home';
+  //         dataInfo[0] = 3
+  //       } else if (main.searchInfo.bedrooms === '3') {
+  //         temp.housetype = '3-Bedroom Home';
+  //         dataInfo[0] = 4;
+  //       } else if (main.searchInfo.bedrooms === '4') {
+  //         temp.housetype = '4-Bedroom Home';
+  //         dataInfo[0] = 5;
+  //       } else if (main.searchInfo.buyOrRent === 'buy') {
+  //         temp.housetype = 'Single Family Home';
+  //         dataInfo[0] = 1;
+  //       }
+  //       if (priceData[dataInfo[0]] && priceData[dataInfo[0]].values && priceData[dataInfo[0]].values[0]) {
+  //         if (priceData[dataInfo[0]].values[0].neighborhood) {
+  //           dataInfo[1] = 'neighborhood';
+  //         }
+  //       }
+  //       if (priceData[dataInfo[0]] &&
+  //         priceData[dataInfo[0]].values &&
+  //         priceData[dataInfo[0]].values[0] &&
+  //         priceData[dataInfo[0]].values[0][dataInfo[1]] &&
+  //         priceData[dataInfo[0]].values[0][dataInfo[1]][0] &&
+  //         priceData[dataInfo[0]].values[0][dataInfo[1]][0].value &&
+  //         priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0] &&
+  //         priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._) {
+  //           temp.priceNum = parseInt(priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._);
+  //           temp.priceStr = '$' + temp.priceNum.toLocaleString();
+  //       }
+  //     }
+  //     main.buyPrice[item.name] = temp;
+  //   });
+  // };
 
   //Function to set the selected type of housing to 'rent'
   main.setValueRent = function() {
@@ -241,12 +285,16 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
       //remove
       // console.log('requestNeighborhoods says: main.serviceObj:',main.serviceObj);
+      
+      main.formatBuyPrice(main.neighborhoods);
 
-      main.getBuyPrice(main.neighborhoods);
       main.neighborhoodArray = main.orderByArray(main.neighborhoods);
       main.filterNeighborhoods();
 
       main.markNeighborhoods();
+
+      // remove
+      // console.log("neighborhoodArray", main.neighborhoodArray)
 
       // turned off until fully implemented
       // let zipArr = Details.createZipArray(main.neighborhoodArray)
@@ -431,6 +479,8 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     main.picturesArr = [];
     if (!hood.googlePics) {
       console.log("No Pictures Found");
+      main.picturesArr = [];   // Todo: insert default pic here.
+      return;
     }
     hood.googlePics.forEach(function (obj) {
       main.picturesArr.push([obj.image, obj.userLink]);

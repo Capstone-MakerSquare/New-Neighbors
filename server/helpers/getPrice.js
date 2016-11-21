@@ -28,28 +28,29 @@ module.exports = function (zipCode, searchType) {
   } else {
 
     switch(searchType.bedrooms) {
-      case 1:
+      case "1":
           searchPath = '_1B';
           break;
-      case 2:
+      case "2":
           searchPath = '_2B';
           break;    
-      case 3:
+      case "3":
           searchPath = '_3B';
           break;
-      case 4:
+      case "4":
           searchPath = '_4B';
           break;
-      case 5:
+      case "5":
           searchPath = '_5B';
           break;
-      case 6:
+      case "6":
           searchPath = '_MSP';
           break;
-      case 7:
+      case "7":
           searchPath = '_C';
           break;
       default:
+
           return "Search input was bad";
     }
   }

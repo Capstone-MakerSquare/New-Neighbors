@@ -12,6 +12,7 @@ Evan changes
 
 5: Mostly fixed picture layout for new pictures.  Still have some inline styling that could be dealt with.
 
-Todos:  Fix demography by using http://geodataservice.net/DemographicsAPI.aspx  Also, disable statistics until the demography comes back separately.
-        Fix rental / purchase estimates (via Quandl)
-        Prices from Quandl are not useful for rental size.  use small/medium/large estimates with their $/sqft, and throw in like 650/750/1000 to get usable numbers.
+6: Fixed price data replacing zilpy & zillow for Quandl.  implemented estimated apartment sizes to let us use $/sqft data instead of apartment prices specific for each size.
+
+Todos:  Fix demography slowing down everything else by moving this api call to a separate server ajax call.
+        Add default picture for when google pics doesn't find/return anything.

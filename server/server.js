@@ -54,8 +54,10 @@ app.post('/api/getNeighbors', function (req, res) {
 	var checkAndRespond = function (neighborhoodObj, force) {
     eventNumber++;
     if(eventNumber === 2 || force) {
-      console.log("Server tasks completed.");
-      res.status(200).send(neighborhoodObj);
+      setTimeout(function() {
+        console.log("Server tasks completed.");
+        res.status(200).send(neighborhoodObj);
+      }, 500)
     }
 	}
 
@@ -100,7 +102,7 @@ app.post('/api/getNeighbors', function (req, res) {
             if(neighborhoodObject[neighborhood].country === 'USA') {
               return Q.all([
                 getPriceEstimate(neighborhood, searchInfo),
-                // getDemography(neighborhood)  Turned off for testing  // Todo: turn back on!
+                getDemography(neighborhood) //  Turned off for testing  // Todo: turn back on!
               ]);
             }
             else { return 'Other Country'; }

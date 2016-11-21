@@ -28,7 +28,7 @@ module.exports = function (placeId, maxPics) {
 
   let placeDetailUrl = placeDetail_path + placeDetail_id + placeDetail_key;
   //remove
-  // console.log('placeDetailUrl:', placeDetailUrl);
+  console.log('placeDetailUrl:', placeDetailUrl);
 
   getRequest(placeDetailUrl)
   .then(function (responseObj) {
