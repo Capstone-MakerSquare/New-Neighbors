@@ -26,20 +26,19 @@
             <option value="2">2 bedrooms</option>
             <option value="3">3 bedrooms</option>
             <option value="4">4 bedrooms</option>
-            <option value="5">5 bedrooms</option>
-            <option value="6">6 bedrooms</option>
-            <option value="7">7+ bedrooms</option>
+            <option value="5">5+ bedrooms</option>
+            <option ng-show="main.searchInfo.buyOrRent === 'buy'" value="6">Median Sale Price</option>
+            <option ng-show="main.searchInfo.buyOrRent === 'buy'" value="7">Condominium</option>
+            <option ng-show="main.searchInfo.buyOrRent === 'rent'" value="8">Studio</option>
           </select>
         </div>
         <div class="col-sm-2 col-md-2 landing-form">
           <select class="form-control" ng-model="main.searchInfo.bathrooms">
             <option value="1" selected>1 bathroom</option>
-            <option value="2">2 bathroom</option>
+            <option value="2">2 bathrooms</option>
             <option value="3">3 bathrooms</option>
             <option value="4">4 bathrooms</option>
-            <option value="5">5 bathrooms</option>
-            <option value="6">6 bathrooms</option>
-            <option value="7">7+ bathrooms</option>
+            <option value="5">5+ bathrooms</option>
           </select>
         </div>
         <div class="col-sm-2 col-md-1 landing-form">
