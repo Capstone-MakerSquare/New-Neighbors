@@ -105,6 +105,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
           googlePics: neighborhoods[i].googlePics,
           coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude},
           demography: neighborhoods[i].demographics,
+          zip: neighborhoods[i].zip,
       }
       hoodObj.priceString = main.formatPriceString(hoodObj);
       hoodObj.orderPrice = main.orderPrice(neighborhoods[i]);
@@ -208,6 +209,10 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
       //remove
       // console.log('requestNeighborhoods says: main.neighborhoods:',main.neighborhoods);
+      
+      // turned off until fully implemented
+      let zipArr = Details.createZipArray(main.neighborhoods)
+      main.getDemography(zipArr);
 
       main.attractionObj = Details.createPlacesObj(main.neighborhoods, Details.attractionDict);
       main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
@@ -225,9 +230,6 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       // remove
       // console.log("neighborhoodArray", main.neighborhoodArray)
 
-      // turned off until fully implemented
-      let zipArr = Details.createZipArray(main.neighborhoodArray)
-      main.getDemography(zipArr);
 
     });
   };
@@ -297,23 +299,22 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       for (let j=0;j<demogArr.length;j++) {
         if (demogArr[j].ZipCode == main.neighborhoodArray[i].zip) {
           main.neighborhoodArray[i].demography = demogArr[j];
+          
+          //mark current
+          if (main.neighborhoodArray[i].zip == main.currentNeighborhood.zip) {
+            main.currentNeighborhood.demography = demogArr[j];
+            Charts.runData(main.currentNeighborhood);
+          }
         }
       }
     }
-    //mark current
-    Details.setDemography(demogArr)
   };
-
 
   //----------------------------------------------------------------------------------
   //Function to move the page
 
   main.goToAnchor = function(anchorId) {
-    // set the location.hash to the id of
-    // the element you wish to scroll to.
     $location.hash(anchorId);
-
-    // call $anchorScroll()
     $anchorScroll();
   };
 
@@ -372,12 +373,14 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     // console.log("mapCurrentNeighborhood says: Details.currentNeighborhood:", Details.currentNeighborhood);
   }
 
+
   //----------------------------------------------------------------------------------
   //Function to drop a circle + marker on a selected neighborhood
   main.selectNeighborhood = function (neighborhood) {
     // console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
     main.populatePictures(neighborhood);
     main.mapCurrentNeighborhood(neighborhood);
+
     main.priceRange = neighborhood.priceString;
     main.currentNeighborhood = neighborhood;
 

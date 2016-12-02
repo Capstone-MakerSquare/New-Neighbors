@@ -104,7 +104,7 @@ app.post('/api/getNeighborhoods', function (req, res) {
             if(neighborhoodObject[neighborhood].country === 'USA') {
               return Q.all([
                 getPriceEstimate(neighborhood, searchInfo),
-                getDemography(neighborhood) //  Turned off for testing  // Todo: turn back on!
+                // getDemography(neighborhood) //  Turned off for testing  // Todo: turn back on!
               ]);
             }
             else { return 'Other Country'; }

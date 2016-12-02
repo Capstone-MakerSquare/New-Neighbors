@@ -92,6 +92,7 @@ angular.module('myApp.charts', [])
   // Runs the data to start making the charts
 
   let runData = function(neighborhood){
+    console.log("runData on", neighborhood.name, neighborhood);
     chartData(neighborhood);
     pieChartData(neighborhood);
     createStrings(neighborhood);
@@ -324,12 +325,6 @@ angular.module('myApp.charts', [])
     if (pieChartObj['0-9 years'] < 50) {
       runDrawPie = true;
     }
-
-    //only draws the pie chart if each age range has a value, but not a great test if one data point is bad.
-    // if (pieChartObj['0-9 years'] && pieChartObj['10-19 years'] && pieChartObj['20-29 years'] && pieChartObj['30-39 years'] &&
-    //       pieChartObj['40-54 years'] && pieChartObj['55-69 years'] && pieChartObj['70+ years']) {
-    //     runDrawPie = true;
-    // }
 
     // console.log(runDrawPie, "pieChartObj", pieChartObj);
 
