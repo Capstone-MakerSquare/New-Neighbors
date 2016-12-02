@@ -88,6 +88,9 @@ angular.module('myApp.charts', [])
     barChartArr = [[],[]];
   }
 
+  //----------------------------------------------------------------------------------
+  // Runs the data to start making the charts
+
   let runData = function(neighborhood){
     chartData(neighborhood);
     pieChartData(neighborhood);

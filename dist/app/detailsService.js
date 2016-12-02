@@ -129,7 +129,7 @@ details
   var createZipArray = function(hoodArr) {
     let arr = [];
     for (let i=0;i<hoodArr.length;i++) {
-      arr.push(hoodArr.zip);
+      arr.push(hoodArr[i].zip);
     }
     return arr;
   }

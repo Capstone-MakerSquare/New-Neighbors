@@ -44,8 +44,8 @@ if (process.env.PORT) {
 }
 
 //Handle a POST request
-//api/getNeighbors
-app.post('/api/getNeighbors', function (req, res) {
+//api/getNeighborhoods
+app.post('/api/getNeighborhoods', function (req, res) {
 	console.log('server.js says: POST request received! Data:', req.body);
 
 	searchInfo = req.body;
