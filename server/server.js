@@ -44,8 +44,8 @@ if (process.env.PORT) {
 }
 
 //Handle a POST request
-//api/getNeighbors
-app.post('/api/getNeighbors', function (req, res) {
+//api/getNeighborhoods
+app.post('/api/getNeighborhoods', function (req, res) {
 	console.log('server.js says: POST request received! Data:', req.body);
 
 	searchInfo = req.body;
@@ -104,7 +104,7 @@ app.post('/api/getNeighbors', function (req, res) {
             if(neighborhoodObject[neighborhood].country === 'USA') {
               return Q.all([
                 getPriceEstimate(neighborhood, searchInfo),
-                getDemography(neighborhood) //  Turned off for testing  // Todo: turn back on!
+                // getDemography(neighborhood) //  Turned off for testing  // Todo: turn back on!
               ]);
             }
             else { return 'Other Country'; }
