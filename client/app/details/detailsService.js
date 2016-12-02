@@ -2,7 +2,7 @@ details
 .factory('Details', function () {
 
   var neighborhoodDetailsObj;
-  var currentNeighborhood;
+  var currentNeighborhood = currentNeighborhood || {};
   var currentMarkers = [];
   var neighborhoodMarkers = [];
 
@@ -129,15 +129,19 @@ details
   var createZipArray = function(hoodArr) {
     let arr = [];
     for (let i=0;i<hoodArr.length;i++) {
-      arr.push(hoodArr.zip);
+      arr.push(hoodArr[i].zip);
     }
     return arr;
   }
 
+
+  // doesn't work.  currentNeighborhood demography is undefined.   
   var setDemography = function(demogArr) {
+    console.log("setDemo current:", currentNeighborhood, "demogArr", demogArr)
     for (let i=0;i<demogArr.length;i++) {
       if (demogArr[i].ZipCode == currentNeighborhood.zip) {
         currentNeighborhood.demography = demogArr[i];
+        Charts.runData(currentNeighborhood);
       }
     }
   }
@@ -157,7 +161,7 @@ details
     createPlacesObj: createPlacesObj,
     neighborhoodMarkers: neighborhoodMarkers,
     createZipArray: createZipArray,
-    setDemography: setDemography 
-    // mapCurrentNeighborhood:mapCurrentNeighborhood
+    setDemography: setDemography,
+    checkDemography: checkDemography 
   };
 });

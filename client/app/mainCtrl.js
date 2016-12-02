@@ -32,7 +32,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       longitude: -98.5
   };
 
-  let apprxApartmentSqft = {  // http://www.rentcafe.com/blog/rental-market/us-average-apartment-size-trends-downward/ , etc.
+  let apprxApartmentSqft = {  // data from http://www.rentcafe.com/blog/rental-market/us-average-apartment-size-trends-downward/ , etc.
     1: 750,
     2: 1100,
     3: 1300,
@@ -105,6 +105,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
           googlePics: neighborhoods[i].googlePics,
           coordinates: {latitude: neighborhoods[i].latitude, longitude: neighborhoods[i].longitude},
           demography: neighborhoods[i].demographics,
+          zip: neighborhoods[i].zip,
       }
       hoodObj.priceString = main.formatPriceString(hoodObj);
       hoodObj.orderPrice = main.orderPrice(neighborhoods[i]);
@@ -119,7 +120,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     let priceData;
     let dataInfo;
     let temp = {};
-    let heading = (main.searchInfo.buyOrRent === 'rent') ? 'Rent Per Month' : 'House Price';
+    let heading = (main.searchInfo.buyOrRent === 'rent') ? 'Rent' : 'House Price';
     let dwelling = (main.searchInfo.buyOrRent === 'rent') ? 'Rental' : 'House';
 
     hoodArr.forEach(function(hood) {
@@ -149,77 +150,6 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       main.buyPrice[hood.name] = temp;
     });
   }
-
-//Function to format the purchase prices for homes
-  // main.getBuyPrice  = function(arr) {
-  //   var priceData;
-  //   var dataInfo;
-  //   var temp = {};
-  //     temp.priceNum;
-  //     temp.priceStr;
-  //           //item.demography.pages[0].page[0].tables[0].table[0].data[0].attribute[3].values[0]
-  //       ////.city[0].value[0]._
-  //   arr.forEach( function(item) {
-  //     priceData = {};
-  //     dataInfo = [,];
-  //     temp = {
-  //       housetype: 'House Purchase Estimate',
-  //       priceStr: 'Data Not Available',
-  //       priceNum: 4000000
-  //       };
-  //     if (main.searchInfo.buyOrRent === 'rent') {
-  //       temp.housetype = 'rent selected';
-  //       temp.priceStr = 'rent selected';
-  //     } else if (item.demographics &&
-  //       item.demographics.pages &&
-  //       item.demographics.pages[0] &&
-  //       item.demographics.pages[0].page &&
-  //       item.demographics.pages[0].page[0] &&
-  //       item.demographics.pages[0].page[0].tables &&
-  //       item.demographics.pages[0].page[0].tables[0] &&
-  //       item.demographics.pages[0].page[0].tables[0].table &&
-  //       item.demographics.pages[0].page[0].tables[0].table[0] &&
-  //       item.demographics.pages[0].page[0].tables[0].table[0].data &&
-  //       item.demographics.pages[0].page[0].tables[0].table[0].data[0] &&
-  //       item.demographics.pages[0].page[0].tables[0].table[0].data[0].attribute) {
-
-  //       priceData = item.demographics.pages[0].page[0].tables[0].table[0].data[0].attribute;
-
-  //       dataInfo[1] = 'city';
-
-  //       if (main.searchInfo.bedrooms === '2') {
-  //         temp.housetype = '2-Bedroom Home';
-  //         dataInfo[0] = 3
-  //       } else if (main.searchInfo.bedrooms === '3') {
-  //         temp.housetype = '3-Bedroom Home';
-  //         dataInfo[0] = 4;
-  //       } else if (main.searchInfo.bedrooms === '4') {
-  //         temp.housetype = '4-Bedroom Home';
-  //         dataInfo[0] = 5;
-  //       } else if (main.searchInfo.buyOrRent === 'buy') {
-  //         temp.housetype = 'Single Family Home';
-  //         dataInfo[0] = 1;
-  //       }
-  //       if (priceData[dataInfo[0]] && priceData[dataInfo[0]].values && priceData[dataInfo[0]].values[0]) {
-  //         if (priceData[dataInfo[0]].values[0].neighborhood) {
-  //           dataInfo[1] = 'neighborhood';
-  //         }
-  //       }
-  //       if (priceData[dataInfo[0]] &&
-  //         priceData[dataInfo[0]].values &&
-  //         priceData[dataInfo[0]].values[0] &&
-  //         priceData[dataInfo[0]].values[0][dataInfo[1]] &&
-  //         priceData[dataInfo[0]].values[0][dataInfo[1]][0] &&
-  //         priceData[dataInfo[0]].values[0][dataInfo[1]][0].value &&
-  //         priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0] &&
-  //         priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._) {
-  //           temp.priceNum = parseInt(priceData[dataInfo[0]].values[0][dataInfo[1]][0].value[0]._);
-  //           temp.priceStr = '$' + temp.priceNum.toLocaleString();
-  //       }
-  //     }
-  //     main.buyPrice[item.name] = temp;
-  //   });
-  // };
 
   //Function to set the selected type of housing to 'rent'
   main.setValueRent = function() {
@@ -271,7 +201,7 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
   //----------------------------------------------------------------------------------
   // Function to make an API request for neighborhoods
   var requestNeighborhoods = function() {
-    ServerApi.submit(main.searchInfo, "Neighbors")
+    ServerApi.submit(main.searchInfo, "Neighborhoods")
     .then(function(data) {
       main.loading = false;
       main.serverResponse = data;
@@ -279,6 +209,10 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
 
       //remove
       // console.log('requestNeighborhoods says: main.neighborhoods:',main.neighborhoods);
+      
+      // turned off until fully implemented
+      let zipArr = Details.createZipArray(main.neighborhoods)
+      main.getDemography(zipArr);
 
       main.attractionObj = Details.createPlacesObj(main.neighborhoods, Details.attractionDict);
       main.serviceObj = Details.createPlacesObj(main.neighborhoods, Details.serviceDict);
@@ -296,9 +230,6 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       // remove
       // console.log("neighborhoodArray", main.neighborhoodArray)
 
-      // turned off until fully implemented
-      // let zipArr = Details.createZipArray(main.neighborhoodArray)
-      // main.getDemography(zipArr);
 
     });
   };
@@ -368,23 +299,22 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
       for (let j=0;j<demogArr.length;j++) {
         if (demogArr[j].ZipCode == main.neighborhoodArray[i].zip) {
           main.neighborhoodArray[i].demography = demogArr[j];
+          
+          //mark current
+          if (main.neighborhoodArray[i].zip == main.currentNeighborhood.zip) {
+            main.currentNeighborhood.demography = demogArr[j];
+            Charts.runData(main.currentNeighborhood);
+          }
         }
       }
     }
-    //mark current
-    Details.setDemography(demogArr)
   };
-
 
   //----------------------------------------------------------------------------------
   //Function to move the page
 
   main.goToAnchor = function(anchorId) {
-    // set the location.hash to the id of
-    // the element you wish to scroll to.
     $location.hash(anchorId);
-
-    // call $anchorScroll()
     $anchorScroll();
   };
 
@@ -443,12 +373,14 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     // console.log("mapCurrentNeighborhood says: Details.currentNeighborhood:", Details.currentNeighborhood);
   }
 
+
   //----------------------------------------------------------------------------------
   //Function to drop a circle + marker on a selected neighborhood
   main.selectNeighborhood = function (neighborhood) {
     // console.log('mainCtrl.js says: selected Neighborhood: ', neighborhood);
     main.populatePictures(neighborhood);
     main.mapCurrentNeighborhood(neighborhood);
+
     main.priceRange = neighborhood.priceString;
     main.currentNeighborhood = neighborhood;
 
@@ -458,9 +390,6 @@ app.controller('MainController', ['Map', 'ServerApi', '$state', 'Details', 'Char
     // console.log('selectNeighborhood says: main.serverResponse:',main.serverResponse);
     // console.log('selectNeighborhood', Details.currentNeighborhood);
     Charts.runData(neighborhood);
-    // Charts.chartData(neighborhood);
-    // Charts.pieChartData(neighborhood);
-    // Charts.createStrings(neighborhood);
 
     // Todo: remove setTimeout.  Seriously, it's not even $Timeout.
 
